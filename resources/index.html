@@ -5,8 +5,8 @@
 	<meta charset="UTF-8" />
 	<meta name="robots" content="noindex,nofollow" />
 	<meta name="googlebot" content="noindex,nofollow" />
-	<link rel="icon" type="image/x-icon" href="/bahmni/favicon.ico">
-	<title>Bahmni</title>
+	<link rel="icon" type="image/png" href="/favicon.png">
+	<title>Pioneer Healthcare</title>
 	<style>
 		html {
 			overflow: auto;
@@ -36,7 +36,7 @@
 		.container>h4 {
 			margin: 0;
 			text-align: center;
-			color: #646464;
+			color: #3E9C85;
 			font-size: 16px;
 		}
 
@@ -75,7 +75,7 @@
 		.launch span {
 			min-height: 55px;
 			display: inline-block;
-			color: #f4834d;
+			color: #081D42;
 			font-weight: bold;
 			font-size: 18px;
 			text-transform: uppercase;
@@ -106,7 +106,7 @@
 		.header_text {
 			text-align: center;
 			margin: 35px auto 25px;
-			color: #646464;
+			color: #081D42;
 			font-size: 24px;
 			width: 100%;
 		}
@@ -168,6 +168,8 @@
 			text-align: center;
 			margin: 10px auto;
 		}
+		body::before { content: ""; position: fixed; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #081D42 0%, #4F46E5 55%, #3E9C85 100%); z-index: 3; }
+		.section:hover { outline: 2px solid #3E9C85; outline-offset: -2px; }
 	</style>
 
 	<script>
@@ -314,11 +316,11 @@
 
 <body onload="init()">
 	<div class="clint-logo-wrapper">
-		<img class="client_logo" src="/bahmni/images/bahmniLogoFull.png" />
+		<img class="client_logo" src="/bahmni_config/openmrs/apps/home/logo.png" alt="Pioneer Healthcare" />
 		<span class="title_text"> TITLE TEXT </span>
 	</div>
 	<div class="header_text">
-		<b>WELCOME TO<br />BAHMNI EMR & HOSPITAL SERVICE</b>
+		<b>WELCOME TO<br />PIONEER HEALTHCARE</b>
 	</div>
 	<div class="container">
 		<h4>GET STARTED</h4>
@@ -333,9 +335,9 @@
 		<img id="bottom-banner-image" />
 	</div>
 	<div class="power-by">
-		<img src="/bahmni/images/bahmniLogoFull.png" alt="Bahmni" />
-		<a class="helper_url" href="https://bahmni.atlassian.net/wiki/display/BAH/Bahmni+Home">
-			Bahmni Help</a>
+		<img src="/favicon.png" alt="" style="width:18px" /> Pioneer Healthcare &middot;
+		<a class="helper_url" href="https://www.pioneeraitech.com">
+			Help</a>
 	</div>
 </body>
 
