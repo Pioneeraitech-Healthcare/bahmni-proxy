@@ -1,75 +1,164 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 /*
- * Pioneer Healthcare skin for Healthcare Core (clinical screens, lab, ERP).
- * Injected into every HTML page by nginx (servers/nginx/conf.d/healthcare-core-prod.conf).
- * Brand from ATA healthcare (src/edition/healthcare): navy ink #081D42, green #3E9C85,
- * indigo accent #4F46E5. Only colours, logos and names change - never layout or behaviour.
+ * Pioneer Healthcare theme for Healthcare Core (clinical screens, lab, ERP) - the ATA healthcare
+ * look: white top bar (skin.js), light toolbars with navy ink, indigo primary actions, white
+ * secondary buttons, rounded fields, Inter. Injected into every HTML page by nginx
+ * (servers/nginx/conf.d/healthcare-core-prod.conf). Colours, type and logos only - never behaviour.
  */
 :root {
+  --ph-ink: #0B1F44;
   --ph-navy: #081D42;
-  --ph-navy-2: #1E3A8A;
+  --ph-ink-2: #334155;
+  --ph-muted: #5B6478;
+  --ph-line: #E4E7F0;
+  --ph-field: #DADDF5;
+  --ph-bg: #F6F7FB;
+  --ph-tint: #EEF2FB;
   --ph-indigo: #4F46E5;
+  --ph-indigo-d: #4338CA;
+  --ph-indigo-t: #EEF0FF;
   --ph-green: #3E9C85;
-  --ph-green-2: #2F7F6B;
-  --ph-head: linear-gradient(100deg, #081D42 0%, #1E3A8A 100%);
-  --ph-ok: linear-gradient(#45A88F, #2F7F6B);
+  --ph-font: Inter, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
-/* ---------- Clinical screens (registration, clinical, appointments, home) ---------- */
-header.reg-header, .reg-header-wrapper, .header-wrapper, .opd-header-top,
-.bahmni-appointments header, .opd-wrapper > header, .reg-wrapper > header {
-  background: var(--ph-head) !important;
-  border-color: var(--ph-navy) !important;
+/* ---------- One logo per page: only the top bar's ---------- */
+.clint-logo-wrapper, .power-by img, img.implementor-logo, img[src*="bahmniLogo"], img[src*="bahmni-logo"],
+#oe-logo, img[src*="openelis_logo"], #header img { display: none !important; }
+
+/* ---------- Clinical screens: page, type ---------- */
+html.ph-has-bar body:not(.o_web_client) { background: var(--ph-bg) !important; font-family: var(--ph-font) !important; color: var(--ph-ink); }
+html.ph-has-bar body:not(.o_web_client) :is(input, select, textarea, button, label, td, th, legend, h1, h2, h3, h4, p, li, span, a, div):not(.fa):not([class*="fa-"]):not([class*="icon-"]) { font-family: var(--ph-font); }
+
+/* Toolbars under the top bar (each app's own menu): light, navy ink */
+.reg-header-wrapper, header.reg-header, .opd-header-wrapper, .opd-header-top, .opd-header-top > header,
+.bahmni-appointments header, .opd-wrapper > header, .reg-wrapper > header, .header-wrapper {
+  background: #fff !important; background-image: none !important; border: 0 !important; box-shadow: none !important; color: var(--ph-ink) !important;
 }
-h2.section-title, h2.section-title-next-ui, h2.section-title.has-link, h2.forms-display-control-section-title,
-.concept-set-title, .dashboard-section h2, .section-title {
-  background: var(--ph-navy-2) !important;
-  border-color: var(--ph-navy-2) !important;
-  color: #fff !important;
+.reg-header-wrapper, .opd-header-wrapper { border-bottom: 1px solid var(--ph-line) !important; }
+:is(.reg-header-wrapper, .opd-header-wrapper, .header-wrapper) :is(a, span, u, .nav-link, i.fa, i[class*="fa-"]):not(.btn-user-info *) { color: var(--ph-ink) !important; text-shadow: none !important; }
+:is(.reg-header-wrapper, .opd-header-wrapper, .header-wrapper) ul.top-nav > li > a, :is(.reg-header-wrapper, .opd-header-wrapper) nav a {
+  border-radius: 8px; padding: 6px 10px !important; background: transparent !important;
 }
-.dashboard-section, section.concept-set-group { border-color: #C7D2FE !important; }
-a.back-btn, .back-btn, .back-btn-link, button.toggle-patient, #addDashboardButton, #template-control-panel-button,
-.opd-header-top .btn, .reg-header .btn {
-  background: var(--ph-head) !important;
-  border-color: var(--ph-navy) !important;
-  color: #fff !important;
+:is(.reg-header-wrapper, .opd-header-wrapper, .header-wrapper) ul.top-nav > li > a:hover,
+:is(.reg-header-wrapper, .opd-header-wrapper) a.active, :is(.reg-header-wrapper, .opd-header-wrapper) li.active > a { background: var(--ph-indigo-t) !important; color: var(--ph-indigo) !important; }
+:is(.reg-header-wrapper, .opd-header-wrapper, .header-wrapper) a.back-btn, a.back-btn, .back-btn-link {
+  background: var(--ph-tint) !important; background-image: none !important; border: 0 !important; border-radius: 10px !important; box-shadow: none !important; color: var(--ph-ink) !important;
 }
-a.btn--success, button.btn--success, .btn--success, button.confirm, button.save-consultation, .login-form button,
-button[type=submit].btn-success, .btn-success {
-  background: var(--ph-ok) !important;
-  border-color: var(--ph-green-2) !important;
-  color: #fff !important;
+a.back-btn i, a.back-btn .fa { color: var(--ph-ink) !important; }
+/* the apps' own user menu: neutral chip (the top bar has the name and Sign out) */
+button.btn-user-info {
+  background: var(--ph-tint) !important; background-image: none !important; border: 0 !important; border-radius: 10px !important; box-shadow: none !important;
 }
-.reg-wrapper, .opd-wrapper, #ClinicalController, #view-content, .bahmni-appointments { color: var(--ph-navy); }
-.reg-wrapper a, .opd-wrapper a, #ClinicalController a { color: var(--ph-navy-2); }
+button.btn-user-info i { color: var(--ph-ink) !important; }
+.retro-date-widget-header button, .opd-header-top button:not(.btn-user-info) {
+  background: #fff !important; background-image: none !important; border: 1px solid var(--ph-field) !important; border-radius: 10px !important; color: var(--ph-ink) !important; box-shadow: none !important; text-shadow: none !important;
+}
+/* appointments: second row of tabs */
+.bahmni-appointments .app-tabs, .bahmni-appointments [class*="tabs"], .bahmni-appointments nav {
+  background: #fff !important; background-image: none !important; border-bottom: 1px solid var(--ph-line) !important;
+}
+.bahmni-appointments [class*="tabs"] a, .bahmni-appointments nav a, .bahmni-appointments header a { color: var(--ph-ink-2) !important; text-shadow: none !important; }
+.bahmni-appointments [class*="tabs"] .active, .bahmni-appointments [class*="tabs"] a.active, .bahmni-appointments header a.active, .bahmni-appointments header .active a {
+  background: var(--ph-indigo-t) !important; color: var(--ph-indigo) !important; border-radius: 8px; border: 0 !important;
+}
+
+/* Buttons: indigo for the main action, white for the rest */
+html.ph-has-bar body:not(.o_web_client) :is(button, input[type=button], input[type=submit], a.button):not(#ph-topbar *):not(.ph-lab-card *):not(.btn-user-info):not(.back-btn):not(.app):not(.toggle-button):not(.camera-btn):not(.upload-btn):not(.fa):not([class*="tab"]):not(.confirm):not(.buttonClass):not(.btn--success):not(.btn-success):not(.btn-primary):not(.save-consultation):not(.print-btn) {
+  background: #fff; background-image: none !important; border: 1px solid var(--ph-field) !important; border-radius: 10px !important;
+  color: var(--ph-ink) !important; text-shadow: none !important; box-shadow: none !important; font-weight: 600; font-family: var(--ph-font) !important;
+}
+html.ph-has-bar body:not(.o_web_client) :is(button.confirm, button.buttonClass, .btn--success, button.btn--success, a.btn--success, button.save-consultation, .btn-success, button[type=submit].btn-success, .submit-btn-container button.confirm, .print-btn, button.btn-primary, .btn-primary):not(#ph-topbar *) {
+  background: var(--ph-indigo) !important; background-image: none !important; border: 1px solid var(--ph-indigo) !important; color: #fff !important;
+  border-radius: 10px !important; text-shadow: none !important; box-shadow: 0 6px 16px -10px rgba(79,70,229,.8) !important;
+}
+html.ph-has-bar body:not(.o_web_client) :is(button.confirm, button.buttonClass, .btn--success, .btn-success, .btn-primary):hover { background: var(--ph-indigo-d) !important; }
+html.ph-has-bar body:not(.o_web_client) button.toggle-button { background: var(--ph-indigo) !important; background-image: none !important; border-color: var(--ph-indigo) !important; color: #fff !important; }
+/* selected toggles (sitting/standing, primary/secondary, ...) */
+html.ph-has-bar body:not(.o_web_client) :is(button.active, button.selected, .btn.active, button[aria-pressed="true"]):not(#ph-topbar *) {
+  background: var(--ph-indigo-t) !important; border-color: var(--ph-indigo) !important; color: var(--ph-indigo) !important;
+}
+html.ph-has-bar body:not(.o_web_client) button:disabled:not(#ph-topbar *) { opacity: .55; }
+
+/* Fields */
+html.ph-has-bar body:not(.o_web_client) :is(input[type=text], input[type=number], input[type=date], input[type=time], input[type=tel], input[type=email], input[type=password], input:not([type]), select, textarea):not(#ph-topbar *):not(.ph-lab-card *) {
+  border: 1px solid var(--ph-field) !important; border-radius: 8px !important; background-color: #fff !important; color: var(--ph-ink) !important; box-shadow: none !important;
+}
+html.ph-has-bar body:not(.o_web_client) :is(input, select, textarea):not(#ph-topbar *):focus { border-color: var(--ph-indigo) !important; box-shadow: 0 0 0 3px rgba(79,70,229,.15) !important; outline: none !important; }
+
+/* Section titles and boxes */
+legend.registraion_legend, legend.additional-attribute, legend {
+  background: transparent !important; border: 0 !important; color: var(--ph-navy) !important; font-weight: 700 !important; font-size: 15px !important; padding: 0 8px !important; box-shadow: none !important;
+}
+h2.section-title, h2.section-title-next-ui, h2.section-title.has-link, h2.forms-display-control-section-title, .concept-set-title, .dashboard-section h2, .section-title {
+  background: transparent !important; background-image: none !important; border: 0 !important; border-bottom: 1px solid var(--ph-line) !important;
+  color: var(--ph-navy) !important; font-weight: 700 !important; text-shadow: none !important;
+}
+.dashboard-section, section.concept-set-group, .patient-search-wrapper, .reg-search-container {
+  background: #fff !important; border: 1px solid var(--ph-line) !important; border-radius: 16px !important; box-shadow: 0 1px 2px rgba(15,23,42,.04) !important;
+}
+.reg-wrapper, .opd-wrapper, #ClinicalController, #view-content, .bahmni-appointments { color: var(--ph-ink); }
+.reg-wrapper a:not(.back-btn):not(#ph-topbar *), .opd-wrapper a:not(.back-btn), #ClinicalController a { color: var(--ph-indigo); }
+
+/* Tabs (clinical queues, dashboards) */
+ul.tabs > li, .tabs li, .tab-list li, .patient-list-tabs li, ul.nav-tabs > li > a {
+  background: #fff !important; background-image: none !important; border: 1px solid var(--ph-line) !important; border-radius: 10px 10px 0 0 !important;
+}
+ul.tabs > li a, .tabs li a, .tab-list li a, .patient-list-tabs li a { color: var(--ph-ink-2) !important; text-shadow: none !important; }
+ul.tabs > li.active, .tabs li.active, .tab-list li.active, .patient-list-tabs li.active, ul.tabs > li.selected, .tabs li.tab-selected {
+  background: var(--ph-indigo-t) !important; border-color: var(--ph-indigo) !important;
+}
+ul.tabs > li.active a, .tabs li.active a, .tab-list li.active a, .patient-list-tabs li.active a { color: var(--ph-indigo) !important; }
+
+/* Notices */
 .fa-question-circle { color: var(--ph-green) !important; }
-/* sign-in page */
-.login-wrapper .login-header, .login .header, .box-header, .login-container h3, .login-form .login-header {
-  background: var(--ph-head) !important; color: #fff !important;
+.message-container .success, .messages .success { background: #ECFDF5 !important; color: #065F46 !important; border-color: #A7F3D0 !important; }
+
+/* ---------- Lab ---------- */
+#header { background: #fff !important; background-image: none !important; border-bottom: 1px solid var(--ph-line) !important; min-height: 0 !important; height: auto !important; }
+#user-info { display: none !important; } /* the top bar has Sign out */
+#topMenu, #nav-first, #nav-last { background: transparent !important; }
+#topMenu li, #topMenu a, ul#nav li a, #menu li a { background: #fff !important; background-image: none !important; color: var(--ph-ink) !important; border-color: var(--ph-line) !important; text-shadow: none !important; }
+#topMenu li:hover > a, #topMenu li a:hover { background: var(--ph-indigo-t) !important; color: var(--ph-indigo) !important; }
+html.ph-has-bar body:not(.o_web_client) :is(input[type=button], input[type=submit]):not(.ph-lab-card *) { padding: 6px 14px !important; }
+
+/* ---------- ERP: app menu bar light like the clinical toolbars ---------- */
+.o_main_navbar, nav.o_main_navbar {
+  background: #fff !important; background-image: none !important; border-bottom: 1px solid var(--ph-line) !important; color: var(--ph-ink) !important;
 }
-.login-wrapper h2, .login-wrapper h3, .title-text, .login-title { color: var(--ph-navy) !important; }
-/* the old footer logo next to "Help" */
-img[src*="bahmniLogo"], img[src*="bahmni-logo"] { content: url(/pioneer-brand/mark.png); width: 18px !important; height: 18px !important; }
-
-/* ---------- Lab (OpenELIS) ---------- */
-#header { background: var(--ph-head) !important; }
-#user-info { background: linear-gradient(#45A88F, #2F7F6B) !important; color: #fff !important; }
-#user-info a { color: #fff !important; }
-img[src*="openelis_logo"] { content: url(/pioneer-brand/logo-white.png); height: 44px !important; width: auto !important; }
-#nav-first, #nav-last, #topMenu li { border-color: #C7D2FE !important; }
-input[type=button], input[type=submit] { accent-color: var(--ph-green); }
-
-/* ---------- ERP (Odoo) ---------- */
-.o_main_navbar, nav.o_main_navbar { background: var(--ph-head) !important; border-bottom-color: var(--ph-navy) !important; }
+.o_main_navbar :is(a, button, .dropdown-toggle, .o_menu_brand, .o_nav_entry, .o_menu_sections .dropdown-item, span, i, .oi, .fa) { color: var(--ph-ink) !important; }
+.o_main_navbar :is(.o_menu_brand) { font-weight: 700 !important; }
+.o_main_navbar :is(.dropdown-toggle, .o_nav_entry, a, button):hover, .o_main_navbar .show > .dropdown-toggle { background: var(--ph-indigo-t) !important; color: var(--ph-indigo) !important; }
+.o_main_navbar .o_user_menu .o_avatar, .o_main_navbar .o_user_avatar { border-radius: 50%; }
 .btn-primary, .o_list_button_add, .o-kanban-button-new, .o_form_button_save {
-  background-color: var(--ph-indigo) !important; border-color: var(--ph-indigo) !important; color: #fff !important;
+  background-color: var(--ph-indigo) !important; border-color: var(--ph-indigo) !important; color: #fff !important; border-radius: 8px !important;
 }
 .o_arrow_button_current, .o_statusbar_status .btn-primary, .o_statusbar_status .o_arrow_button.btn-primary {
-  background-color: var(--ph-navy-2) !important; border-color: var(--ph-navy-2) !important;
+  background-color: var(--ph-indigo-t) !important; border-color: var(--ph-indigo) !important; color: var(--ph-indigo) !important;
 }
 .badge.text-bg-primary, .o_tag_color_10 { background-color: var(--ph-indigo) !important; }
+.o_web_client { font-family: var(--ph-font) !important; }
 a.o_powered_by, .o_brand_promotion, .o_login_auth .o_brand_promotion, a[href*="odoo.com?utm"] { display: none !important; }
-.oe_login_form .btn-primary, .oe_signup_form .btn-primary { background-color: var(--ph-green) !important; border-color: var(--ph-green-2) !important; }
+/* sample-data onboarding banner on empty lists */
+.o_onboarding_container, .o_onboarding { display: none !important; }
+
+/* ---------- Leftover old greys/teals found by scanning every screen ---------- */
+span.mylegend, legend > span { background: transparent !important; border: 0 !important; box-shadow: none !important; color: var(--ph-navy) !important; font-weight: 700 !important; padding: 0 !important; }
+button.camera-btn, button.upload-btn { background-color: #fff !important; border: 1px solid var(--ph-field) !important; border-radius: 10px !important; box-shadow: none !important; }
+span.add-on { background: #F3F4F9 !important; border: 1px solid var(--ph-field) !important; color: var(--ph-muted) !important; border-radius: 8px 0 0 8px !important; text-shadow: none !important; }
+li.active-patient, .patient-list li, .patients-list li { background: #fff !important; border: 1px solid var(--ph-line) !important; border-radius: 12px !important; box-shadow: 0 1px 2px rgba(15,23,42,.04) !important; }
+li.active-patient:hover { border-color: var(--ph-indigo) !important; background: var(--ph-indigo-t) !important; }
+#patientContext, .patient-info-fixed-postion-container { background: #fff !important; background-image: none !important; border-bottom: 1px solid var(--ph-line) !important; box-shadow: none !important; color: var(--ph-ink) !important; }
+.laborder-sub-heading, .toggle-container.active, .dashboard-section li.toggle-container, .dashboard-section .toggle-container { background: #F6F7FB !important; background-image: none !important; color: var(--ph-ink) !important; }
+.dashboard-section ul > li { background-color: transparent !important; }
+html.ph-has-bar body:not(.o_web_client) th { background: #F6F7FB !important; background-image: none !important; color: var(--ph-ink-2) !important; border-color: var(--ph-line) !important; }
+label.video-placeholder { background: var(--ph-tint) !important; border-radius: 8px !important; color: var(--ph-ink) !important; }
+/* location page: its own title is replaced by the card heading */
+html.ph-login .login > header.reg-header:not(:has(select#locale)) { display: none !important; }
+/* clinical tabs on a patient (General, +) */
+.opd-header-top .tabs a, .opd-header-top [class*="tab"] a, .dashboard-tabs a, .patient-dashboard-tabs a { background: #fff !important; background-image: none !important; color: var(--ph-ink) !important; border: 1px solid var(--ph-line) !important; border-radius: 10px !important; }
+.opd-header-top [class*="tab"] .active a, .opd-header-top [class*="tab"] a.active, .dashboard-tabs .active a { background: var(--ph-indigo-t) !important; color: var(--ph-indigo) !important; border-color: var(--ph-indigo) !important; }
+/* ERP: the name is in the top bar; keep only the avatar menu in the ERP bar */
+.o_main_navbar .o_user_menu .oe_topbar_name, .o_main_navbar .o_user_menu .o_user_avatar + span, .o_main_navbar .o_user_menu span.text-truncate { display: none !important; }
 
 /* ---------- Top bar on every module (same as ATA healthcare's header), fixed at the top ---------- */
 #ph-topbar {
@@ -123,7 +212,7 @@ html.ph-has-bar body.o_web_client #ph-topbar { position: relative; }
 html.ph-login body { background: #F6F7FB !important; }
 .ph-login-head { text-align: center; margin: 0 0 22px; font-family: Inter, -apple-system, "Segoe UI", Roboto, sans-serif; }
 .ph-login-head img { width: 44px; height: 44px; display: block; margin: 0 auto 14px; }
-.ph-login-head h1 { margin: 0; font-size: 24px !important; font-weight: 800 !important; letter-spacing: -0.02em; color: #081D42 !important; line-height: 1.2; }
+.ph-login-head h1 { margin: 0; border: 0 !important; padding: 0 !important; background: none !important; font-size: 24px !important; font-weight: 800 !important; letter-spacing: -0.02em; color: #081D42 !important; line-height: 1.2; }
 .ph-login-head p { margin: 6px 0 0; font-size: 14px; color: #5B6478; }
 /* clinical */
 html.ph-login .reg-wrapper #view-content { min-height: calc(100vh - 62px); display: flex; align-items: center; justify-content: center; padding: 24px 16px 70px; box-sizing: border-box; }

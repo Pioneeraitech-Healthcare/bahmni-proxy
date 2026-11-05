@@ -232,16 +232,18 @@
 
   // Login pages (clinical, lab, ERP): one centred card in the Pioneer Healthcare style.
   var AREA = ON_ERP ? 'Stock Inventory & Billing' : ON_LAB ? 'Laboratory' : 'Clinical Service';
-  function loginHead() {
-    return '<div class="ph-login-head"><img src="/pioneer-brand/mark.png" alt=""><h1>Sign in</h1><p>' + esc(AREA) + ' &middot; Pioneer Healthcare</p></div>';
+  // No logo here: the top bar already shows it (one logo per page).
+  function loginHead(title, line) {
+    return '<div class="ph-login-head"><h1>' + esc(title || 'Sign in') + '</h1><p>' + esc(line || AREA) + '</p></div>';
   }
   function loginSkin() {
     var html = document.documentElement;
     if (!ON_ERP && !ON_LAB) {
       var box = document.querySelector('.login:not(.login-otp)');
-      var on = !!(document.querySelector('#username') && box && box.offsetParent !== null);
+      var loc = document.querySelector('select#location');
+      var on = !!((document.querySelector('#username') || loc) && box && box.offsetParent !== null);
       html.classList.toggle('ph-login', on);
-      if (on && !box.querySelector('.ph-login-head')) box.insertAdjacentHTML('afterbegin', loginHead());
+      if (on && !box.querySelector('.ph-login-head')) box.insertAdjacentHTML('afterbegin', loc ? loginHead('Choose your location', 'Where are you working today?') : loginHead());
       return;
     }
     if (ON_ERP) {
