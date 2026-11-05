@@ -1,0 +1,149 @@
+/* ATA UI sizes: ONE file for the size of every button, text and table in every module.
+   The same file sits in every web app (src/shared/ui-v2/ata-ui.css; ata-parent: src/shared/ata-ui.css) and is
+   injected once into the page (style id "ata-ui-css"), so whichever app loads first, the sizes are the same.
+   To change a size: edit the variables below, then copy this file over the other apps' copies (keep them identical).
+
+   It wins over the MUI theme, `sx` and the kit's own rules on purpose (`:root` + a doubled class).
+   Left alone: a button that holds block content (a choice tile or card made from a Button) and anything with the
+   class `ata-ui-free`. */
+:root{
+  /* Text */
+  --ata-fs-xs:12px;   /* captions, badges, helper text */
+  --ata-fs-sm:13px;   /* secondary text, table cells, inputs, menus, buttons */
+  --ata-fs-base:14px; /* body text */
+  --ata-fs-md:16px;   /* card and section titles */
+  --ata-fs-lg:18px;   /* dialog and drawer titles */
+  --ata-fs-title:19px;/* page titles (the page header on every list and studio page) */
+  --ata-fs-xl:20px;   /* the largest heading anywhere (overview headlines); KPI numbers are the only bigger text */
+
+  /* Buttons */
+  --ata-btn-h:32px;
+  --ata-btn-h-sm:28px;
+  --ata-btn-h-xs:24px;
+  --ata-btn-fs:13px;
+  --ata-btn-fs-sm:12px;
+  --ata-btn-px:14px;
+  --ata-btn-px-sm:10px;
+  --ata-btn-px-text:10px;
+  --ata-btn-weight:600;
+  --ata-btn-radius:8px;
+  --ata-btn-icon:16px;
+  --ata-icon-btn-icon:20px;
+
+  /* Tables */
+  --ata-table-fs:13px;
+  --ata-table-head-fs:12px;
+}
+
+/* ------------------------------------------------------------ MUI buttons */
+:root .MuiButton-root.MuiButton-root:not(.ata-ui-free):not(:has(div,p,ul,ol,table,h1,h2,h3,h4,h5,h6)){
+  min-height:var(--ata-btn-h);
+  height:auto;
+  padding-block:0;
+  padding-inline:var(--ata-btn-px);
+  font-size:var(--ata-btn-fs);
+  font-weight:var(--ata-btn-weight);
+  line-height:1.3;
+  letter-spacing:0;
+  text-transform:none;
+  border-radius:var(--ata-btn-radius);
+}
+:root .MuiButton-root.MuiButton-text:not(.ata-ui-free):not(:has(div,p,ul,ol,table,h1,h2,h3,h4,h5,h6)){
+  padding-inline:var(--ata-btn-px-text);
+}
+:root .MuiButton-root.MuiButton-sizeSmall:not(.ata-ui-free):not(:has(div,p,ul,ol,table,h1,h2,h3,h4,h5,h6)){
+  min-height:var(--ata-btn-h-sm);
+  padding-inline:var(--ata-btn-px-sm);
+  font-size:var(--ata-btn-fs-sm);
+}
+:root .MuiButton-root.MuiButton-root:not(.ata-ui-free) :is(.MuiButton-startIcon,.MuiButton-endIcon)>.MuiSvgIcon-root{
+  font-size:var(--ata-btn-icon);
+}
+:root .MuiButtonGroup-root .MuiButton-root.MuiButton-root:not(.ata-ui-free){
+  border-radius:0;
+}
+:root .MuiButtonGroup-root .MuiButton-root.MuiButton-root:not(.ata-ui-free):first-of-type{
+  border-start-start-radius:var(--ata-btn-radius);
+  border-end-start-radius:var(--ata-btn-radius);
+}
+:root .MuiButtonGroup-root .MuiButton-root.MuiButton-root:not(.ata-ui-free):last-of-type{
+  border-start-end-radius:var(--ata-btn-radius);
+  border-end-end-radius:var(--ata-btn-radius);
+}
+
+/* Icon-only buttons: 32 px (small 28 px), a 20 px icon. */
+:root .MuiIconButton-root.MuiIconButton-sizeMedium:not(.ata-ui-free),
+:root .MuiIconButton-root.MuiIconButton-sizeLarge:not(.ata-ui-free){
+  padding:6px;
+}
+:root .MuiIconButton-root:is(.MuiIconButton-sizeMedium,.MuiIconButton-sizeLarge):not(.ata-ui-free)>.MuiSvgIcon-root{
+  font-size:var(--ata-icon-btn-icon);
+}
+
+/* Toggle buttons (segmented controls) */
+:root .MuiToggleButton-root.MuiToggleButton-root:not(.ata-ui-free):not(:has(div,p,ul,ol,table)){
+  min-height:var(--ata-btn-h);
+  padding-block:0;
+  padding-inline:12px;
+  font-size:var(--ata-btn-fs);
+  line-height:1.3;
+  text-transform:none;
+}
+:root .MuiToggleButton-root.MuiToggleButton-sizeSmall:not(.ata-ui-free):not(:has(div,p,ul,ol,table)){
+  min-height:var(--ata-btn-h-sm);
+  padding-inline:var(--ata-btn-px-sm);
+  font-size:var(--ata-btn-fs-sm);
+}
+
+/* ------------------------------------------------------------ kit buttons (.btn) */
+:root :is(.ata-designer,.ata-runtime,.ata-v2) .btn.btn:not(.ata-ui-free){
+  min-height:var(--ata-btn-h);
+  padding-block:0;
+  padding-inline:var(--ata-btn-px);
+  font-size:var(--ata-btn-fs);
+  line-height:1.3;
+}
+:root :is(.ata-designer,.ata-runtime,.ata-v2) .btn.btn.sm:not(.ata-ui-free){
+  min-height:var(--ata-btn-h-sm);
+  padding-inline:var(--ata-btn-px-sm);
+  font-size:var(--ata-btn-fs-sm);
+}
+:root :is(.ata-designer,.ata-runtime,.ata-v2) .btn.btn.xs:not(.ata-ui-free){
+  min-height:var(--ata-btn-h-xs);
+  padding-inline:8px;
+  font-size:var(--ata-fs-xs);
+}
+
+/* ------------------------------------------------------------ text */
+:root .kph-t.kph-t.kph-t:not(.ata-ui-free){font-size:var(--ata-fs-title)}
+:root .MuiTypography-root.MuiTypography-h1:not(.ata-ui-free),
+:root .MuiTypography-root.MuiTypography-h2:not(.ata-ui-free){font-size:var(--ata-fs-xl);line-height:1.3}
+:root .MuiTypography-root.MuiTypography-h3:not(.ata-ui-free),
+:root .MuiTypography-root.MuiTypography-h4:not(.ata-ui-free){font-size:var(--ata-fs-title);line-height:1.3}
+:root .MuiTypography-root.MuiTypography-h5:not(.ata-ui-free){font-size:var(--ata-fs-md);line-height:1.35}
+:root .MuiTypography-root.MuiTypography-h6:not(.ata-ui-free){font-size:var(--ata-fs-base);line-height:1.4}
+:root .MuiTypography-root.MuiTypography-subtitle1:not(.ata-ui-free){font-size:var(--ata-fs-base)}
+:root .MuiTypography-root.MuiTypography-subtitle2:not(.ata-ui-free){font-size:var(--ata-fs-sm)}
+:root .MuiTypography-root.MuiTypography-body1:not(.ata-ui-free){font-size:var(--ata-fs-base)}
+:root .MuiTypography-root.MuiTypography-body2:not(.ata-ui-free){font-size:var(--ata-fs-sm)}
+:root .MuiTypography-root.MuiTypography-caption:not(.ata-ui-free){font-size:var(--ata-fs-xs)}
+:root .MuiTypography-root.MuiTypography-overline:not(.ata-ui-free){font-size:var(--ata-fs-xs)}
+:root .MuiDialogTitle-root.MuiDialogTitle-root:not(.ata-ui-free){font-size:var(--ata-fs-lg);line-height:1.3}
+
+/* Inputs, menus, tabs, chips */
+:root .MuiInputBase-root.MuiInputBase-root:not(.ata-ui-free){font-size:var(--ata-fs-sm)}
+:root .MuiInputLabel-root.MuiInputLabel-root:not(.ata-ui-free),
+:root .MuiFormLabel-root.MuiFormLabel-root:not(.ata-ui-free){font-size:var(--ata-fs-sm)}
+:root .MuiFormHelperText-root.MuiFormHelperText-root:not(.ata-ui-free){font-size:var(--ata-fs-xs)}
+:root .MuiFormControlLabel-label.MuiFormControlLabel-label:not(.ata-ui-free){font-size:var(--ata-fs-sm)}
+:root .MuiMenuItem-root.MuiMenuItem-root:not(.ata-ui-free){font-size:var(--ata-fs-sm);min-height:32px}
+:root .MuiTab-root.MuiTab-root:not(.ata-ui-free){font-size:var(--ata-fs-sm);text-transform:none}
+:root .MuiChip-root.MuiChip-root:not(.ata-ui-free){font-size:var(--ata-fs-xs)}
+:root .MuiTooltip-tooltip.MuiTooltip-tooltip:not(.ata-ui-free){font-size:var(--ata-fs-xs)}
+
+/* ------------------------------------------------------------ tables */
+:root .MuiTableCell-root.MuiTableCell-body:not(.ata-ui-free){font-size:var(--ata-table-fs)}
+:root .MuiTableCell-root.MuiTableCell-head:not(.ata-ui-free){font-size:var(--ata-table-head-fs);font-weight:600}
+:root .MuiTablePagination-root.MuiTablePagination-root :is(.MuiTablePagination-selectLabel,.MuiTablePagination-displayedRows,.MuiTablePagination-select){font-size:var(--ata-fs-sm)}
+:root .MuiDataGrid-root.MuiDataGrid-root:not(.ata-ui-free){font-size:var(--ata-table-fs)}
+:root .MuiDataGrid-root.MuiDataGrid-root:not(.ata-ui-free) .MuiDataGrid-columnHeaderTitle{font-size:var(--ata-table-head-fs);font-weight:600}

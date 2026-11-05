@@ -1,0 +1,2 @@
+02c38b1c 2026-11-05 11:18:43 +0600
+Copied verbatim from ATA apigovernance-web src/shared/ui-v2 (tokens.css, ui-v2.css, table/standard.css, ata-ui.css). Keep identical; re-copy to update.

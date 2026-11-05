@@ -148,10 +148,11 @@
         '<kbd>Ctrl K</kbd>' +
         '<ul class="ph-s-list" role="listbox" hidden></ul>' +
       '</div>' +
-      '<div class="ph-user"></div>';
+      '<div class="ph-lang"></div><div class="ph-user"></div>';
     document.body.insertBefore(el, document.body.firstChild);
     document.documentElement.classList.add('ph-has-bar');
     wireSearch(el);
+    try { lang(el); } catch (e) {}
     user(el);
   }
 
@@ -220,7 +221,7 @@
     var all = document.body.getElementsByTagName('*');
     for (var i = 0; i < all.length; i++) {
       var e = all[i];
-      if (e.id === 'ph-topbar' || e.closest('#ph-topbar')) continue;
+      if (e.id === 'ph-topbar' || e.closest('#ph-topbar, .ph-auth, #ph-labnav')) continue;
       var cs = getComputedStyle(e);
       if (cs.position !== 'fixed' || e.getAttribute('data-ph-shifted')) continue;
       var t = parseFloat(cs.top);
@@ -230,54 +231,130 @@
   var fixQueued = null;
   function queueFix() { if (fixQueued) return; fixQueued = setTimeout(function () { fixQueued = null; try { fixTops(); } catch (e) {} }, 400); }
 
-  // Login pages (clinical, lab, ERP): one centred card in the Pioneer Healthcare style.
+  /*
+   * Sign-in pages (clinical, lab, ERP) in the ATA healthcare pattern: brand panel on the left, a
+   * narrow work column on the right, no app header. The apps' real sign-in forms are moved into it,
+   * so signing in works exactly as before.
+   */
   var AREA = ON_ERP ? 'Stock Inventory & Billing' : ON_LAB ? 'Laboratory' : 'Clinical Service';
-  // No logo here: the top bar already shows it (one logo per page).
-  function loginHead(title, line) {
-    return '<div class="ph-login-head"><h1>' + esc(title || 'Sign in') + '</h1><p>' + esc(line || AREA) + '</p></div>';
+  var AREA_LINE = ON_ERP ? 'Sign in to Stock Inventory & Billing: medicines, stock, bills, invoices and payments.'
+    : ON_LAB ? 'Sign in to the Laboratory: samples, results and validation.'
+    : 'Sign in to Clinical Service: registration, consultations, orders and appointments.';
+  var EYE = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+  var shell = null, shellKey = '', shellOrigin = null;
+  function logo(h) { return LOGO.replace('height="32" width="122"', 'height="' + h + '" width="' + Math.round(h * 122 / 32) + '"'); }
+  function buildShell(title, sub) {
+    var d = document.createElement('div');
+    d.className = 'ph-auth';
+    d.innerHTML =
+      '<aside class="ph-auth-brand" aria-hidden="true">' + logo(36) +
+        '<img class="ph-auth-hero" src="/pioneer-brand/hero-mark.png" alt="">' +
+        '<div class="ph-auth-copy"><p class="ph-auth-eyebrow">Patients &bull; Laboratory &bull; Pharmacy &bull; Billing</p>' +
+        '<p class="ph-auth-title">Healthcare Core</p><p class="ph-auth-line">' + esc(AREA_LINE) + '</p></div>' +
+        '<p class="ph-auth-tag">Technology for a healthier tomorrow</p>' +
+      '</aside>' +
+      '<main class="ph-auth-main"><div class="ph-auth-top"><span class="ph-auth-mlogo">' + logo(30) + '</span></div>' +
+        '<div class="ph-auth-center"><div class="ph-auth-col"><h1>' + esc(title) + '</h1><p class="ph-auth-sub">' + esc(sub) + '</p><div class="ph-auth-slot"></div></div></div>' +
+        '<footer class="ph-auth-foot">&copy; ' + new Date().getFullYear() + ' Pioneer Healthcare</footer></main>';
+    document.body.appendChild(d);
+    return d;
+  }
+  function dropShell() {
+    if (shell) { shell.remove(); shell = null; shellKey = ''; shellOrigin = null; }
+    document.documentElement.classList.remove('ph-auth-on', 'ph-login');
+  }
+  function eyes(root) {
+    root.querySelectorAll('input[type=password]').forEach(function (i) {
+      if (i.parentNode.classList.contains('ph-pw')) return;
+      var w = document.createElement('span'); w.className = 'ph-pw';
+      i.parentNode.insertBefore(w, i); w.appendChild(i);
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'ph-pw-eye'; b.setAttribute('aria-label', 'Show password'); b.innerHTML = EYE;
+      b.addEventListener('click', function () { var show = i.type === 'password'; i.type = show ? 'text' : 'password'; b.setAttribute('aria-label', show ? 'Hide password' : 'Show password'); i.focus(); });
+      w.appendChild(b);
+    });
+  }
+  function errorsToAlerts(root) {
+    root.querySelectorAll('.note.error, .alert-danger, .ph-note').forEach(function (n) { n.classList.add('ph-alert'); });
   }
   function loginSkin() {
     var html = document.documentElement;
-    if (!ON_ERP && !ON_LAB) {
-      var box = document.querySelector('.login:not(.login-otp)');
-      var loc = document.querySelector('select#location');
-      var on = !!((document.querySelector('#username') || loc) && box && box.offsetParent !== null);
-      html.classList.toggle('ph-login', on);
-      if (on && !box.querySelector('.ph-login-head')) box.insertAdjacentHTML('afterbegin', loc ? loginHead('Choose your location', 'Where are you working today?') : loginHead());
-      return;
-    }
+    if (shell && shellOrigin && !shellOrigin.isConnected) dropShell();
+    var key = '', origin = null, title = 'Sign in', sub = ON_ERP ? 'Use your email and password.' : 'Use your username and password.';
+    var mover = null;
     if (ON_ERP) {
-      var card = document.querySelector('form.oe_login_form');
-      if (!card) return;
-      html.classList.add('ph-login');
-      var body = card.closest('.card-body');
-      if (body && !body.querySelector('.ph-login-head')) body.insertAdjacentHTML('afterbegin', loginHead());
-      return;
+      var of = document.querySelector('form.oe_login_form');
+      if (of) { key = 'erp'; origin = document.body; mover = function (slot) { slot.appendChild(of); }; }
+    } else if (ON_LAB) {
+      var user = document.querySelector('input[name=loginName]'), pass = document.querySelector('input[name=password]');
+      if (user && pass && user.form) {
+        key = 'lab'; origin = document.body;
+        mover = function (slot) {
+          var form = user.form, note = '';
+          document.querySelectorAll('td, div, span, font').forEach(function (n) { if (!note && n.children.length === 0 && /session has expired|invalid|incorrect|failed|not authori/i.test(n.textContent)) note = n.textContent.trim(); });
+          if (note) slot.insertAdjacentHTML('beforeend', '<div class="ph-alert" role="alert">' + esc(note) + '</div>');
+          var f1 = document.createElement('label'); f1.className = 'ph-f'; f1.innerHTML = '<span>Username</span>';
+          var f2 = document.createElement('label'); f2.className = 'ph-f'; f2.innerHTML = '<span>Password</span>';
+          f1.appendChild(user); f2.appendChild(pass); slot.appendChild(f1); slot.appendChild(f2);
+          var chg = document.getElementById('changePasswordButton'), sbm = document.getElementById('submitButton');
+          if (chg) { var row = document.createElement('div'); row.className = 'ph-auth-links'; chg.value = 'Change password'; row.appendChild(chg); slot.appendChild(row); }
+          if (sbm) { sbm.value = 'Sign in'; slot.appendChild(sbm); }
+          // the old page puts its form inside a table, where browsers hide it: keep the fields tied to it
+          if (!form.id) form.id = 'ph-lab-form';
+          [user, pass, sbm, chg].forEach(function (x) { if (x) x.setAttribute('form', form.id); });
+          html.classList.add('ph-lab-login');
+        };
+      }
+    } else {
+      var box = document.querySelector('.login:not(.login-otp)');
+      var form2 = box && box.querySelector('form');
+      if (box && form2 && box.offsetParent !== null) {
+        var loc = !!form2.querySelector('select#location');
+        if (form2.querySelector('#username') || loc) {
+          key = loc ? 'clinical-location' : 'clinical-login'; origin = box;
+          if (loc) { title = 'Choose your location'; sub = 'Where are you working today?'; }
+          mover = function (slot) {
+            slot.appendChild(form2);
+            var btn = form2.querySelector('button.confirm, button[type=submit]');
+            if (btn && /^\s*login\s*$/i.test(btn.textContent)) btn.textContent = 'Sign in';
+          };
+        }
+      }
     }
-    // Lab: the old page is tables; build the card inside the same form and move the real fields in.
-    var user = document.querySelector('input[name=loginName]'), pass = document.querySelector('input[name=password]');
-    if (!user || !pass || document.querySelector('.ph-lab-card')) return;
-    var form = user.form; if (!form) return;
-    var note = '';
-    document.querySelectorAll('td, div, span, font').forEach(function (n) { if (!note && n.children.length === 0 && /session has expired|invalid|incorrect|failed/i.test(n.textContent)) note = n.textContent.trim(); });
-    var c = document.createElement('div');
-    c.className = 'ph-lab-card';
-    c.innerHTML = loginHead() + (note ? '<div class="ph-note">' + esc(note) + '</div>' : '') +
-      '<label class="ph-f"><span>Username</span></label><label class="ph-f"><span>Password</span></label><div class="ph-btns"></div><div class="ph-lang"></div>';
-    var f = c.querySelectorAll('.ph-f');
-    f[0].appendChild(user); f[1].appendChild(pass);
-    var sub = document.getElementById('submitButton'), chg = document.getElementById('changePasswordButton');
-    if (sub) c.querySelector('.ph-btns').appendChild(sub);
-    if (chg) c.querySelector('.ph-btns').appendChild(chg);
-    var lang = document.querySelector('#language-chooser select');
-    if (lang) { var lw = c.querySelector('.ph-lang'); lw.innerHTML = '<span>Language</span>'; lw.appendChild(lang); }
-    // The old page puts its form inside a table, where browsers hide it. The card goes on the
-    // page itself and the moved fields stay tied to the form, so sign-in still submits it.
-    if (!form.id) form.id = 'ph-lab-form';
-    [user, pass, sub, chg, lang].forEach(function (x) { if (x) x.setAttribute('form', form.id); });
-    document.body.appendChild(c);
-    html.classList.add('ph-login', 'ph-lab-login');
-    user.focus();
+    if (!key) { if (shell && !(shellOrigin && shellOrigin.isConnected)) dropShell(); return; }
+    if (shell && shellKey === key && shellOrigin === origin) { errorsToAlerts(shell); return; }
+    if (shell && shellKey === key) return; // the form already lives in the shell
+    dropShell();
+    shell = buildShell(title, sub); shellKey = key; shellOrigin = origin;
+    var slot = shell.querySelector('.ph-auth-slot');
+    mover(slot); eyes(slot); errorsToAlerts(slot);
+    html.classList.add('ph-auth-on', 'ph-login');
+    var first = slot.querySelector('input:not([type=hidden]), select'); if (first) first.focus();
+  }
+
+  /* Language: in the top bar after sign-in (not on the sign-in page). Real languages per area. */
+  var LANGS = (ON_ERP || ON_LAB) ? [['en', 'English']] : [['en', 'English'], ['es', 'Español'], ['fr', 'Français'], ['it', 'Italiano'], ['pt_BR', 'Português']];
+  function lang(el) {
+    var host = el.querySelector('.ph-lang'); if (!host) return;
+    var cur = 'en'; try { cur = (localStorage.getItem('NG_TRANSLATE_LANG_KEY') || 'en').replace(/"/g, ''); } catch (e) {}
+    if (ON_ERP || ON_LAB) cur = 'en';
+    var label = (LANGS.filter(function (l) { return l[0] === cur; })[0] || LANGS[0]);
+    host.innerHTML = '<button type="button" class="ph-lang-btn" aria-haspopup="menu" aria-expanded="false" title="Language">' +
+      '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>' +
+      '<span>' + esc(label[0].slice(0, 2).toUpperCase()) + '</span></button>' +
+      '<div class="ph-menu ph-lang-menu" role="menu" hidden><div class="ph-menu-h">Language</div>' +
+      LANGS.map(function (l) { return '<button type="button" role="menuitemradio" aria-checked="' + (l[0] === label[0]) + '" data-l="' + l[0] + '">' + esc(l[1]) + (l[0] === label[0] ? '<span class="ph-check">✓</span>' : '') + '</button>'; }).join('') +
+      (LANGS.length === 1 ? '<div class="ph-menu-note">More languages can be added by an administrator.</div>' : '') + '</div>';
+    var btn = host.querySelector('.ph-lang-btn'), menu = host.querySelector('.ph-lang-menu');
+    btn.addEventListener('click', function (e) { e.stopPropagation(); menu.hidden = !menu.hidden; btn.setAttribute('aria-expanded', !menu.hidden); });
+    document.addEventListener('click', function () { menu.hidden = true; btn.setAttribute('aria-expanded', 'false'); });
+    menu.querySelectorAll('[data-l]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var l = b.getAttribute('data-l');
+        if (l === label[0]) return;
+        try { localStorage.setItem('NG_TRANSLATE_LANG_KEY', l); } catch (e) {}
+        location.reload();
+      });
+    });
   }
 
   function start() {
@@ -288,5 +365,29 @@
     window.addEventListener('hashchange', function () { LOGIN_PAGE = /#\/login/.test(location.hash) || /LoginPage\.do/.test(location.pathname) || /^\/web\/login/.test(location.pathname); refreshUser(); });
     setInterval(refreshUser, 15000); // name appears after signing in (the apps change screens without reloading)
   }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+/*
+ * The Pioneer Healthcare loader (same as ATA healthcare's PcpLoader): the "P + cross" mark breathing
+ * inside a ring whose arc sweeps round from brand blue to green. Replaces every old spinner.
+ */
+(function () {
+  var n = 0;
+  window.PH_LOADER_SVG = function (size) {
+    var id = 'ph-lg-' + (++n);
+    size = size || 48;
+    return '<svg class="ph-loader" viewBox="0 0 48 48" width="' + size + '" height="' + size + '" role="img" aria-label="Loading">' +
+      '<defs><linearGradient id="' + id + '" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1E5BD8"/><stop offset="100%" stop-color="#3E9C85"/></linearGradient></defs>' +
+      '<circle cx="24" cy="24" r="22.5" fill="none" stroke="#1E5BD8" stroke-opacity="0.12" stroke-width="2"/>' +
+      '<circle class="ph-loader-arc" cx="24" cy="24" r="22.5" fill="none" stroke="url(#' + id + ')" stroke-width="2" stroke-linecap="round" stroke-dasharray="42 100"/>' +
+      '<image class="ph-loader-mark" href="/pioneer-brand/mark.png" x="6" y="6" width="36" height="36"/></svg>';
+  };
+  // clinical screens: the apps' loading overlay (#overlay) gets the loader instead of the old spinner
+  function swap() {
+    var o = document.getElementById('overlay');
+    if (o && !o.querySelector('.ph-loader')) { o.insertAdjacentHTML('beforeend', '<div class="ph-loader-box">' + window.PH_LOADER_SVG(56) + '</div>'); o.classList.add('ph-has-loader'); }
+  }
+  function start() { swap(); new MutationObserver(swap).observe(document.body, { childList: true }); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();

@@ -1,0 +1,149 @@
+/* The standard list (one data table for the whole platform, signed off as
+   pcp-data-table-prototype.html): toolbar (search left, filters right, active
+   filter pills), the pager, "+n more" tags, person cells and row actions.
+   Tokens only, so light, dark and the host accent all apply. */
+
+/* ---------- Toolbar */
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb{display:flex;flex-direction:column;gap:8px;min-width:0;width:100%}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-row{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap;min-width:0}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-search{flex:0 1 320px;min-width:200px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-search .ksearch{width:100%}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-filters{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end;margin-inline-start:auto;min-width:0}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-active{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12.5px;color:var(--muted)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-pill{display:inline-flex;align-items:center;gap:4px;padding-block:2px;padding-inline:9px 3px;border:1px solid var(--line);border-radius:999px;background:var(--line2);color:var(--ink2)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-pill b{font-weight:600;color:var(--ink)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-pill button{display:grid;place-items:center;width:22px;height:22px;border:0;border-radius:999px;background:none;color:var(--muted);cursor:pointer}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-pill button:hover{background:var(--line);color:var(--ink)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-clear{border:0;background:none;padding:2px 4px;border-radius:var(--r-xs);color:var(--blue);font:inherit;font-weight:600;cursor:pointer}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-clear:hover{text-decoration:underline}
+@media (max-width:760px){:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-search{flex-basis:100%}:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-filters{justify-content:flex-start;margin-inline-start:0}}
+
+/* ---------- Pager */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr{display:flex;align-items:center;gap:10px 18px;flex-wrap:wrap;padding:10px 4px 0;font-size:13.5px;color:var(--muted)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-count{font-variant-numeric:tabular-nums}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-count b{color:var(--ink);font-weight:600}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-size{display:inline-flex;align-items:center;gap:8px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-size select{height:30px;padding-block:0;padding-inline:10px 24px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--card);color:var(--ink);font:inherit;cursor:pointer}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-sp{flex:1}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-nav{display:flex;align-items:center;gap:3px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-nav button{display:inline-grid;place-items:center;min-width:32px;height:32px;padding:0 8px;border:1px solid transparent;border-radius:var(--r-md);background:none;color:var(--ink2);font:inherit;font-weight:500;font-variant-numeric:tabular-nums;cursor:pointer}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-nav button:hover:not(:disabled):not([aria-current="page"]){background:var(--card);border-color:var(--line)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-nav button[aria-current="page"]:hover{background:var(--pri-hover);border-color:var(--pri-hover);color:#fff}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-nav button[aria-current="page"]{background:var(--pri);border-color:var(--pri);color:#fff;font-weight:700}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-nav button:disabled{opacity:.4;cursor:not-allowed}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-nav svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-gap{min-width:22px;text-align:center;color:var(--faint)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-goto{display:inline-flex;align-items:center;gap:6px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-goto input{width:56px;height:30px;padding:0 6px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--card);color:var(--ink);font:inherit;text-align:center}
+@media (max-width:760px){:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr{justify-content:center}:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-goto,:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-sp{display:none}}
+
+/* ---------- "+n more" tags */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmore{display:inline-flex;align-items:center;gap:4px;min-width:0;max-width:100%}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmore>.ktag{overflow:hidden;text-overflow:ellipsis;max-width:170px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmore-btn{display:inline-flex;align-items:center;height:20px;padding:0 7px;border:1px solid var(--blue-line);border-radius:var(--r-xs);background:var(--blue-soft);color:var(--blue);font:inherit;font-size:11.5px;font-weight:700;cursor:pointer;flex:none}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmore-btn:hover,:is(.ata-designer,.ata-runtime,.ata-v2) .kmore-btn[aria-expanded="true"]{background:var(--pri);border-color:var(--pri);color:#fff}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmore-tip{position:fixed;z-index:var(--z-pop,210);max-width:280px;padding:10px 12px;border-radius:10px;background:#111827;color:#F9FAFB;box-shadow:var(--shl);font-size:12.5px;line-height:1.4;pointer-events:none;text-align:start;white-space:normal}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmore-tip b{display:block;margin-bottom:6px;font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#A5B4FC}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmore-tip ul{display:flex;flex-direction:column;gap:4px;margin:0;padding:0;list-style:none}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmore-tip li{display:flex;align-items:center;gap:7px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmore-tip li::before{content:"";flex:none;width:6px;height:6px;border-radius:999px;background:#818CF8}
+
+/* ---------- Person cell */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kwho{display:inline-flex;align-items:center;gap:8px;min-width:0;white-space:nowrap}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kwho>span:last-child{overflow:hidden;text-overflow:ellipsis}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kav{display:grid;place-items:center;flex:none;width:24px;height:24px;border-radius:999px;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.02em}
+
+/* ---------- Row actions: one or two inline actions on hover or focus, then the ⋮ menu */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kract{display:inline-flex;align-items:center;justify-content:flex-end;gap:4px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kract-inline{opacity:0;transition:opacity .15s var(--ease)}
+:is(.ata-designer,.ata-runtime,.ata-v2) tr:hover .kract-inline,:is(.ata-designer,.ata-runtime,.ata-v2) tr:focus-within .kract-inline,:is(.ata-designer,.ata-runtime,.ata-v2) tr[aria-selected="true"] .kract-inline,:is(.ata-designer,.ata-runtime,.ata-v2) .kract-inline:focus-visible{opacity:1}
+@media (hover:none){:is(.ata-designer,.ata-runtime,.ata-v2) .kract-inline{opacity:1}}
+@media (prefers-reduced-motion:reduce){:is(.ata-designer,.ata-runtime,.ata-v2) .kract-inline{transition:none}}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmut{color:var(--muted)}
+
+/* In the DataTable bar the toolbar takes the whole width (search left, filters at the right edge). */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-bar .kdt-cap:has(>.ktb){flex:1;min-width:0;margin-inline-end:0;font-size:inherit;color:inherit}
+
+/* ---------- The card: toolbar, table and pager as one surface (DataTable className="kstd") */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd{gap:0;border:1px solid var(--line);border-radius:14px;background:var(--card);box-shadow:var(--sh);overflow:hidden}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd>.kdt-bar{min-height:58px;padding:12px 14px;border-bottom:1px solid var(--line);background:var(--card)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd>.kdt-scroll{border:0;border-radius:0;box-shadow:none}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd table.kdt th{height:42px;background:color-mix(in srgb,var(--line2) 85%,var(--card))}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd table.kdt tr:has(>td input[type="checkbox"]:checked)>td{background:var(--blue-soft)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd>.kpgr{padding:10px 14px;border-top:1px solid var(--line);background:color-mix(in srgb,var(--line2) 45%,var(--card))}
+
+/* ---------- Bulk bar (replaces search and filters while rows are selected) */
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-bulk{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap;min-height:34px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-sel{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--ink)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-badge{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 8px;border-radius:999px;background:var(--pri);color:#fff;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-acts{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-inline-start:auto}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-acts .btn{height:32px;border-radius:8px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-x{display:grid;place-items:center;width:32px;height:32px;border:1px solid transparent;border-radius:8px;background:none;color:var(--muted);cursor:pointer}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-x:hover{background:var(--line2);border-color:var(--line);color:var(--ink)}
+
+/* ---------- Pager details (match the prototype) */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-size select{appearance:none;-webkit-appearance:none;min-width:60px;height:32px;padding-block:0;padding-inline:10px 28px;border-radius:8px;background:var(--card) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='m7 10 5 5 5-5'/%3E%3C/svg%3E") right 8px center/14px no-repeat}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-nav button{border-radius:8px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-goto input{height:32px;border-radius:8px}
+/* the ⋮ trigger: a plain icon, framed on hover or while its menu is open (as in the prototype) */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kract-more{display:grid;place-items:center;width:32px;height:32px;padding:0;border:1px solid transparent;border-radius:8px;background:none;color:var(--muted);cursor:pointer}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kract-more:hover,:is(.ata-designer,.ata-runtime,.ata-v2) .kract-more[aria-expanded="true"]{background:var(--line2);border-color:var(--line);color:var(--ink)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kract-more[aria-expanded="true"]{background:var(--blue-soft);border-color:var(--blue-line);color:var(--blue)}
+
+/* ---------- Menus (filter chips, ⋮ row menus): readable size, roomier rows */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmenu.kmenu-list{min-width:220px;padding:6px;border-radius:12px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmenu.kmenu-list .kmi{min-height:36px;padding:8px 10px;border-radius:8px;font-size:14px;line-height:1.35}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmenu.kmenu-list .kmhint{font-size:12.5px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmenu.kmenu-list .kmenu-h{font-size:12px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmenu.kmenu-list .kmck{width:14px}
+
+/* ---------- Older toolbars inside the card (a .kfbar row): search on the left, everything after it at the right edge */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd>.kdt-bar>.kdt-cap:has(>.kfbar){flex:1;min-width:0;margin-inline-end:0;font-size:inherit;color:inherit}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd>.kdt-bar>.kdt-cap>.kfbar{width:100%}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd>.kdt-bar>.kdt-cap>.kfbar>.ksearch+*{margin-inline-start:auto}
+/* RTL: the pager's arrows point the reading way */
+[dir="rtl"] :is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-nav svg,:is(.ata-designer,.ata-runtime,.ata-v2)[dir="rtl"] .kpgr-nav svg{transform:scaleX(-1)}
+
+/* ---------- Name cell: a type tile, then the bold name (the name reads in ink, not as a link colour) */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kent{display:flex;align-items:center;gap:11px;min-width:0}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktile{display:grid;place-items:center;flex:none;width:34px;height:34px;border-radius:9px;border:1px solid var(--ktile-edge,var(--blue-line));background:var(--ktile-bg,var(--blue-soft));color:var(--ktile,var(--blue))}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktile svg{width:17px;height:17px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd .kname-t{color:var(--ink)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd tr:hover .kname-t{color:var(--blue)}
+
+/* ---------- One row height everywhere: a cell's text stays on one line and is cut with "…"
+   (useTruncationTips shows the whole text on hover or focus). The name cell keeps the name and at
+   most one sub-line. Expanded detail rows (.kexp) are not affected. */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd table.kdt{table-layout:auto}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd table.kdt tbody tr.krow>td{height:56px;padding-top:6px;padding-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:var(--kcell-max,320px)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd table.kdt tbody tr.krow>td *{white-space:nowrap;flex-wrap:nowrap!important}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd table.kdt tbody tr.krow>td>*:not(.kract):not(.kmore):not(button):not(input){max-width:100%;overflow:hidden;text-overflow:ellipsis}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd table.kdt tbody tr.krow>td :is(p,div,span.kname,.kent,.as-row){min-width:0}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd table.kdt tbody tr.krow>td p{margin:0;overflow:hidden;text-overflow:ellipsis}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd table.kdt tbody tr.krow>td .kname{display:flex;flex-direction:column;justify-content:center;min-width:0;max-width:100%}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd table.kdt tbody tr.krow>td .kname>*{display:block;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd table.kdt tbody tr.krow>td .kname>:nth-child(n+3){display:none}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd table.kdt tbody tr.krow>td .kent{max-width:100%}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd table.kdt tbody tr.krow>td.kdt-x,:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd table.kdt tbody tr.krow>td:last-child{overflow:visible;max-width:none}
+.kcell-tip{max-width:420px;font-weight:400}
+/* ---- 2026-11-04: realistic loading rows, a fixed-size table (fill), numbers headed where they sit. ---- */
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt tr.kskel-tr>td{height:56px;box-sizing:border-box;padding-top:0;padding-bottom:0;border-bottom:1px solid var(--line2)}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt tr.kskel-tr .kskel{height:10px;max-width:none;border-radius:999px;background:linear-gradient(90deg,var(--line) 0%,color-mix(in srgb,var(--line) 35%,var(--card)) 40%,var(--line) 80%);background-size:300% 100%;animation:kskel-shine 1.4s ease-in-out infinite}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt tr.kskel-tr .kskel-ent{display:flex;align-items:center;gap:12px;min-width:0}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt tr.kskel-tr .kskel.kskel-tile{flex:none;width:32px;height:32px;border-radius:8px}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt tr.kskel-tr .kskel-lines{flex:1;min-width:0;display:flex;flex-direction:column;gap:7px}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt tr.kskel-tr .kskel.kskel-sub{height:8px;opacity:.6}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt tr.kskel-tr td.num .kskel.kskel-num{width:28px;margin-inline-start:auto}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt tr.kskel-tr:nth-child(n+5) .kskel{opacity:.8}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt tr.kskel-tr:nth-child(n+7) .kskel{opacity:.6}
+@keyframes kskel-shine{0%{background-position:100% 0}100%{background-position:0 0}}
+@media (prefers-reduced-motion:reduce){:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt tr.kskel-tr .kskel{animation:none}}
+/* fill: the rows area has the height useFillHeight measures; the header row stays on top while rows scroll. */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kfill>.kdt-scroll{overflow:auto;overscroll-behavior:contain}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kfill table.kdt thead th{position:sticky;top:0;z-index:2}
+/* A number column's header sits over its numbers (end-aligned), sort arrow included. */
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt th.num .kdt-sort{margin-inline-start:auto;justify-content:flex-end}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt th.num{text-align:end}
+/* A list kept one size (DataTable `fill`, or automatically for a page's list with a pager): rows scroll, header stays. */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap>.kdt-scroll[data-fill]{overflow:auto;overscroll-behavior:contain}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap>.kdt-scroll[data-fill] table.kdt thead th{position:sticky;top:0;z-index:2}

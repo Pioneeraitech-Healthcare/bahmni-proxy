@@ -1,0 +1,74 @@
+/* v2 UI kit tokens (UI-spec section 1). One set for every feature root:
+   the Designer (.ata-designer), the Runtime console (.ata-runtime) and any kit
+   component used on an MUI screen (.ata-v2). tokens.ts holds the same colour
+   values as data; __tests__/tokens.test.ts keeps the two equal and checks
+   every text pair at 4.5:1 in both themes.
+   Rules: white text only on --pri and --av; --blue, --red, --green, --amber and
+   --t are text colours; --s and --d are stripes only. The --*-text names are
+   aliases kept for the CSS that already uses them. */
+.ata-designer,.ata-runtime,.ata-v2{
+  --ink:#0F172A; --ink2:#334155; --muted:#526175; --faint:#5E6B7F;
+  --line:#E2E8F0; --line2:#F1F5F9; --line-input:#8A94A6; --bg:#F7F9FC; --card:#FFFFFF;
+  --blue:#1A56CC; --blue-soft:#EAF1FE; --blue-line:#C9DAFB; --blue-hover:#174FBF;
+  --pri:#1D5FE0; --pri-hover:#174FBF;
+  --s:#3B82F6; --s-bg:#EDF3FE; --s-edge:#BFD4FB;
+  --t:#6A48D6; --t-bg:#F4F0FE; --t-edge:#D9CEFA;
+  --d:#16A34A; --d-bg:#ECF8F0; --d-edge:#BFE7CD;
+  --green:#127237; --amber:#A34A06; --amber-bg:#FEF3E2; --amber-edge:#F5D9A8;
+  --red:#C81E1E; --red-bg:#FEECEC; --red-edge:#F8C4C4;
+  --av:#475569; --bg2:rgba(127,140,160,.05); --hatch:rgba(100,116,139,.13);
+  --toast-bg:#0F172A; --toast-ink:#FFFFFF; --toast-edge:#0F172A; --toast-action:#9CC0FF;
+  --backdrop:rgba(15,23,42,.32);
+  --red-text:var(--red); --amber-text:var(--amber); --green-text:var(--green); --blue-text:var(--blue);
+  --t-text:var(--t); --s-text:var(--blue); --d-text:var(--green);
+  --sh:0 1px 2px rgba(15,23,42,.05),0 2px 8px rgba(15,23,42,.05);
+  --shl:0 12px 32px rgba(15,23,42,.16);
+  --sans:"Inter",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --ease:cubic-bezier(.22,.8,.24,1); --dur:.28s;
+  --sp-1:2px; --sp-2:4px; --sp-3:6px; --sp-4:8px; --sp-5:10px; --sp-6:12px; --sp-7:14px; --sp-8:16px; --sp-9:18px; --sp-10:22px;
+  --r-xs:4px; --r-sm:6px; --r-md:7px; --r-lg:10px; --r-xl:12px; --r-pill:10px;
+  --z-sticky:1; --z-bar:3; --z-drawer:20; --z-focus:40; --z-drawer-max:45; --z-sugg:60;
+  /* The toast is above every page surface, the studio toolbar (an MUI AppBar at 1200) and the Designer's
+     Focus mode layer (1240) included, and under an MUI dialog (1300), which takes the message as its note. */
+  --z-toast:1250; --z-dialog:200; --z-pop:210; --z-skip:400;
+  /* The host app bar the toast sits under (UX-A: one toast position). */
+  --appbar-h:64px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  .ata-designer:not([data-theme="light"]),.ata-runtime:not([data-theme="light"]),.ata-v2:not([data-theme="light"]){
+    --ink:#E5E9F0; --ink2:#C3CAD6; --muted:#9AA6B8; --faint:#8A96AA;
+    --line:#283040; --line2:#1E2533; --line-input:#667286; --bg:#121620; --card:#191F2B;
+    --blue:#6D9EF5; --blue-soft:#18264A; --blue-line:#2B437A; --blue-hover:#3A74E0;
+    --pri:#2F6BD8; --pri-hover:#285EC2;
+    --s-bg:#162238; --s-edge:#27406B;
+    --t:#A996F5; --t-bg:#1E1A33; --t-edge:#3B3266;
+    --d-bg:#132719; --d-edge:#214F33;
+    --green:#4ADE80; --amber:#F0A54A; --amber-bg:#352710; --amber-edge:#5C4518;
+    --red:#F26B6B; --red-bg:#3A1A1A; --red-edge:#6B2A2A;
+    --hatch:rgba(148,160,179,.12);
+    --toast-bg:#2A3242; --toast-ink:#E5E9F0; --toast-edge:#3B4558;
+    --backdrop:rgba(0,0,0,.55);
+    color-scheme:dark;
+  }
+}
+.ata-designer[data-theme="dark"],.ata-runtime[data-theme="dark"],.ata-v2[data-theme="dark"]{
+  --ink:#E5E9F0; --ink2:#C3CAD6; --muted:#9AA6B8; --faint:#8A96AA;
+  --line:#283040; --line2:#1E2533; --line-input:#667286; --bg:#121620; --card:#191F2B;
+  --blue:#6D9EF5; --blue-soft:#18264A; --blue-line:#2B437A; --blue-hover:#3A74E0;
+  --pri:#2F6BD8; --pri-hover:#285EC2;
+  --s-bg:#162238; --s-edge:#27406B;
+  --t:#A996F5; --t-bg:#1E1A33; --t-edge:#3B3266;
+  --d-bg:#132719; --d-edge:#214F33;
+  --green:#4ADE80; --amber:#F0A54A; --amber-bg:#352710; --amber-edge:#5C4518;
+  --red:#F26B6B; --red-bg:#3A1A1A; --red-edge:#6B2A2A;
+  --hatch:rgba(148,160,179,.12);
+  --toast-bg:#2A3242; --toast-ink:#E5E9F0; --toast-edge:#3B4558;
+  --backdrop:rgba(0,0,0,.55);
+  color-scheme:dark;
+}
+@media (prefers-reduced-motion:reduce){
+  .ata-designer,.ata-runtime,.ata-v2{--dur:0s}
+  .ata-designer *,.ata-runtime *,.ata-v2 *{animation-duration:0s!important;transition-duration:0s!important;scroll-behavior:auto!important}
+}

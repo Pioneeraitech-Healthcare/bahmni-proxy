@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow">
+<title>Pioneer Healthcare UI kit</title>
+<link rel="icon" type="image/png" href="/pioneer-brand/mark.png">
+<link rel="stylesheet" href="/pioneer-brand/ph-kit.css?v=1">
+<style>
+  body { margin: 0; }
+  .kit-page { max-width: 1180px; margin: 0 auto; padding: 8px 24px 64px; }
+  .kit-sec { margin: 0 0 28px; }
+  .kit-sec > h2 { font: 600 16px var(--sans); color: var(--ink); margin: 0 0 4px; }
+  .kit-sec > p { font: 13px var(--sans); color: var(--muted); margin: 0 0 12px; }
+  .kit-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+  .kit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .kit-f { display: flex; flex-direction: column; gap: 4px; font: 600 12px var(--sans); color: var(--ink2); }
+  .kit-demo { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px; }
+</style>
+</head>
+<body>
+<main class="kit-page" id="kit"></main>
+<script src="/pioneer-brand/ph-ui.js?v=1"></script>
+<script>
+(function () {
+  var ui = PH.ui; ui.scope(document.documentElement);
+  var root = document.getElementById('kit');
+  function sec(title, line, nodes) { var s = document.createElement('section'); s.className = 'kit-sec'; s.innerHTML = '<h2>' + title + '</h2><p>' + line + '</p>'; nodes.forEach(function (n) { s.appendChild(n); }); root.appendChild(s); }
+  function row(nodes, cls) { var d = document.createElement('div'); d.className = cls || 'kit-row'; nodes.forEach(function (n) { d.appendChild(n); }); return d; }
+  function h(html) { var d = document.createElement('div'); d.innerHTML = html; return d.firstElementChild; }
+
+  root.appendChild(ui.pageHeader({ icon: 'settings', title: 'Pioneer Healthcare UI kit', purpose: 'Every component used on Healthcare Core screens, built on the ATA healthcare kit.', actions: [ui.newButton('Secondary'), ui.newButton('Primary action', 'primary')] }));
+
+  sec('Buttons', '32px, 13px, 600, radius 8. One primary per screen.', [row([ui.newButton('Primary', 'primary'), ui.newButton('Secondary'), ui.newButton('Quiet', 'quiet'), ui.newButton('Danger', 'danger'), ui.newButton('Link', 'link'), (function () { var b = ui.newButton('Disabled', 'primary'); b.disabled = true; return b; })()])]);
+
+  var f1 = h('<input type="text" placeholder="Enter a value">'), f2 = h('<select><option>Blood</option><option>Urine</option></select>'), f3 = h('<input type="text" value="Read only" readonly>'), f4 = h('<textarea placeholder="Notes"></textarea>');
+  [f1, f2, f3, f4].forEach(ui.field);
+  var lab = function (t, el) { var l = document.createElement('label'); l.className = 'kit-f'; l.textContent = t; l.appendChild(el); return l; };
+  sec('Fields', 'Label above, 32px, border #8A94A6, focus ring in the accent.', [row([lab('Text field', f1), lab('Select', f2), lab('Read only', f3), lab('Text area', f4)], 'kit-grid')]);
+
+  sec('Tabs', 'Underline tabs; the selected tab has the accent underline.', [ui.tabs([{ label: 'To collect', selected: true, count: 4 }, { label: 'Collected', count: 12 }, { label: 'Earlier days' }])]);
+
+  var mb = ui.newButton('Open menu'); var holder = row([mb]);
+  sec('Menus', 'Dropdown menus with headings and separators.', [holder]);
+  ui.menu(mb, [{ header: 'Search' }, { label: 'By patient', href: '#' }, { label: 'By lab number', href: '#', current: true }, { separator: true }, { header: 'Enter results' }, { label: 'Haematology', href: '#' }, { label: 'Biochemistry', href: '#' }]);
+
+  var t = h('<table><thead><tr><th>Lab number</th><th>Patient</th><th>Test</th><th>Status</th><th class="num">Result</th></tr></thead><tbody>' +
+    '<tr><td><a href="#">05112026-001</a></td><td>Ayesha Rahman</td><td>Complete blood count</td><td></td><td class="num">14.6</td></tr>' +
+    '<tr><td><a href="#">05112026-002</a></td><td>Rahim Uddin</td><td>Lipid panel</td><td></td><td class="num">232</td></tr>' +
+    '<tr><td><a href="#">05112026-003</a></td><td>Nusrat Jahan</td><td>Blood glucose</td><td></td><td class="num">—</td></tr></tbody></table>');
+  var tc = document.createElement('div'); tc.appendChild(t);
+  sec('Table', 'The standard table card: 42px header, 13px rows, hover in the accent tint.', [tc]);
+  ui.table(t, { title: 'Samples', toolbar: [ui.newButton('Export')] });
+  var cells = t.querySelectorAll('tbody tr td:nth-child(4)');
+  cells[0].appendChild(ui.pill('Validated', 'ok')); cells[1].appendChild(ui.pill('Awaiting validation', 'warn')); cells[2].appendChild(ui.pill('To collect', 'info'));
+
+  sec('Status pills', 'Word and colour together.', [row([ui.pill('Completed', 'ok'), ui.pill('Pending', 'warn'), ui.pill('Rejected', 'bad'), ui.pill('In progress', 'info'), ui.pill('Inactive', 'mute')])]);
+
+  sec('Stat cards', 'Live counters on dashboards.', [row([ui.stat(4, 'Samples to collect'), ui.stat(12, 'Samples collected'), ui.stat(2, 'Awaiting validation')], 'ph-stats')]);
+
+  sec('Cards', 'Sections of a form or page.', [row([ui.card({ title: 'Order', required: true, body: ['Card body content.'] }), ui.card({ body: ['A card without a title.'] })], 'kit-grid')]);
+
+  sec('Alerts', 'Ink text; only the icon carries the colour.', [ui.alert('Results are sent to the doctor when you accept them.', 'info'), ui.alert('Saved.', 'ok'), ui.alert('Two results are outside the normal range.', 'warn'), ui.alert('The sample could not be saved.', 'bad')]);
+
+  var d = ui.drawer({ title: 'Sample 05112026-001', subtitle: 'Ayesha Rahman · Blood', body: [ui.alert('Drawers hold details and quick edits without leaving the list.', 'info')], actions: [ui.newButton('Cancel', 'quiet', function () { d.close(); }), ui.newButton('Save', 'primary', function () { d.close(); ui.toast('Saved', 'ok'); })] });
+  sec('Drawer and toast', 'Side panel for details; toast for short confirmations.', [row([ui.newButton('Open drawer', 'secondary', d.open), ui.newButton('Show toast', 'secondary', function () { ui.toast('Results saved and sent to the doctor.', 'ok'); })])]);
+
+  var es = document.createElement('div'); es.className = 'kit-demo'; es.appendChild(ui.emptyState({ title: 'No samples here', text: 'Samples appear here as soon as a doctor orders a lab test.' }));
+  sec('Empty state', 'When a list or screen has nothing to show.', [es]);
+
+  var ld = document.createElement('div'); ld.className = 'kit-demo kit-row'; ld.innerHTML = ui.loader(56);
+  sec('Loader', 'The Pioneer Healthcare loader, used for every wait.', [ld]);
+
+  sec('Tiles', 'Card grid of links (settings pages).', [ui.tiles([{ label: 'Tests', href: '#' }, { label: 'Units of measure', href: '#' }, { label: 'Users', href: '#' }])]);
+})();
+</script>
+</body>
+</html>

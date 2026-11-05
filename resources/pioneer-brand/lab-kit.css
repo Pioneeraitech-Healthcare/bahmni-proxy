@@ -1,0 +1,1077 @@
+/* v2 UI kit tokens (UI-spec section 1). One set for every feature root:
+   the Designer (.ata-designer), the Runtime console (.ata-runtime) and any kit
+   component used on an MUI screen (.ata-v2). tokens.ts holds the same colour
+   values as data; __tests__/tokens.test.ts keeps the two equal and checks
+   every text pair at 4.5:1 in both themes.
+   Rules: white text only on --pri and --av; --blue, --red, --green, --amber and
+   --t are text colours; --s and --d are stripes only. The --*-text names are
+   aliases kept for the CSS that already uses them. */
+.ata-designer,.ata-runtime,.ata-v2{
+  --ink:#0F172A; --ink2:#334155; --muted:#526175; --faint:#5E6B7F;
+  --line:#E2E8F0; --line2:#F1F5F9; --line-input:#8A94A6; --bg:#F7F9FC; --card:#FFFFFF;
+  --blue:#1A56CC; --blue-soft:#EAF1FE; --blue-line:#C9DAFB; --blue-hover:#174FBF;
+  --pri:#1D5FE0; --pri-hover:#174FBF;
+  --s:#3B82F6; --s-bg:#EDF3FE; --s-edge:#BFD4FB;
+  --t:#6A48D6; --t-bg:#F4F0FE; --t-edge:#D9CEFA;
+  --d:#16A34A; --d-bg:#ECF8F0; --d-edge:#BFE7CD;
+  --green:#127237; --amber:#A34A06; --amber-bg:#FEF3E2; --amber-edge:#F5D9A8;
+  --red:#C81E1E; --red-bg:#FEECEC; --red-edge:#F8C4C4;
+  --av:#475569; --bg2:rgba(127,140,160,.05); --hatch:rgba(100,116,139,.13);
+  --toast-bg:#0F172A; --toast-ink:#FFFFFF; --toast-edge:#0F172A; --toast-action:#9CC0FF;
+  --backdrop:rgba(15,23,42,.32);
+  --red-text:var(--red); --amber-text:var(--amber); --green-text:var(--green); --blue-text:var(--blue);
+  --t-text:var(--t); --s-text:var(--blue); --d-text:var(--green);
+  --sh:0 1px 2px rgba(15,23,42,.05),0 2px 8px rgba(15,23,42,.05);
+  --shl:0 12px 32px rgba(15,23,42,.16);
+  --sans:"Inter",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --ease:cubic-bezier(.22,.8,.24,1); --dur:.28s;
+  --sp-1:2px; --sp-2:4px; --sp-3:6px; --sp-4:8px; --sp-5:10px; --sp-6:12px; --sp-7:14px; --sp-8:16px; --sp-9:18px; --sp-10:22px;
+  --r-xs:4px; --r-sm:6px; --r-md:7px; --r-lg:10px; --r-xl:12px; --r-pill:10px;
+  --z-sticky:1; --z-bar:3; --z-drawer:20; --z-focus:40; --z-drawer-max:45; --z-sugg:60;
+  /* The toast is above every page surface, the studio toolbar (an MUI AppBar at 1200) and the Designer's
+     Focus mode layer (1240) included, and under an MUI dialog (1300), which takes the message as its note. */
+  --z-toast:1250; --z-dialog:200; --z-pop:210; --z-skip:400;
+  /* The host app bar the toast sits under (UX-A: one toast position). */
+  --appbar-h:64px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  .ata-designer:not([data-theme="light"]),.ata-runtime:not([data-theme="light"]),.ata-v2:not([data-theme="light"]){
+    --ink:#E5E9F0; --ink2:#C3CAD6; --muted:#9AA6B8; --faint:#8A96AA;
+    --line:#283040; --line2:#1E2533; --line-input:#667286; --bg:#121620; --card:#191F2B;
+    --blue:#6D9EF5; --blue-soft:#18264A; --blue-line:#2B437A; --blue-hover:#3A74E0;
+    --pri:#2F6BD8; --pri-hover:#285EC2;
+    --s-bg:#162238; --s-edge:#27406B;
+    --t:#A996F5; --t-bg:#1E1A33; --t-edge:#3B3266;
+    --d-bg:#132719; --d-edge:#214F33;
+    --green:#4ADE80; --amber:#F0A54A; --amber-bg:#352710; --amber-edge:#5C4518;
+    --red:#F26B6B; --red-bg:#3A1A1A; --red-edge:#6B2A2A;
+    --hatch:rgba(148,160,179,.12);
+    --toast-bg:#2A3242; --toast-ink:#E5E9F0; --toast-edge:#3B4558;
+    --backdrop:rgba(0,0,0,.55);
+    color-scheme:dark;
+  }
+}
+.ata-designer[data-theme="dark"],.ata-runtime[data-theme="dark"],.ata-v2[data-theme="dark"]{
+  --ink:#E5E9F0; --ink2:#C3CAD6; --muted:#9AA6B8; --faint:#8A96AA;
+  --line:#283040; --line2:#1E2533; --line-input:#667286; --bg:#121620; --card:#191F2B;
+  --blue:#6D9EF5; --blue-soft:#18264A; --blue-line:#2B437A; --blue-hover:#3A74E0;
+  --pri:#2F6BD8; --pri-hover:#285EC2;
+  --s-bg:#162238; --s-edge:#27406B;
+  --t:#A996F5; --t-bg:#1E1A33; --t-edge:#3B3266;
+  --d-bg:#132719; --d-edge:#214F33;
+  --green:#4ADE80; --amber:#F0A54A; --amber-bg:#352710; --amber-edge:#5C4518;
+  --red:#F26B6B; --red-bg:#3A1A1A; --red-edge:#6B2A2A;
+  --hatch:rgba(148,160,179,.12);
+  --toast-bg:#2A3242; --toast-ink:#E5E9F0; --toast-edge:#3B4558;
+  --backdrop:rgba(0,0,0,.55);
+  color-scheme:dark;
+}
+@media (prefers-reduced-motion:reduce){
+  .ata-designer,.ata-runtime,.ata-v2{--dur:0s}
+  .ata-designer *,.ata-runtime *,.ata-v2 *{animation-duration:0s!important;transition-duration:0s!important;scroll-behavior:auto!important}
+}
+/* v2 UI kit components (UI-spec sections 2 and 3). Tokens are in tokens.css.
+   Scoped to the three roots; MUI screens sit inside the remote's .ata-v2 root
+   (V2Root) and portalled kit parts (dialogs, menus, toasts) carry .ata-v2
+   themselves. Injected as <style id="ata-v2-css"> by ./styles.ts. */
+
+/* ---- focus: one visible ring everywhere (2.2) ---- */
+:is(.ata-designer,.ata-runtime,.ata-v2) :focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+:is(.ata-designer,.ata-runtime,.ata-v2) :focus:not(:focus-visible){outline:none}
+/* MUI text fields show focus with their own 2 px outline; a second ring would cover the floating label. */
+.ata-v2 .MuiInputBase-input:focus-visible,.ata-v2 .MuiSelect-select:focus-visible{outline:none}
+.ata-v2 .sr-only,.kit-sr{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.ata-v2-root{display:contents}
+
+/* ---- Button (3.1) ---- */
+.ata-v2 .btn:not(:is(.ata-designer,.ata-runtime) *){display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:30px;border:1px solid var(--line);border-radius:var(--r-md);padding:5px 12px;font:inherit;font-size:13px;font-weight:500;line-height:1.3;color:var(--blue);background:var(--card);white-space:nowrap;cursor:pointer;text-decoration:none}
+.ata-v2 .btn:hover:not(:is(.ata-designer,.ata-runtime) *){background:var(--blue-soft)}
+.ata-v2 .btn.pri:not(:is(.ata-designer,.ata-runtime) *){background:var(--pri);border-color:var(--pri);color:#fff}
+.ata-v2 .btn.pri:hover:not(:is(.ata-designer,.ata-runtime) *){background:var(--pri-hover);border-color:var(--pri-hover)}
+.ata-v2 .btn.quiet:not(:is(.ata-designer,.ata-runtime) *){color:var(--ink2)}
+.ata-v2 .btn.quiet:hover:not(:is(.ata-designer,.ata-runtime) *){background:var(--line2)}
+.ata-v2 .btn.danger:not(:is(.ata-designer,.ata-runtime) *){color:var(--red)}
+.ata-v2 .btn.danger:hover:not(:is(.ata-designer,.ata-runtime) *){background:var(--red-bg)}
+.ata-v2 .btn.sm:not(:is(.ata-designer,.ata-runtime) *){min-height:26px;padding:3px 10px;font-size:12px}
+.ata-v2 .btn:not(:is(.ata-designer,.ata-runtime) *) svg{width:15px;height:15px;flex:none}
+:is(.ata-designer,.ata-runtime,.ata-v2) .btn.ai{color:var(--t);border-color:var(--t-edge)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .btn.ai:hover{background:var(--t-bg)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .btn.xs{min-height:24px;min-width:24px;padding:2px 8px;font-size:11.5px;border-radius:var(--r-sm)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .btn[aria-busy="true"]{cursor:progress}
+:is(.ata-designer,.ata-runtime,.ata-v2) .btn .kspin{width:13px;height:13px;border:2px solid currentColor;border-inline-end-color:transparent;border-radius:50%;animation:kspin .7s linear infinite;flex:none}
+@keyframes kspin{to{transform:rotate(360deg)}}
+/* Disabled stays readable (UX-A): no opacity, muted text on a quiet fill.
+   A disabled primary is --muted on --line2 (5.76:1 light, 6.23:1 dark), never
+   white on white. */
+:is(.ata-designer,.ata-runtime,.ata-v2) .btn:disabled,
+:is(.ata-designer,.ata-runtime,.ata-v2) .btn[aria-disabled="true"]{opacity:1;cursor:not-allowed;background:var(--card);border-color:var(--line);color:var(--muted);box-shadow:none;transform:none}
+:is(.ata-designer,.ata-runtime,.ata-v2) .btn.pri:disabled,
+:is(.ata-designer,.ata-runtime,.ata-v2) .btn.pri[aria-disabled="true"]{background:var(--line2);border-color:var(--line);color:var(--muted)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .btn[aria-disabled="true"]:hover,
+:is(.ata-designer,.ata-runtime,.ata-v2) .btn:disabled:hover{background:var(--card)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .btn.pri[aria-disabled="true"]:hover,
+:is(.ata-designer,.ata-runtime,.ata-v2) .btn.pri:disabled:hover{background:var(--line2)}
+/* Icon-only button: 28 px square, 24 px minimum hit area in dense rows. */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kibtn{font:inherit;display:inline-grid;place-items:center;min-width:28px;min-height:28px;padding:4px;border:0;border-radius:var(--r-md);background:none;color:var(--muted);cursor:pointer}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kibtn:hover{background:var(--line2);color:var(--ink)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kibtn.xs{min-width:24px;min-height:24px;padding:2px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kibtn svg{width:16px;height:16px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kibtn[aria-disabled="true"]{cursor:not-allowed;color:var(--faint)}
+
+/* ---- StatusPill (3.2, 3.11): glyph + word, never colour alone ---- */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpill{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-weight:600;line-height:1.4;padding-block:1px;padding-inline:6px 8px;border-radius:var(--r-pill);border:1px solid transparent;white-space:nowrap;vertical-align:middle}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpill::before{display:none}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpill .kpg{width:12px;height:12px;flex:none}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpill.ok{background:var(--d-bg);color:var(--green);border-color:var(--d-edge)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpill.warn{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-edge)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpill.bad{background:var(--red-bg);color:var(--red);border-color:var(--red-edge)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpill.info{background:var(--blue-soft);color:var(--blue);border-color:var(--blue-line)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpill.mute{background:var(--line2);color:var(--ink2);border-color:var(--line)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpill.t{background:var(--t-bg);color:var(--t);border-color:var(--t-edge)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpill.sm{font-size:11px;padding-block:0;padding-inline:5px 6px}
+
+/* ---- Dialog shell (3.6) on MUI Dialog ---- */
+.ata-v2.kdlg{background:var(--card);color:var(--ink);border-radius:var(--r-xl);box-shadow:var(--shl);font-family:var(--sans);font-size:13px;line-height:1.45;display:flex;flex-direction:column;max-height:88vh;width:100%;margin:16px;overflow:hidden}
+.ata-v2.kdlg.w-default{max-width:640px}.ata-v2.kdlg.w-wide{max-width:820px}.ata-v2.kdlg.w-xwide{max-width:1180px}.ata-v2.kdlg.w-narrow{max-width:480px}
+.ata-v2.kdlg>header{display:flex;align-items:flex-start;gap:12px;padding-block:14px 10px;padding-inline:18px 12px;border-bottom:1px solid var(--line)}
+.ata-v2.kdlg>header .kdt{flex:1;min-width:0}
+.ata-v2.kdlg>header h2{margin:0;font-size:16px;font-weight:600;color:var(--ink);line-height:1.35}
+.ata-v2.kdlg>header p{margin:2px 0 0;color:var(--muted);font-size:12.5px}
+.ata-v2.kdlg>.kdbd{padding:12px 18px 16px;overflow:auto;flex:1;min-height:0}
+.ata-v2.kdlg>footer{display:flex;align-items:center;gap:8px;padding:10px 18px 14px;border-top:1px solid var(--line)}
+.ata-v2.kdlg>footer .kdnote{flex:1;min-width:0;color:var(--muted);font-size:12px}
+.ata-v2.kdlg>footer .kdacts{display:flex;gap:8px;margin-inline-start:auto;flex-wrap:wrap;justify-content:flex-end}
+.ata-v2.kdlg>.kdbd>.MuiDialogContent-root{padding:0;overflow:visible}
+.kdlg-backdrop{background:var(--backdrop,rgba(15,23,42,.32))!important}
+
+/* ---- Drawer host (3.8): closed drawers are clipped, never scroll the page ---- */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdrw-host{position:relative;overflow:clip;display:flex;min-width:0;min-height:0}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdrw-host>.kdrw-main{flex:1;min-width:0;min-height:0;overflow:auto}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdrw{width:min(var(--kdrw-w,440px),100%);position:relative;flex:none;display:flex;flex-direction:column;background:var(--card);border-inline-start:1px solid var(--line);min-height:0;max-width:100%}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdrw[hidden]{display:none}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdrw.overlay{position:absolute;top:0;inset-inline-end:0;bottom:0;box-shadow:var(--shl);z-index:var(--z-drawer)}
+/* Expanded (the edge handle): towards the page's start, the page less a 56 px sliver; full width on a phone. The width animates
+   with the same easing as the slide-in, only while expanding or restoring (.kdrw-anim), never while the grip is dragged. */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdrw.max{position:absolute;top:0;bottom:0;inset-inline-end:0;width:min(calc(100vw - 56px),100%)!important;max-width:100%;z-index:var(--z-drawer-max)}
+@media (max-width:599.95px){:is(.ata-designer,.ata-runtime,.ata-v2) .kdrw.max{width:100%!important}}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdrw.kdrw-anim{transition:transform 225ms cubic-bezier(.2,0,0,1),width 280ms cubic-bezier(.2,0,0,1)!important}
+@media (prefers-reduced-motion:reduce){:is(.ata-designer,.ata-runtime,.ata-v2) .kdrw.kdrw-anim{transition:none!important}}
+/* The handle: 26 x 64, standing out from the drawer's inline-start edge half-way down (as PCP Gateway's drawers). */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdrw>.kdrw-x{position:absolute;inset-inline-start:-26px;top:50%;transform:translateY(-50%);z-index:2;width:26px;height:64px;display:grid;place-items:center;padding:0;border:1px solid var(--line);border-inline-end:0;border-start-start-radius:10px;border-end-start-radius:10px;background:var(--card);color:var(--pri,var(--blue));box-shadow:-4px 0 12px rgba(15,23,42,.12);cursor:pointer}
+[dir="rtl"] :is(.ata-designer,.ata-runtime,.ata-v2) .kdrw>.kdrw-x,:is(.ata-designer,.ata-runtime,.ata-v2)[dir="rtl"] .kdrw>.kdrw-x{box-shadow:4px 0 12px rgba(15,23,42,.12)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdrw>.kdrw-x:hover{color:var(--pri-hover,var(--blue))}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdrw>.kdrw-x:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdrw:not(.on)>.kdrw-x{visibility:hidden}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdrw>.kdrw-grip{position:absolute;inset-inline-start:-4px;top:0;bottom:0;width:8px;cursor:col-resize;background:none;border:0;padding:0;z-index:1}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdrw>.kdrw-grip:hover,:is(.ata-designer,.ata-runtime,.ata-v2) .kdrw>.kdrw-grip:focus-visible{background:color-mix(in srgb,var(--blue) 30%,transparent);outline-offset:-2px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdrw>header{display:flex;align-items:center;gap:8px;padding-block:10px 8px;padding-inline:16px 8px;border-bottom:1px solid var(--line)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdrw>header h3{flex:1;min-width:0;margin:0;font-size:15px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdrw>header .ksub{display:block;font-size:12px;font-weight:400;color:var(--muted)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdrw>header .x2b{display:flex;gap:4px;margin-inline-start:auto;flex:none}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdrw>header .kdrw-acts{display:flex;align-items:center;gap:4px;margin-inline-start:auto;flex:none}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdrw>header .kdrw-acts+.x2b{margin-inline-start:0}
+:is(.ata-designer,.ata-v2) .kdrw>header .x2b button{display:grid;place-items:center;min-width:28px;min-height:28px;border:0;background:none;border-radius:var(--r-md);color:var(--muted);cursor:pointer}
+:is(.ata-designer,.ata-v2) .kdrw>header .x2b button:hover{background:var(--line2);color:var(--ink)}
+:is(.ata-designer,.ata-v2) .kdrw>header .back{display:none}
+:is(.ata-designer,.ata-v2) .kdrw.max>header .back{display:inline-flex;align-items:center;gap:4px;border:0;background:none;color:var(--blue);font:inherit;font-weight:600;cursor:pointer}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdrw svg.i{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdrw>.pbody{flex:1;min-height:0;overflow:auto;padding:12px 16px 18px;container-type:inline-size}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdrw>.pfoot{display:flex;gap:8px;justify-content:flex-end;padding:10px 16px;border-top:1px solid var(--line)}
+
+/* ---- DataTable (3.11) ---- */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap{display:flex;flex-direction:column;gap:6px;min-width:0}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-bar{display:flex;align-items:center;gap:8px;justify-content:flex-end;min-height:28px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-bar .kdt-cap{margin-inline-end:auto;min-width:0;color:var(--muted);font-size:12px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-scroll{overflow:auto;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--card);max-width:100%}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt{width:100%;border-collapse:separate;border-spacing:0;font-size:12.5px;color:var(--ink)}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt th{position:sticky;top:0;z-index:var(--z-sticky);background:var(--line2);color:var(--muted);font-size:11.5px;font-weight:600;text-align:start;padding:0 10px;height:34px;border-bottom:1px solid var(--line);white-space:nowrap}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt th.sortable{padding:0 4px}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt th .kdt-sort{display:inline-flex;align-items:center;gap:4px;border:0;background:none;font:inherit;color:inherit;padding:4px 6px;border-radius:var(--r-sm);cursor:pointer;min-height:24px}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt th .kdt-sort:hover{background:var(--card);color:var(--ink)}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt th[aria-sort="ascending"],:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt th[aria-sort="descending"]{color:var(--ink)}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt th .kdt-sort svg{width:12px;height:12px}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt tr:last-child>td{border-bottom:0}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt td.num,:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt th.num{text-align:end;font-variant-numeric:tabular-nums}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt tbody tr.krow{cursor:default}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt tbody tr.krow.click{cursor:pointer}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt tbody tr.krow:hover>td{background:color-mix(in srgb,var(--blue-soft) 55%,transparent)}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt tbody tr.krow[aria-selected="true"]>td{background:var(--blue-soft)}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt tbody tr.krow:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt tbody tr.kexp>td{background:var(--bg);padding:8px 14px}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt dl.kdt-more{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;margin:0}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt dl.kdt-more dt{color:var(--muted);font-size:12px}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt dl.kdt-more dd{margin:0}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-chooser{position:relative}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt .kdt-x{width:32px;padding:0 4px;text-align:center}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kskel{display:block;height:10px;border-radius:var(--r-xs);background:var(--line2);max-width:160px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmenu{position:absolute;inset-inline-end:0;top:calc(100% + 4px);z-index:var(--z-pop);min-width:220px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shl);padding:6px;display:flex;flex-direction:column;gap:2px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmenu .kmh{font-size:11.5px;color:var(--muted);padding:4px 8px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmenu label{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:var(--r-sm);font-size:12.5px;cursor:pointer;min-height:28px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmenu label:hover{background:var(--line2)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmenu input[type=checkbox]{accent-color:var(--blue);margin:0}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmenu .kmfoot{border-top:1px solid var(--line);margin-top:4px;padding-top:4px}
+
+/* ---- EmptyState and ErrorState (3.11) ---- */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstate{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:20px 18px;max-width:560px;color:var(--ink)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstate.center{align-items:center;text-align:center;margin:0 auto}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstate .kst-t{margin:0;font-size:14px;font-weight:600}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstate .kst-w{margin:0;color:var(--muted);font-size:12.5px;line-height:1.5}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstate .kst-a{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstate.err .kst-t{color:var(--red)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstate .kst-where{margin:0;font-size:12.5px;color:var(--ink2)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstate .kst-corr{font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+
+/* ---- Toast (2.4): one position, under the host app bar, top right ----
+   A page whose own toolbar carries its actions top right (the iFlow studio) moves the toast under that toolbar with
+   `--toast-top` on the document (`setToastTop`), so a toast is never cut off by the toolbar and never covers its buttons. */
+.ata-v2.ktoasts{position:fixed;top:var(--toast-top,calc(var(--appbar-h) + 8px));inset-inline-end:16px;z-index:var(--z-toast);display:flex;flex-direction:column;align-items:flex-end;gap:8px;pointer-events:none;max-width:min(440px,calc(100vw - 32px))}
+.ata-v2.ktoasts.dlgopen{visibility:hidden}
+/* Inside a Focus mode layer (DS-11): under its 40 px header. */
+.ata-v2.ktoasts.inslot{top:48px}
+/* Bottom right, for screens whose header actions sit top right (DataHub). */
+.ata-v2.ktoasts.bottom{top:auto;bottom:16px;flex-direction:column-reverse}
+.ata-v2 .ktoast.err{border-inline-start:3px solid var(--red)}
+.ata-v2 .ktoast{pointer-events:auto;display:flex;align-items:flex-start;gap:10px;background:var(--toast-bg);color:var(--toast-ink);border:1px solid var(--toast-edge);border-radius:var(--r-lg);box-shadow:var(--shl);padding-block:9px;padding-inline:14px 8px;font-family:var(--sans);font-size:12.5px;line-height:1.45;animation:ktin .2s var(--ease)}
+.ata-v2 .ktoast .ktm{flex:1;min-width:0;padding-top:2px}
+.ata-v2 .ktoast .kta{border:0;background:none;color:var(--toast-action);font:inherit;font-weight:600;cursor:pointer;padding:2px 6px;border-radius:var(--r-sm);min-height:24px}
+.ata-v2 .ktoast .ktx{border:0;background:none;color:var(--toast-ink);cursor:pointer;display:grid;place-items:center;width:24px;height:24px;border-radius:var(--r-sm);flex:none}
+.ata-v2 .ktoast .ktx:hover,.ata-v2 .ktoast .kta:hover{background:rgba(255,255,255,.12)}
+.ata-v2 .ktoast :focus-visible{outline-color:var(--toast-action)}
+.ata-v2 .ktoast .ktx svg{width:14px;height:14px}
+@keyframes ktin{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+/* react-toastify on the MUI screens uses the same place. */
+.Toastify__toast-container.ata-toastify{top:var(--toast-top,calc(64px + 8px));inset-inline-end:16px}
+
+/* ---- Inputs (3.4): 3:1 borders (G-TOK-2 default yes) ---- */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kinp{min-height:30px;border:1px solid var(--line-input);border-radius:var(--r-md);background:var(--card);color:var(--ink);font:inherit;font-size:12.5px;padding:4px 8px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kinp:focus-visible{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft)}
+
+/* ---- Radio cards (3.4) ---- */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kradios{display:flex;gap:12px;flex-wrap:wrap}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kradio{flex:1 1 200px;display:flex;flex-direction:column;gap:4px;padding:10px 12px;border:2px solid var(--line);border-radius:var(--r-lg);background:var(--card);cursor:pointer;min-width:0;transition:border-color .15s,background-color .15s}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kradio:hover{border-color:var(--blue-line)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kradio.on{border-color:var(--pri);background:var(--blue-soft)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kradio:focus-within{outline:2px solid var(--blue);outline-offset:2px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kradio .krt{display:flex;align-items:center;gap:8px;color:var(--ink);font-size:13px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kradio .kri{display:inline-flex;color:var(--muted)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kradio.on .kri{color:var(--blue)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kradio .kri svg{width:18px;height:18px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kradio .krh{font-size:12px;color:var(--muted);line-height:1.45}
+/* An unavailable option (ENV-2): muted, not clickable, the reason in --amber under the hint. */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kradio.dis{cursor:not-allowed;background:var(--line2);border-color:var(--line)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kradio.dis:hover{border-color:var(--line)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kradio.dis .krt{color:var(--ink2)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kradio .krw{font-size:12px;color:var(--amber);line-height:1.45}
+
+/* ---- File drop (audit L15) ---- */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kfiledrop{display:flex;flex-direction:column;align-items:center;gap:6px;width:100%;padding:20px 16px;border:2px dashed var(--line-input);border-radius:var(--r-lg);background:var(--bg);color:var(--ink);font:inherit;cursor:pointer;text-align:center}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kfiledrop:hover,:is(.ata-designer,.ata-runtime,.ata-v2) .kfiledrop.over{border-color:var(--blue);background:var(--blue-soft)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kfiledrop .kfd-i{color:var(--blue);display:inline-flex}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kfiledrop .kfd-i svg{width:36px;height:36px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kfiledrop .kfd-l{font-size:14px;font-weight:600;color:var(--blue)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kfiledrop .kfd-h{font-size:12px;color:var(--muted)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kfd-sel{margin:8px 0 0;font-size:12.5px;color:var(--ink2)}
+
+/* ---- Menu (popover menu; ui-components "Popover menu"). Token fallbacks so it reads right outside the kit roots ---- */
+.kmenu-wrap{position:relative;display:inline-flex}
+.kmenu{position:absolute;top:calc(100% + 4px);z-index:30;min-width:220px;background:var(--card,#fff);border:1px solid var(--line,#e2e8f0);border-radius:10px;box-shadow:0 12px 32px rgba(15,23,42,.16);padding:4px;display:flex;flex-direction:column;font-family:inherit}
+.kmenu.end{inset-inline-end:0}.kmenu.start{inset-inline-start:0}
+.kmenu.up{top:auto;bottom:calc(100% + 4px)}
+.kmenu [role^='menuitem']{text-align:start;border:0;background:none;padding:6px 10px;border-radius:6px;font:inherit;font-size:12.5px;color:var(--ink,#0f172a);cursor:pointer;display:flex;gap:6px;align-items:center;min-height:24px}
+.kmenu [role^='menuitem']:hover,.kmenu [role^='menuitem']:focus{background:var(--blue-soft,#eaf1fe);outline:none}
+.kmenu [role^='menuitem']:focus-visible{box-shadow:inset 0 0 0 2px var(--blue,#1a56cc)}
+.kmenu [role^='menuitem'][aria-disabled='true']{color:var(--muted,#526175);cursor:default;background:none}
+.kmenu-h{font-size:11px;font-weight:600;color:var(--muted,#526175);padding:4px 10px}
+.kmenu-mk{width:12px;display:inline-block;color:var(--blue-text,var(--blue,#1a56cc))}
+.kmenu .kmsep{height:1px;background:var(--line,#e2e8f0);margin:4px 2px}
+.kmenu .kml{display:flex;flex-direction:column;gap:1px;min-width:0}
+.kmenu .kmhint{font-size:11.5px;color:var(--muted,#526175)}
+.kmenu .kmic{display:inline-flex;width:16px;flex:none;color:var(--muted,#526175)}
+.kmenu .kmi.danger{color:var(--red-text,var(--red,#b42318))}
+
+/* ---- ActionBar (3.1 priority+ overflow): nothing is ever clipped ---- */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kab{position:relative;display:flex;align-items:center;justify-content:flex-end;flex:1 1 auto;min-width:0}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kab-i{display:inline-flex;align-items:center;flex:none;white-space:nowrap}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kab-measure{position:absolute;inset-inline-start:0;top:0;height:0;width:max-content;overflow:hidden;visibility:hidden;pointer-events:none;display:flex;gap:inherit}
+
+/* ---- UX-D list parts: page header, filter chips, split button, menus, search, tags ---- */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kph{display:flex;align-items:center;gap:14px;flex-wrap:nowrap;height:64px;padding:0;color:var(--ink);box-sizing:border-box}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kph-i{flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:10px;background:var(--blue-soft);border:1px solid var(--blue-line);color:var(--blue)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kph-i svg{width:20px;height:20px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kph-id{flex:1 1 320px;min-width:0;display:flex;flex-direction:column;gap:2px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kph-row{display:flex;align-items:center;gap:10px;min-width:0;flex-wrap:nowrap}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kph-t{margin:0;font-size:19px;font-weight:650;line-height:1.3;letter-spacing:-.01em;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kph-c{font-size:11.5px;font-weight:500;color:var(--ink2);background:var(--line2);border-radius:999px;padding:2px 9px;font-variant-numeric:tabular-nums;white-space:nowrap}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kph-p{margin:0;font-size:13px;line-height:1.45;color:var(--muted);min-width:0;max-width:880px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kph-a{display:flex;align-items:center;gap:8px;flex-wrap:nowrap;flex:none;margin-inline-start:auto}
+@media (max-width:900px){:is(.ata-designer,.ata-runtime,.ata-v2) .kph{flex-wrap:wrap;height:auto;min-height:64px;padding:8px 0}:is(.ata-designer,.ata-runtime,.ata-v2) .kph-a{flex-wrap:wrap}}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kfbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-width:0}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kfbar .knote{font-size:12px;color:var(--muted)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kfchip-wrap{position:relative;display:inline-flex}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kfchip{display:inline-flex;align-items:center;gap:6px;min-height:28px;padding:3px 10px;border:1px solid var(--line-input);border-radius:14px;background:var(--card);color:var(--ink2);font:inherit;font-size:12px;cursor:pointer;white-space:nowrap}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kfchip:hover{background:var(--line2);color:var(--ink)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kfchip.on{border-color:var(--blue);background:var(--blue-soft);color:var(--blue);font-weight:600}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksbtn{position:relative;display:inline-flex;flex-direction:row;flex-wrap:nowrap}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksbtn>.ksbtn-main{border-start-end-radius:0;border-end-end-radius:0}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksbtn>.ksbtn-caret{border-start-start-radius:0;border-end-start-radius:0;padding:5px 7px;margin-inline-start:-1px;border-inline-start-color:color-mix(in srgb,var(--card) 35%,transparent)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmenu.start{inset-inline-start:0;inset-inline-end:auto}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmenu .kmsep{height:1px;background:var(--line);margin:4px 2px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmenu .kmi{display:flex;align-items:flex-start;gap:8px;width:100%;min-height:30px;padding:6px 8px;border:0;border-radius:var(--r-sm);background:none;color:var(--ink);font:inherit;font-size:12.5px;text-align:start;cursor:pointer}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmenu .kmi:hover,:is(.ata-designer,.ata-runtime,.ata-v2) .kmenu .kmi:focus-visible{background:var(--line2)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmenu .kmi:focus-visible{outline-offset:-2px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmenu .kmi.danger{color:var(--red)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmenu .kmi[aria-disabled="true"]{color:var(--muted);cursor:not-allowed}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmenu .kmck{width:12px;flex:none;color:var(--blue);font-weight:700}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmenu .kml{display:flex;flex-direction:column;gap:1px;min-width:0}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmenu .kmhint{font-size:11.5px;color:var(--muted)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksearch{position:relative;display:inline-flex;align-items:center;max-width:100%}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksearch .kinp{width:100%;padding-inline:28px;appearance:none}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksearch .kinp::-webkit-search-cancel-button{display:none}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksearch .kinp::placeholder{color:var(--muted);opacity:1}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksearch-i{position:absolute;inset-inline-start:9px;color:var(--muted);pointer-events:none}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksearch-x{position:absolute;inset-inline-end:2px}
+/* One neutral tag style for secondary facts (Source, Mode, API, Scheduled): never a status. */
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktag{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:500;line-height:1.4;padding:0 6px;border-radius:var(--r-xs);border:1px solid var(--line);background:var(--line2);color:var(--ink2);white-space:nowrap;vertical-align:middle}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kname{display:flex;flex-direction:column;gap:1px;min-width:0}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kname>.kname-t{color:var(--blue);font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kname>.kname-id{font-family:var(--mono);font-size:11.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+:is(.ata-designer,.ata-runtime,.ata-v2) .klink{border:0;background:none;padding:0;font:inherit;color:var(--blue);cursor:pointer;text-align:start;text-decoration:none}
+:is(.ata-designer,.ata-runtime,.ata-v2) .klink:hover{text-decoration:underline}
+/* A link inside running text is underlined, so it is not told apart by colour alone (WCAG 1.4.1). */
+:is(.ata-designer,.ata-runtime,.ata-v2) .klink.inline{text-decoration:underline;text-underline-offset:2px}
+/* Template picker (list + preview) */
+.ata-v2 .ktpl{display:grid;grid-template-columns:minmax(200px,260px) 1fr;gap:16px;min-height:340px}
+@media (max-width:720px){.ata-v2 .ktpl{grid-template-columns:1fr}}
+.ata-v2 .ktpl-list{display:flex;flex-direction:column;gap:8px;min-width:0}
+.ata-v2 .ktpl-items{display:flex;flex-direction:column;gap:2px;border:1px solid var(--line);border-radius:var(--r-lg);padding:4px;max-height:52vh;overflow:auto}
+.ata-v2 .ktpl-item{display:flex;flex-direction:column;gap:2px;padding:7px 10px;border-radius:var(--r-sm);cursor:pointer;color:var(--ink)}
+.ata-v2 .ktpl-item:hover{background:var(--line2)}
+.ata-v2 .ktpl-item.on{background:var(--blue-soft);box-shadow:inset 3px 0 0 var(--blue)}
+.ata-v2 .ktpl-item:focus-within{outline:2px solid var(--blue);outline-offset:-2px}
+.ata-v2 .ktpl-t{font-size:13px;font-weight:600}
+.ata-v2 .ktpl-m{font-size:11.5px;color:var(--muted);display:flex;gap:6px;align-items:center}
+.ata-v2 .ktpl-prev{min-width:0;color:var(--ink)}
+.ata-v2 .ktpl-prev h3{margin:0 0 4px;font-size:15px}
+.ata-v2 .ktpl-d{margin:0 0 10px;color:var(--muted);font-size:12.5px;line-height:1.5}
+.ata-v2 .ktpl-name{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--ink2);margin-bottom:12px;max-width:360px}
+.ata-v2 .ktpl-lane{margin-bottom:10px}
+.ata-v2 .ktpl-lane h4{margin:0 0 4px;font-size:11.5px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.ata-v2 .ktpl-lane ol,.ata-v2 .ktpl-lane ul{margin:0;padding-inline-start:20px;font-size:12.5px;line-height:1.7}
+.ata-v2 .ktpl-note{color:var(--muted)}
+/* Simple kit forms in dialogs and drawers */
+.ata-v2 .kform{display:flex;flex-direction:column;gap:12px}
+.ata-v2 .kfield{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--ink2);min-width:0}
+.ata-v2 .kfield>span:first-child{font-weight:600}
+.ata-v2 .kfield .kinp{width:100%}
+.ata-v2 .kfield .kinp.mono,.ata-v2 .kidprev{font-family:var(--mono);font-size:12px}
+.ata-v2 .kfield-row{display:flex;align-items:center;gap:10px;min-width:0}
+.ata-v2 .kidprev{padding:4px 8px;border-radius:var(--r-sm);background:var(--line2);color:var(--ink);overflow-wrap:anywhere}
+.ata-v2 .khelp{font-size:11.5px;color:var(--muted);line-height:1.45}
+.ata-v2 .khelp code{font-family:var(--mono);color:var(--ink2)}
+/* Read-only inspector content (definition list + wrapped preformatted text) */
+.ata-v2 .kinspect{color:var(--ink);font-size:12.5px}
+.ata-v2 .kinspect dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 14px;margin:0 0 14px}
+.ata-v2 .kinspect dt{color:var(--muted)}
+.ata-v2 .kinspect dd{margin:0;min-width:0;overflow-wrap:anywhere}
+.ata-v2 .kinspect h4{margin:0 0 6px;font-size:12px;font-weight:600;color:var(--ink2)}
+.ata-v2 .kpre{margin:0;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--bg);color:var(--ink);font-family:var(--mono);font-size:12px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere;max-height:50vh;overflow:auto}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt td .kname{max-width:min(560px,42vw)}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt td .kname .kinp{min-width:220px}
+
+/* ---- Menu, fixed placement (inside scrolling tables and clipped toolbars) ---- */
+.kmenu.fixed{z-index:1310}
+.kmenu .kmic svg{width:14px;height:14px}
+
+/* ---- SelectionBar (bulk actions docked at the top of a table) ---- */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kselbar{display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding:6px 10px;border:1px solid var(--blue-line);background:var(--blue-soft);border-radius:8px;color:var(--ink);font-size:12.5px;width:100%}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kselbar .num b{font-weight:600}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kselbar.form{padding:0;border:0;background:none}
+
+/* ---- Tabs (RX-UI-spec 1.2, 8.1) ---- */
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:thin;border-bottom:1px solid var(--line);min-width:0}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktab{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 12px;font:inherit;font-size:13px;font-weight:500;line-height:1;color:var(--ink2);text-decoration:none;white-space:nowrap;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;border-radius:var(--r-sm) var(--r-sm) 0 0;background:none;cursor:pointer}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktab:hover{color:var(--ink);background:var(--line2)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktab[aria-selected="true"]{color:var(--blue);border-bottom-color:var(--blue);font-weight:600}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktab:focus-visible{outline-offset:-2px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktab .ktab-i{display:inline-flex;color:var(--muted)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktab .ktab-i svg{width:14px;height:14px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktab .kcount{display:inline-block;min-width:20px;padding:2px 6px;border-radius:var(--r-pill);background:var(--line2);color:var(--ink2);font-size:11.5px;font-weight:600;text-align:center;font-variant-numeric:tabular-nums}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktab[aria-selected="true"] .kcount{background:var(--blue-soft);color:var(--blue)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktab .kcount.bad{background:var(--red-bg);color:var(--red)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktab .kcount.warn{background:var(--amber-bg);color:var(--amber)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktabpanel{min-width:0}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktabpanel:focus{outline:none}
+
+/* ---- Skeleton (RX-UI-spec 1.2) ---- */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kskel-rows{display:flex;flex-direction:column;gap:12px;padding:10px 0}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kskel-rows>.kskel-row{display:grid;gap:14px;align-items:center}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kskel-block{display:block;border-radius:var(--r-md)}
+
+/* ---- Segmented (RX-UI-spec 1.2) ---- */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kseg{display:inline-flex;align-items:stretch;gap:2px;padding:2px;border:1px solid var(--line-input);border-radius:var(--r-md);background:var(--card);max-width:100%}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kseg-o{display:inline-flex;flex-direction:column;justify-content:center;gap:2px;min-height:24px;padding:3px 10px;border:0;border-radius:var(--r-sm);background:none;color:var(--ink2);font:inherit;font-size:12.5px;font-weight:500;line-height:1.3;cursor:pointer;text-align:start;min-width:0}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kseg-o:hover{background:var(--line2);color:var(--ink)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kseg-o.on{background:var(--blue-soft);color:var(--blue);font-weight:600;box-shadow:inset 0 0 0 1px var(--blue-line)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kseg-o[aria-disabled="true"]{color:var(--muted);cursor:not-allowed;background:none}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kseg-o:focus-visible{outline-offset:-2px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kseg-l:has(> .kseg-i){display:inline-flex;align-items:center;gap:6px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kseg-i{display:inline-flex;flex:none}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kseg-i svg{width:14px;height:14px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kseg.sm .kseg-o{min-height:22px;padding:2px 8px;font-size:12px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kseg.vert{display:flex;flex-direction:column}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kseg.vert .kseg-o{padding:6px 10px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kseg-l{overflow:hidden;text-overflow:ellipsis}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kseg-h{font-size:11.5px;font-weight:400;color:var(--muted);line-height:1.45;white-space:normal}
+
+/* ---- InlineEdit (RX-UI-spec 1.2, 8.2) ---- */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kied{display:inline-flex;flex-direction:column;gap:2px;margin:0;min-width:0;max-width:100%;font:inherit}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kied-b{display:inline-flex;align-items:center;gap:6px;min-height:26px;max-width:100%;padding:1px 6px;border:1px solid transparent;border-radius:var(--r-sm);background:none;color:inherit;font:inherit;text-align:start;cursor:text}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kied-b:hover{border-color:var(--line-input);background:var(--card)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kied-b[aria-disabled="true"]{cursor:default}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kied-b[aria-disabled="true"]:hover{border-color:transparent;background:none}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kied-t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kied-ph{color:var(--muted);font-style:italic}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kied-pen{width:13px;height:13px;flex:none;fill:none;stroke:var(--muted);stroke-width:1.4;stroke-linejoin:round;opacity:0}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kied-b:hover .kied-pen,:is(.ata-designer,.ata-runtime,.ata-v2) .kied-b:focus-visible .kied-pen{opacity:1}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kied-i{font:inherit;min-width:220px;max-width:100%}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kied.mono,:is(.ata-designer,.ata-runtime,.ata-v2) .kied-i.mono{font-family:var(--mono)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kied-i[aria-invalid="true"]{border-color:var(--red)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kied-err{font-size:11.5px;font-weight:400;color:var(--red)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kied.kied-row{flex-direction:row;align-items:center;gap:4px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kied-p{flex:none;display:inline-grid;vertical-align:middle;place-items:center;width:24px;height:24px;padding:0;border:0;border-radius:var(--r-sm);background:none;color:inherit;cursor:pointer}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kied-p:hover{background:var(--card)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kied-p:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kied-p[aria-disabled="true"]{cursor:default}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kied-p .kied-pen{opacity:1}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kied-l{font-size:11.5px;font-weight:500;color:var(--ink2)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kied-hints{display:flex;flex-direction:column;gap:2px;font-size:11.5px;font-weight:400;color:var(--muted);white-space:normal}
+
+/* ---- SplitPane (RX-UI-spec 1.2, RE-3.2) ---- */
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksplit{position:relative;display:flex;flex-direction:column;min-width:0;min-height:0;background:var(--card);color:var(--ink);transition:width var(--dur) var(--ease)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksplit.start{border-inline-end:1px solid var(--line)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksplit.end{border-inline-start:1px solid var(--line)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksp-head{display:flex;align-items:center;gap:6px;min-height:36px;padding:4px 8px;border-bottom:1px solid var(--line)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksplit.end .ksp-head{flex-direction:row-reverse;justify-content:flex-end}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksp-chev{flex:none}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksp-chev.out{transform:scaleX(-1)}
+[dir="rtl"] :is(.ata-designer,.ata-runtime,.ata-v2) .ksp-chev.in,:is(.ata-designer,.ata-runtime,.ata-v2)[dir="rtl"] .ksp-chev.in{transform:scaleX(-1)}
+[dir="rtl"] :is(.ata-designer,.ata-runtime,.ata-v2) .ksp-chev.out,:is(.ata-designer,.ata-runtime,.ata-v2)[dir="rtl"] .ksp-chev.out{transform:none}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksp-body{flex:1;min-height:0;overflow:auto}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksp-grip{position:absolute;top:0;bottom:0;width:8px;cursor:col-resize;z-index:var(--z-bar);touch-action:none}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksplit.start .ksp-grip{inset-inline-end:-4px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksplit.end .ksp-grip{inset-inline-start:-4px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksp-grip::after{content:"";position:absolute;top:0;bottom:0;inset-inline-start:3px;width:2px;background:transparent;transition:background var(--dur) var(--ease)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksp-grip:hover::after,:is(.ata-designer,.ata-runtime,.ata-v2) .ksp-grip:focus-visible::after{background:var(--blue)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksp-grip:focus-visible{outline:none}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksplit.collapsed{align-items:center;padding:6px 0;gap:8px;background:var(--bg)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksp-rail{display:flex;align-items:center;justify-content:center;width:30px;min-height:96px;padding:8px 0;border:1px solid transparent;border-radius:var(--r-sm);background:none;color:var(--ink2);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksp-rail:hover{background:var(--line2);color:var(--ink);border-color:var(--line)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksp-rail-t{writing-mode:vertical-rl;white-space:nowrap}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksplit.start .ksp-rail-t{transform:rotate(180deg)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksp-rail-x{display:flex;flex-direction:column;align-items:center;gap:6px}
+/* Toolbar readiness chip (UX pass): a StatusPill that is also the way into the Validation tab. */
+:is(.ata-designer,.ata-runtime,.ata-v2) .rdy-chip{border:0;background:none;padding:2px;margin:0;border-radius:999px;cursor:pointer;font:inherit;display:inline-flex;align-items:center}
+:is(.ata-designer,.ata-runtime,.ata-v2) .rdy-chip:hover .kpill{filter:brightness(.97)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .rdy-chip:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .rdy-chip:disabled{cursor:default;opacity:.6}
+/* iFlow list (UX pass): status, kind and version in one cell. */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstat{display:inline-flex;align-items:center;gap:6px 8px;flex-wrap:wrap;min-width:0}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstat-v{font-family:var(--mono);font-size:11.5px;color:var(--ink2)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstat-k{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--ink2)}
+
+/* ---- Steps (ENV-UI-spec 4.3) ---- */
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksteps{list-style:none;margin:0;padding:0;display:flex;color:var(--ink);font-size:12.5px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksteps.h{flex-wrap:wrap;gap:4px 18px;align-items:center}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksteps.v{flex-direction:column;gap:2px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstep{position:relative;min-width:0}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstep-b{display:inline-flex;align-items:flex-start;gap:8px;padding:4px 2px;border:0;background:none;font:inherit;color:inherit;text-align:start;border-radius:var(--r-sm)}
+:is(.ata-designer,.ata-runtime,.ata-v2) button.kstep-b{cursor:pointer}
+:is(.ata-designer,.ata-runtime,.ata-v2) button.kstep-b:hover .kstep-t{text-decoration:underline}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksteps.h .kstep.current .kstep-b{box-shadow:inset 0 -2px 0 var(--pri);border-radius:0}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksteps.v .kstep{padding-inline-start:8px;border-inline-start:2px solid transparent}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ksteps.v .kstep.current{border-inline-start-color:var(--pri)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstep-m{flex:none;display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--line-input);background:var(--card);color:var(--ink2);font-size:11px;font-weight:600;font-variant-numeric:tabular-nums}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstep-m.current{border-color:var(--pri);color:var(--blue);background:var(--blue-soft)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstep-m.done{border-color:var(--d-edge);background:var(--d-bg);color:var(--green)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstep-m.error{border-color:var(--red-edge);background:var(--red-bg);color:var(--red)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstep-m.skipped{border-style:dashed;color:var(--muted)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstep-l{display:flex;flex-direction:column;gap:1px;min-width:0;padding-top:1px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstep-t{font-weight:500;color:var(--ink)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstep.current .kstep-t{font-weight:600}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstep.upcoming .kstep-t,:is(.ata-designer,.ata-runtime,.ata-v2) .kstep.skipped .kstep-t{color:var(--muted);font-weight:400}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstep.error .kstep-t{color:var(--red)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstep-d{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstep-x{padding-block:2px 6px;padding-inline:30px 0}
+
+/* ---- Meter (ENV-UI-spec 4.4): a bar next to its numbers, never colour alone ---- */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmeter{display:flex;align-items:center;gap:10px;min-width:0;font-size:12px;color:var(--ink2)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmeter-l{flex:none;min-width:84px;color:var(--ink2);font-weight:500}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmeter-t{flex:1 1 120px;min-width:80px;height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmeter-b{display:block;height:100%;border-radius:3px;background:var(--blue);transition:width var(--dur) var(--ease)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmeter.ok .kmeter-b{background:var(--green)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmeter.bad .kmeter-b{background:var(--red)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmeter.warn .kmeter-b{background:var(--amber)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmeter-d{flex:none;font-variant-numeric:tabular-nums;color:var(--ink2);white-space:nowrap}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmeter.none .kmeter-d{color:var(--muted)}
+
+/* ---- Right to left (Arabic): a glyph that points a way (back, next) mirrors. Kit roots get `dir` from V2Root / the host. ---- */
+[dir="rtl"] .kflip,.kflip[dir="rtl"]{transform:scaleX(-1)}
+/* ---- ErrorState as a calm card (2026-11-04): icon, a plain title and sentence, the next step, and the technical
+   text folded under "Show technical details". Never a bare red line with the raw message. ---- */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstate.kstate-card{flex-direction:row;align-items:flex-start;gap:12px;box-sizing:border-box;width:100%;max-width:520px;margin:12px 0;padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--card);box-shadow:0 1px 2px rgba(15,23,42,.04)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstate.kstate-card.center{margin:16px auto;text-align:start}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstate-card .kst-ico{flex:none;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--red-bg);color:var(--red)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstate-card .kst-b{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstate.err.kstate-card .kst-t{color:var(--ink);font-size:14px;font-weight:600;line-height:1.4}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstate-card .kst-w{color:var(--ink2);font-size:13px;line-height:1.5}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstate-card .kst-a{margin-top:8px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstate-card .kst-det{margin-top:10px;padding-top:8px;border-top:1px solid var(--line2)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstate-card .kst-det>summary{display:inline-flex;align-items:center;gap:6px;cursor:pointer;list-style:none;font-size:12.5px;font-weight:500;color:var(--muted)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstate-card .kst-det>summary::-webkit-details-marker{display:none}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstate-card .kst-det>summary::before{content:"";width:6px;height:6px;border-inline-end:1.5px solid currentColor;border-block-end:1.5px solid currentColor;transform:rotate(-45deg);transition:transform .15s}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstate-card .kst-det[open]>summary::before{transform:rotate(45deg)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstate-card .kst-det>summary:hover{color:var(--ink)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstate-card .kst-det>summary:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:4px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstate-card .kst-raw{margin:8px 0 6px;padding:8px 10px;max-height:160px;overflow:auto;border:1px solid var(--line);border-radius:8px;background:var(--bg2);font-family:var(--mono);font-size:12px;line-height:1.5;color:var(--ink);white-space:pre-wrap;word-break:break-word}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kstate-card .kst-copy{font-size:12px}
+/* Drawers never narrower than a usable form (full width on small screens). */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdrw{min-width:min(440px,100%)}
+/* The standard list (one data table for the whole platform, signed off as
+   pcp-data-table-prototype.html): toolbar (search left, filters right, active
+   filter pills), the pager, "+n more" tags, person cells and row actions.
+   Tokens only, so light, dark and the host accent all apply. */
+
+/* ---------- Toolbar */
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb{display:flex;flex-direction:column;gap:8px;min-width:0;width:100%}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-row{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap;min-width:0}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-search{flex:0 1 320px;min-width:200px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-search .ksearch{width:100%}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-filters{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end;margin-inline-start:auto;min-width:0}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-active{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12.5px;color:var(--muted)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-pill{display:inline-flex;align-items:center;gap:4px;padding-block:2px;padding-inline:9px 3px;border:1px solid var(--line);border-radius:999px;background:var(--line2);color:var(--ink2)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-pill b{font-weight:600;color:var(--ink)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-pill button{display:grid;place-items:center;width:22px;height:22px;border:0;border-radius:999px;background:none;color:var(--muted);cursor:pointer}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-pill button:hover{background:var(--line);color:var(--ink)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-clear{border:0;background:none;padding:2px 4px;border-radius:var(--r-xs);color:var(--blue);font:inherit;font-weight:600;cursor:pointer}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-clear:hover{text-decoration:underline}
+@media (max-width:760px){:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-search{flex-basis:100%}:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-filters{justify-content:flex-start;margin-inline-start:0}}
+
+/* ---------- Pager */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr{display:flex;align-items:center;gap:10px 18px;flex-wrap:wrap;padding:10px 4px 0;font-size:13.5px;color:var(--muted)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-count{font-variant-numeric:tabular-nums}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-count b{color:var(--ink);font-weight:600}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-size{display:inline-flex;align-items:center;gap:8px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-size select{height:30px;padding-block:0;padding-inline:10px 24px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--card);color:var(--ink);font:inherit;cursor:pointer}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-sp{flex:1}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-nav{display:flex;align-items:center;gap:3px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-nav button{display:inline-grid;place-items:center;min-width:32px;height:32px;padding:0 8px;border:1px solid transparent;border-radius:var(--r-md);background:none;color:var(--ink2);font:inherit;font-weight:500;font-variant-numeric:tabular-nums;cursor:pointer}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-nav button:hover:not(:disabled):not([aria-current="page"]){background:var(--card);border-color:var(--line)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-nav button[aria-current="page"]:hover{background:var(--pri-hover);border-color:var(--pri-hover);color:#fff}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-nav button[aria-current="page"]{background:var(--pri);border-color:var(--pri);color:#fff;font-weight:700}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-nav button:disabled{opacity:.4;cursor:not-allowed}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-nav svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-gap{min-width:22px;text-align:center;color:var(--faint)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-goto{display:inline-flex;align-items:center;gap:6px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-goto input{width:56px;height:30px;padding:0 6px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--card);color:var(--ink);font:inherit;text-align:center}
+@media (max-width:760px){:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr{justify-content:center}:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-goto,:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-sp{display:none}}
+
+/* ---------- "+n more" tags */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmore{display:inline-flex;align-items:center;gap:4px;min-width:0;max-width:100%}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmore>.ktag{overflow:hidden;text-overflow:ellipsis;max-width:170px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmore-btn{display:inline-flex;align-items:center;height:20px;padding:0 7px;border:1px solid var(--blue-line);border-radius:var(--r-xs);background:var(--blue-soft);color:var(--blue);font:inherit;font-size:11.5px;font-weight:700;cursor:pointer;flex:none}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmore-btn:hover,:is(.ata-designer,.ata-runtime,.ata-v2) .kmore-btn[aria-expanded="true"]{background:var(--pri);border-color:var(--pri);color:#fff}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmore-tip{position:fixed;z-index:var(--z-pop,210);max-width:280px;padding:10px 12px;border-radius:10px;background:#111827;color:#F9FAFB;box-shadow:var(--shl);font-size:12.5px;line-height:1.4;pointer-events:none;text-align:start;white-space:normal}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmore-tip b{display:block;margin-bottom:6px;font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#A5B4FC}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmore-tip ul{display:flex;flex-direction:column;gap:4px;margin:0;padding:0;list-style:none}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmore-tip li{display:flex;align-items:center;gap:7px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmore-tip li::before{content:"";flex:none;width:6px;height:6px;border-radius:999px;background:#818CF8}
+
+/* ---------- Person cell */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kwho{display:inline-flex;align-items:center;gap:8px;min-width:0;white-space:nowrap}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kwho>span:last-child{overflow:hidden;text-overflow:ellipsis}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kav{display:grid;place-items:center;flex:none;width:24px;height:24px;border-radius:999px;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.02em}
+
+/* ---------- Row actions: one or two inline actions on hover or focus, then the ⋮ menu */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kract{display:inline-flex;align-items:center;justify-content:flex-end;gap:4px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kract-inline{opacity:0;transition:opacity .15s var(--ease)}
+:is(.ata-designer,.ata-runtime,.ata-v2) tr:hover .kract-inline,:is(.ata-designer,.ata-runtime,.ata-v2) tr:focus-within .kract-inline,:is(.ata-designer,.ata-runtime,.ata-v2) tr[aria-selected="true"] .kract-inline,:is(.ata-designer,.ata-runtime,.ata-v2) .kract-inline:focus-visible{opacity:1}
+@media (hover:none){:is(.ata-designer,.ata-runtime,.ata-v2) .kract-inline{opacity:1}}
+@media (prefers-reduced-motion:reduce){:is(.ata-designer,.ata-runtime,.ata-v2) .kract-inline{transition:none}}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmut{color:var(--muted)}
+
+/* In the DataTable bar the toolbar takes the whole width (search left, filters at the right edge). */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-bar .kdt-cap:has(>.ktb){flex:1;min-width:0;margin-inline-end:0;font-size:inherit;color:inherit}
+
+/* ---------- The card: toolbar, table and pager as one surface (DataTable className="kstd") */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd{gap:0;border:1px solid var(--line);border-radius:14px;background:var(--card);box-shadow:var(--sh);overflow:hidden}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd>.kdt-bar{min-height:58px;padding:12px 14px;border-bottom:1px solid var(--line);background:var(--card)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd>.kdt-scroll{border:0;border-radius:0;box-shadow:none}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd table.kdt th{height:42px;background:color-mix(in srgb,var(--line2) 85%,var(--card))}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd table.kdt tr:has(>td input[type="checkbox"]:checked)>td{background:var(--blue-soft)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd>.kpgr{padding:10px 14px;border-top:1px solid var(--line);background:color-mix(in srgb,var(--line2) 45%,var(--card))}
+
+/* ---------- Bulk bar (replaces search and filters while rows are selected) */
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-bulk{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap;min-height:34px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-sel{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--ink)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-badge{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 8px;border-radius:999px;background:var(--pri);color:#fff;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-acts{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-inline-start:auto}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-acts .btn{height:32px;border-radius:8px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-x{display:grid;place-items:center;width:32px;height:32px;border:1px solid transparent;border-radius:8px;background:none;color:var(--muted);cursor:pointer}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktb-x:hover{background:var(--line2);border-color:var(--line);color:var(--ink)}
+
+/* ---------- Pager details (match the prototype) */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-size select{appearance:none;-webkit-appearance:none;min-width:60px;height:32px;padding-block:0;padding-inline:10px 28px;border-radius:8px;background:var(--card) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='m7 10 5 5 5-5'/%3E%3C/svg%3E") right 8px center/14px no-repeat}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-nav button{border-radius:8px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-goto input{height:32px;border-radius:8px}
+/* the ⋮ trigger: a plain icon, framed on hover or while its menu is open (as in the prototype) */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kract-more{display:grid;place-items:center;width:32px;height:32px;padding:0;border:1px solid transparent;border-radius:8px;background:none;color:var(--muted);cursor:pointer}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kract-more:hover,:is(.ata-designer,.ata-runtime,.ata-v2) .kract-more[aria-expanded="true"]{background:var(--line2);border-color:var(--line);color:var(--ink)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kract-more[aria-expanded="true"]{background:var(--blue-soft);border-color:var(--blue-line);color:var(--blue)}
+
+/* ---------- Menus (filter chips, ⋮ row menus): readable size, roomier rows */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmenu.kmenu-list{min-width:220px;padding:6px;border-radius:12px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmenu.kmenu-list .kmi{min-height:36px;padding:8px 10px;border-radius:8px;font-size:14px;line-height:1.35}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmenu.kmenu-list .kmhint{font-size:12.5px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmenu.kmenu-list .kmenu-h{font-size:12px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kmenu.kmenu-list .kmck{width:14px}
+
+/* ---------- Older toolbars inside the card (a .kfbar row): search on the left, everything after it at the right edge */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd>.kdt-bar>.kdt-cap:has(>.kfbar){flex:1;min-width:0;margin-inline-end:0;font-size:inherit;color:inherit}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd>.kdt-bar>.kdt-cap>.kfbar{width:100%}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd>.kdt-bar>.kdt-cap>.kfbar>.ksearch+*{margin-inline-start:auto}
+/* RTL: the pager's arrows point the reading way */
+[dir="rtl"] :is(.ata-designer,.ata-runtime,.ata-v2) .kpgr-nav svg,:is(.ata-designer,.ata-runtime,.ata-v2)[dir="rtl"] .kpgr-nav svg{transform:scaleX(-1)}
+
+/* ---------- Name cell: a type tile, then the bold name (the name reads in ink, not as a link colour) */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kent{display:flex;align-items:center;gap:11px;min-width:0}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktile{display:grid;place-items:center;flex:none;width:34px;height:34px;border-radius:9px;border:1px solid var(--ktile-edge,var(--blue-line));background:var(--ktile-bg,var(--blue-soft));color:var(--ktile,var(--blue))}
+:is(.ata-designer,.ata-runtime,.ata-v2) .ktile svg{width:17px;height:17px}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd .kname-t{color:var(--ink)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd tr:hover .kname-t{color:var(--blue)}
+
+/* ---------- One row height everywhere: a cell's text stays on one line and is cut with "…"
+   (useTruncationTips shows the whole text on hover or focus). The name cell keeps the name and at
+   most one sub-line. Expanded detail rows (.kexp) are not affected. */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd table.kdt{table-layout:auto}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd table.kdt tbody tr.krow>td{height:56px;padding-top:6px;padding-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:var(--kcell-max,320px)}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd table.kdt tbody tr.krow>td *{white-space:nowrap;flex-wrap:nowrap!important}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd table.kdt tbody tr.krow>td>*:not(.kract):not(.kmore):not(button):not(input){max-width:100%;overflow:hidden;text-overflow:ellipsis}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd table.kdt tbody tr.krow>td :is(p,div,span.kname,.kent,.as-row){min-width:0}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd table.kdt tbody tr.krow>td p{margin:0;overflow:hidden;text-overflow:ellipsis}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd table.kdt tbody tr.krow>td .kname{display:flex;flex-direction:column;justify-content:center;min-width:0;max-width:100%}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd table.kdt tbody tr.krow>td .kname>*{display:block;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd table.kdt tbody tr.krow>td .kname>:nth-child(n+3){display:none}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd table.kdt tbody tr.krow>td .kent{max-width:100%}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd table.kdt tbody tr.krow>td.kdt-x,:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kstd table.kdt tbody tr.krow>td:last-child{overflow:visible;max-width:none}
+.kcell-tip{max-width:420px;font-weight:400}
+/* ---- 2026-11-04: realistic loading rows, a fixed-size table (fill), numbers headed where they sit. ---- */
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt tr.kskel-tr>td{height:56px;box-sizing:border-box;padding-top:0;padding-bottom:0;border-bottom:1px solid var(--line2)}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt tr.kskel-tr .kskel{height:10px;max-width:none;border-radius:999px;background:linear-gradient(90deg,var(--line) 0%,color-mix(in srgb,var(--line) 35%,var(--card)) 40%,var(--line) 80%);background-size:300% 100%;animation:kskel-shine 1.4s ease-in-out infinite}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt tr.kskel-tr .kskel-ent{display:flex;align-items:center;gap:12px;min-width:0}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt tr.kskel-tr .kskel.kskel-tile{flex:none;width:32px;height:32px;border-radius:8px}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt tr.kskel-tr .kskel-lines{flex:1;min-width:0;display:flex;flex-direction:column;gap:7px}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt tr.kskel-tr .kskel.kskel-sub{height:8px;opacity:.6}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt tr.kskel-tr td.num .kskel.kskel-num{width:28px;margin-inline-start:auto}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt tr.kskel-tr:nth-child(n+5) .kskel{opacity:.8}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt tr.kskel-tr:nth-child(n+7) .kskel{opacity:.6}
+@keyframes kskel-shine{0%{background-position:100% 0}100%{background-position:0 0}}
+@media (prefers-reduced-motion:reduce){:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt tr.kskel-tr .kskel{animation:none}}
+/* fill: the rows area has the height useFillHeight measures; the header row stays on top while rows scroll. */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kfill>.kdt-scroll{overflow:auto;overscroll-behavior:contain}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap.kfill table.kdt thead th{position:sticky;top:0;z-index:2}
+/* A number column's header sits over its numbers (end-aligned), sort arrow included. */
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt th.num .kdt-sort{margin-inline-start:auto;justify-content:flex-end}
+:is(.ata-designer,.ata-runtime,.ata-v2) table.kdt th.num{text-align:end}
+/* A list kept one size (DataTable `fill`, or automatically for a page's list with a pager): rows scroll, header stays. */
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap>.kdt-scroll[data-fill]{overflow:auto;overscroll-behavior:contain}
+:is(.ata-designer,.ata-runtime,.ata-v2) .kdt-wrap>.kdt-scroll[data-fill] table.kdt thead th{position:sticky;top:0;z-index:2}
+/* ATA UI sizes: ONE file for the size of every button, text and table in every module.
+   The same file sits in every web app (src/shared/ui-v2/ata-ui.css; ata-parent: src/shared/ata-ui.css) and is
+   injected once into the page (style id "ata-ui-css"), so whichever app loads first, the sizes are the same.
+   To change a size: edit the variables below, then copy this file over the other apps' copies (keep them identical).
+
+   It wins over the MUI theme, `sx` and the kit's own rules on purpose (`:root` + a doubled class).
+   Left alone: a button that holds block content (a choice tile or card made from a Button) and anything with the
+   class `ata-ui-free`. */
+:root{
+  /* Text */
+  --ata-fs-xs:12px;   /* captions, badges, helper text */
+  --ata-fs-sm:13px;   /* secondary text, table cells, inputs, menus, buttons */
+  --ata-fs-base:14px; /* body text */
+  --ata-fs-md:16px;   /* card and section titles */
+  --ata-fs-lg:18px;   /* dialog and drawer titles */
+  --ata-fs-title:19px;/* page titles (the page header on every list and studio page) */
+  --ata-fs-xl:20px;   /* the largest heading anywhere (overview headlines); KPI numbers are the only bigger text */
+
+  /* Buttons */
+  --ata-btn-h:32px;
+  --ata-btn-h-sm:28px;
+  --ata-btn-h-xs:24px;
+  --ata-btn-fs:13px;
+  --ata-btn-fs-sm:12px;
+  --ata-btn-px:14px;
+  --ata-btn-px-sm:10px;
+  --ata-btn-px-text:10px;
+  --ata-btn-weight:600;
+  --ata-btn-radius:8px;
+  --ata-btn-icon:16px;
+  --ata-icon-btn-icon:20px;
+
+  /* Tables */
+  --ata-table-fs:13px;
+  --ata-table-head-fs:12px;
+}
+
+/* ------------------------------------------------------------ MUI buttons */
+:root .MuiButton-root.MuiButton-root:not(.ata-ui-free):not(:has(div,p,ul,ol,table,h1,h2,h3,h4,h5,h6)){
+  min-height:var(--ata-btn-h);
+  height:auto;
+  padding-block:0;
+  padding-inline:var(--ata-btn-px);
+  font-size:var(--ata-btn-fs);
+  font-weight:var(--ata-btn-weight);
+  line-height:1.3;
+  letter-spacing:0;
+  text-transform:none;
+  border-radius:var(--ata-btn-radius);
+}
+:root .MuiButton-root.MuiButton-text:not(.ata-ui-free):not(:has(div,p,ul,ol,table,h1,h2,h3,h4,h5,h6)){
+  padding-inline:var(--ata-btn-px-text);
+}
+:root .MuiButton-root.MuiButton-sizeSmall:not(.ata-ui-free):not(:has(div,p,ul,ol,table,h1,h2,h3,h4,h5,h6)){
+  min-height:var(--ata-btn-h-sm);
+  padding-inline:var(--ata-btn-px-sm);
+  font-size:var(--ata-btn-fs-sm);
+}
+:root .MuiButton-root.MuiButton-root:not(.ata-ui-free) :is(.MuiButton-startIcon,.MuiButton-endIcon)>.MuiSvgIcon-root{
+  font-size:var(--ata-btn-icon);
+}
+:root .MuiButtonGroup-root .MuiButton-root.MuiButton-root:not(.ata-ui-free){
+  border-radius:0;
+}
+:root .MuiButtonGroup-root .MuiButton-root.MuiButton-root:not(.ata-ui-free):first-of-type{
+  border-start-start-radius:var(--ata-btn-radius);
+  border-end-start-radius:var(--ata-btn-radius);
+}
+:root .MuiButtonGroup-root .MuiButton-root.MuiButton-root:not(.ata-ui-free):last-of-type{
+  border-start-end-radius:var(--ata-btn-radius);
+  border-end-end-radius:var(--ata-btn-radius);
+}
+
+/* Icon-only buttons: 32 px (small 28 px), a 20 px icon. */
+:root .MuiIconButton-root.MuiIconButton-sizeMedium:not(.ata-ui-free),
+:root .MuiIconButton-root.MuiIconButton-sizeLarge:not(.ata-ui-free){
+  padding:6px;
+}
+:root .MuiIconButton-root:is(.MuiIconButton-sizeMedium,.MuiIconButton-sizeLarge):not(.ata-ui-free)>.MuiSvgIcon-root{
+  font-size:var(--ata-icon-btn-icon);
+}
+
+/* Toggle buttons (segmented controls) */
+:root .MuiToggleButton-root.MuiToggleButton-root:not(.ata-ui-free):not(:has(div,p,ul,ol,table)){
+  min-height:var(--ata-btn-h);
+  padding-block:0;
+  padding-inline:12px;
+  font-size:var(--ata-btn-fs);
+  line-height:1.3;
+  text-transform:none;
+}
+:root .MuiToggleButton-root.MuiToggleButton-sizeSmall:not(.ata-ui-free):not(:has(div,p,ul,ol,table)){
+  min-height:var(--ata-btn-h-sm);
+  padding-inline:var(--ata-btn-px-sm);
+  font-size:var(--ata-btn-fs-sm);
+}
+
+/* ------------------------------------------------------------ kit buttons (.btn) */
+:root :is(.ata-designer,.ata-runtime,.ata-v2) .btn.btn:not(.ata-ui-free){
+  min-height:var(--ata-btn-h);
+  padding-block:0;
+  padding-inline:var(--ata-btn-px);
+  font-size:var(--ata-btn-fs);
+  line-height:1.3;
+}
+:root :is(.ata-designer,.ata-runtime,.ata-v2) .btn.btn.sm:not(.ata-ui-free){
+  min-height:var(--ata-btn-h-sm);
+  padding-inline:var(--ata-btn-px-sm);
+  font-size:var(--ata-btn-fs-sm);
+}
+:root :is(.ata-designer,.ata-runtime,.ata-v2) .btn.btn.xs:not(.ata-ui-free){
+  min-height:var(--ata-btn-h-xs);
+  padding-inline:8px;
+  font-size:var(--ata-fs-xs);
+}
+
+/* ------------------------------------------------------------ text */
+:root .kph-t.kph-t.kph-t:not(.ata-ui-free){font-size:var(--ata-fs-title)}
+:root .MuiTypography-root.MuiTypography-h1:not(.ata-ui-free),
+:root .MuiTypography-root.MuiTypography-h2:not(.ata-ui-free){font-size:var(--ata-fs-xl);line-height:1.3}
+:root .MuiTypography-root.MuiTypography-h3:not(.ata-ui-free),
+:root .MuiTypography-root.MuiTypography-h4:not(.ata-ui-free){font-size:var(--ata-fs-title);line-height:1.3}
+:root .MuiTypography-root.MuiTypography-h5:not(.ata-ui-free){font-size:var(--ata-fs-md);line-height:1.35}
+:root .MuiTypography-root.MuiTypography-h6:not(.ata-ui-free){font-size:var(--ata-fs-base);line-height:1.4}
+:root .MuiTypography-root.MuiTypography-subtitle1:not(.ata-ui-free){font-size:var(--ata-fs-base)}
+:root .MuiTypography-root.MuiTypography-subtitle2:not(.ata-ui-free){font-size:var(--ata-fs-sm)}
+:root .MuiTypography-root.MuiTypography-body1:not(.ata-ui-free){font-size:var(--ata-fs-base)}
+:root .MuiTypography-root.MuiTypography-body2:not(.ata-ui-free){font-size:var(--ata-fs-sm)}
+:root .MuiTypography-root.MuiTypography-caption:not(.ata-ui-free){font-size:var(--ata-fs-xs)}
+:root .MuiTypography-root.MuiTypography-overline:not(.ata-ui-free){font-size:var(--ata-fs-xs)}
+:root .MuiDialogTitle-root.MuiDialogTitle-root:not(.ata-ui-free){font-size:var(--ata-fs-lg);line-height:1.3}
+
+/* Inputs, menus, tabs, chips */
+:root .MuiInputBase-root.MuiInputBase-root:not(.ata-ui-free){font-size:var(--ata-fs-sm)}
+:root .MuiInputLabel-root.MuiInputLabel-root:not(.ata-ui-free),
+:root .MuiFormLabel-root.MuiFormLabel-root:not(.ata-ui-free){font-size:var(--ata-fs-sm)}
+:root .MuiFormHelperText-root.MuiFormHelperText-root:not(.ata-ui-free){font-size:var(--ata-fs-xs)}
+:root .MuiFormControlLabel-label.MuiFormControlLabel-label:not(.ata-ui-free){font-size:var(--ata-fs-sm)}
+:root .MuiMenuItem-root.MuiMenuItem-root:not(.ata-ui-free){font-size:var(--ata-fs-sm);min-height:32px}
+:root .MuiTab-root.MuiTab-root:not(.ata-ui-free){font-size:var(--ata-fs-sm);text-transform:none}
+:root .MuiChip-root.MuiChip-root:not(.ata-ui-free){font-size:var(--ata-fs-xs)}
+:root .MuiTooltip-tooltip.MuiTooltip-tooltip:not(.ata-ui-free){font-size:var(--ata-fs-xs)}
+
+/* ------------------------------------------------------------ tables */
+:root .MuiTableCell-root.MuiTableCell-body:not(.ata-ui-free){font-size:var(--ata-table-fs)}
+:root .MuiTableCell-root.MuiTableCell-head:not(.ata-ui-free){font-size:var(--ata-table-head-fs);font-weight:600}
+:root .MuiTablePagination-root.MuiTablePagination-root :is(.MuiTablePagination-selectLabel,.MuiTablePagination-displayedRows,.MuiTablePagination-select){font-size:var(--ata-fs-sm)}
+:root .MuiDataGrid-root.MuiDataGrid-root:not(.ata-ui-free){font-size:var(--ata-table-fs)}
+:root .MuiDataGrid-root.MuiDataGrid-root:not(.ata-ui-free) .MuiDataGrid-columnHeaderTitle{font-size:var(--ata-table-head-fs);font-weight:600}
+/*
+ * Pioneer Healthcare UI components (PH.ui, ph-ui.js). Loaded after the ATA kit (kit/*.css); every value
+ * is a kit token, so the components match ATA healthcare exactly. Module CSS (lab.css, ...) must not
+ * restyle these - it only lays out the page and maps old markup that PH.ui cannot rename.
+ * Sizes follow ata-ui.css: controls 32px, text 13px, titles 19px, cards radius 10, table card 14.
+ */
+.ph-ui body { font-family: var(--sans); color: var(--ink); background: var(--bg); -webkit-font-smoothing: antialiased; }
+
+/* ---------- Page header (kit .kph) ---------- */
+.ph-ui .ph-page-header { margin: 8px 0 12px; }
+.ph-ui .ph-page-header h1.kph-t { border: 0 !important; padding: 0 !important; margin: 0 !important; background: none !important; display: block !important; font-size: 19px !important; font-weight: 650 !important; color: var(--ink) !important; }
+.ph-ui .ph-page-header :is(p, div, span:not(.kph-i)) { background: transparent !important; border: 0 !important; }
+
+/* ---------- Card ---------- */
+.ph-ui .ph-card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; margin: 0 0 16px; }
+.ph-ui .ph-card > .ph-card-h, .ph-ui h2.ph-card-h {
+  display: flex; align-items: center; gap: 6px; margin: 0 !important; padding: 12px 16px !important;
+  background: transparent !important; border: 0 !important; border-bottom: 1px solid var(--line) !important; border-radius: 10px 10px 0 0 !important;
+  font: 600 14px/1.4 var(--sans) !important; color: var(--ink) !important; box-shadow: none !important; text-shadow: none !important;
+}
+.ph-ui .ph-card-h :is(.ph-req, .requiredlabel) { color: var(--red) !important; }
+.ph-ui .ph-card > .ph-card-b { padding: 14px 16px 16px; }
+.ph-ui .ph-card-plain > .ph-card-b { padding: 16px; }
+
+/* ---------- Button (kit .btn at ata-ui sizes) ---------- */
+.ph-ui .ph-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px; width: auto !important;
+  min-height: 32px !important; height: 32px; padding: 0 14px !important; margin: 0 6px 0 0;
+  border: 1px solid var(--line) !important; border-radius: 8px !important; background: var(--card) !important; background-image: none !important;
+  color: var(--blue) !important; font: 600 13px/1 var(--sans) !important; letter-spacing: 0; text-transform: none; text-shadow: none !important; box-shadow: none !important;
+  cursor: pointer; white-space: nowrap; vertical-align: middle; text-decoration: none !important;
+}
+.ph-ui input.ph-btn { line-height: 30px !important; }
+.ph-ui .ph-btn:hover { background: var(--blue-soft) !important; }
+.ph-ui .ph-btn:focus-visible { outline: 2px solid var(--blue) !important; outline-offset: 2px; }
+.ph-ui .ph-btn.pri { background: var(--pri) !important; border-color: var(--pri) !important; color: #fff !important; }
+.ph-ui .ph-btn.pri:hover { background: var(--pri-hover) !important; border-color: var(--pri-hover) !important; }
+.ph-ui .ph-btn.quiet { color: var(--ink2) !important; border-color: var(--line-input) !important; }
+.ph-ui .ph-btn.quiet:hover { background: var(--line2) !important; border-color: var(--ink2) !important; }
+.ph-ui .ph-btn.danger { color: var(--red) !important; border-color: rgba(200,30,30,.5) !important; }
+.ph-ui .ph-btn.danger:hover { background: rgba(200,30,30,.06) !important; border-color: var(--red) !important; }
+.ph-ui .ph-btn.ph-link { border-color: transparent !important; background: none !important; padding: 0 6px !important; }
+.ph-ui .ph-btn.ph-link:hover { background: var(--blue-soft) !important; }
+.ph-ui .ph-btn:disabled, .ph-ui .ph-btn[disabled] { background: var(--line2) !important; border-color: var(--line) !important; color: var(--muted) !important; cursor: not-allowed; }
+
+/* ---------- Field (kit .kinp at 32px) ---------- */
+.ph-ui .ph-field {
+  box-sizing: border-box; height: 32px; min-height: 32px; max-width: 100%; margin: 0 4px 0 0; padding: 4px 10px !important;
+  border: 1px solid var(--line-input) !important; border-radius: 6px !important; background-color: var(--card) !important;
+  color: var(--ink) !important; font: 13px var(--sans) !important; box-shadow: none !important; outline: none;
+}
+.ph-ui textarea.ph-field { height: auto; min-height: 64px; padding: 8px 10px !important; }
+.ph-ui .ph-field:hover { border-color: var(--ink2) !important; }
+.ph-ui .ph-field:focus { border-color: var(--blue) !important; box-shadow: 0 0 0 3px var(--blue-soft) !important; }
+.ph-ui .ph-field:disabled, .ph-ui .ph-field[readonly] { background-color: var(--line2) !important; color: var(--muted) !important; }
+.ph-ui .ph-field::placeholder { color: var(--muted); opacity: 1; }
+.ph-ui .ph-select:not([multiple]) {
+  -webkit-appearance: none; appearance: none; padding-right: 30px !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important; background-position: right 8px center !important; background-size: 14px !important;
+}
+.ph-ui .ph-select[multiple] { height: auto; }
+.ph-ui .ph-check { accent-color: var(--blue); width: 16px; height: 16px; vertical-align: middle; }
+.ph-ui .ph-file { font: 12.5px var(--sans); color: var(--muted); background: none !important; border: 0 !important; }
+.ph-ui .ph-file::file-selector-button { height: 32px; margin-right: 10px; padding: 0 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--card); color: var(--blue); font: 600 13px var(--sans); cursor: pointer; }
+.ph-ui .ph-file::file-selector-button:hover { background: var(--blue-soft); }
+.ph-ui :is(td, div, span):has(> .ph-file) { background: none !important; border: 0 !important; box-shadow: none !important; }
+
+/* ---------- Table (kit standard table card) ---------- */
+.ph-ui .ph-table-card { margin: 0 0 16px; }
+.ph-ui .ph-table-card > .kdt-scroll { overflow: auto; }
+.ph-ui .ph-table-bar { display: flex; align-items: center; gap: 12px; }
+.ph-ui .ph-table-title { font-weight: 600; font-size: 14px; color: var(--ink); margin-right: auto; }
+.ph-ui table.ph-table { width: 100% !important; border-collapse: separate !important; border-spacing: 0 !important; background: var(--card) !important; font: 13px var(--sans) !important; }
+.ph-ui table.ph-table :is(th, tr.ph-thr > td) {
+  height: 42px; padding: 0 10px !important; background: color-mix(in srgb, var(--line2) 85%, var(--card)) !important; color: var(--muted) !important;
+  font: 600 12px var(--sans) !important; text-align: start; white-space: nowrap; border: 0 !important; border-bottom: 1px solid var(--line) !important;
+}
+.ph-ui table.ph-table td { padding: 8px 10px !important; border: 0 !important; border-bottom: 1px solid var(--line) !important; color: var(--ink); font-size: 13px !important; background-color: transparent; }
+.ph-ui table.ph-table tr:last-child > td { border-bottom: 0 !important; }
+.ph-ui table.ph-table tbody tr:hover > td { background-color: color-mix(in srgb, var(--blue-soft) 55%, transparent); }
+.ph-ui table.ph-table a { color: var(--blue); font-weight: 600; text-decoration: none; }
+
+/* ---------- Tabs (kit .ktabs) and tab menus ---------- */
+.ph-ui .ph-tabmenu, .ph-ui .ph-menu-anchor { position: relative; display: inline-flex; }
+.ph-ui .ph-chev { display: inline-flex; color: var(--muted); transition: transform .15s; }
+.ph-ui .ktab[aria-expanded="true"] { color: var(--ink); background: var(--line2); }
+.ph-ui .ktab[aria-expanded="true"] .ph-chev { transform: rotate(180deg); }
+
+/* ---------- Menu (kit .kmenu) ---------- */
+.ph-ui .ph-menu { inset-inline-end: auto !important; left: 0; top: calc(100% + 4px) !important; min-width: 240px; padding: 6px !important; gap: 1px; }
+.ph-ui .ph-menu[hidden] { display: none !important; }
+.ph-ui .ph-menu .ph-menu-h { font: 600 11px var(--sans); letter-spacing: .02em; color: var(--muted); padding: 8px 8px 4px; }
+.ph-ui .ph-menu .ph-mi {
+  display: flex; align-items: center; width: 100%; min-height: 32px; padding: 6px 10px; border: 0; border-radius: 6px; background: none;
+  font: 13px var(--sans); color: var(--ink) !important; text-decoration: none !important; white-space: nowrap; text-align: left; cursor: pointer;
+}
+.ph-ui .ph-menu .ph-mi:hover, .ph-ui .ph-menu .ph-mi:focus { background: var(--blue-soft); outline: none; }
+.ph-ui .ph-menu .ph-mi[aria-current="page"] { background: var(--blue-soft); color: var(--blue) !important; font-weight: 600; }
+
+/* ---------- Drawer (kit .kdrw, overlay) ---------- */
+.ph-ui .ph-drawer-layer { position: fixed; inset: 62px 0 0 0; pointer-events: none; z-index: 2147482500; }
+.ph-ui .ph-scrim { position: absolute; inset: 0; background: var(--backdrop); pointer-events: auto; }
+.ph-ui .ph-scrim[hidden], .ph-ui .ph-drawer[hidden] { display: none !important; }
+.ph-ui .ph-drawer { position: absolute !important; top: 0; bottom: 0; right: 0; pointer-events: auto; animation: ph-drawer-in 225ms cubic-bezier(.2,0,0,1); }
+@keyframes ph-drawer-in { from { transform: translateX(24px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+/* ---------- Empty state (kit .kstate) ---------- */
+.ph-ui .ph-empty { margin: 24px auto !important; }
+.ph-ui .ph-empty p { background: transparent !important; }
+.ph-ui .ph-empty-i { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 14px; background: var(--blue-soft); color: var(--blue); margin-bottom: 4px; }
+
+/* ---------- Stat card ---------- */
+.ph-ui .ph-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 0 0 16px; }
+.ph-ui .ph-stat { display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; background: var(--card); border: 1px solid var(--line); border-radius: 10px; }
+.ph-ui .ph-stat-v { font: 700 20px/1.2 var(--sans); color: var(--ink); font-variant-numeric: tabular-nums; }
+.ph-ui .ph-stat-k { font-size: 12px; color: var(--muted); }
+
+/* ---------- Alert (governance alert: ink text, coloured icon) ---------- */
+.ph-ui .ph-alert { display: flex; align-items: flex-start; gap: 10px; padding: 8px 12px; border-radius: 8px; border: 1px solid; font-size: 13px; color: var(--ink); line-height: 1.45; margin: 0 0 12px; }
+.ph-ui .ph-alert.info { background: #EDF3FE; border-color: #BFD4FB; } .ph-ui .ph-alert.info .ph-alert-i { color: var(--blue); }
+.ph-ui .ph-alert.ok { background: var(--d-bg); border-color: var(--d-edge); } .ph-ui .ph-alert.ok .ph-alert-i { color: var(--green); }
+.ph-ui .ph-alert.warn { background: var(--amber-bg); border-color: var(--amber-edge); } .ph-ui .ph-alert.warn .ph-alert-i { color: var(--amber); }
+.ph-ui .ph-alert.bad { background: var(--red-bg); border-color: var(--red-edge); } .ph-ui .ph-alert.bad .ph-alert-i { color: var(--red); }
+.ph-ui .ph-alert-i { display: inline-flex; flex: none; margin-top: 1px; }
+
+/* ---------- Toast (ATA toast skin) ---------- */
+.ph-ui .ph-toasts { position: fixed; top: 70px; right: 16px; z-index: 2147483400; display: flex; flex-direction: column; gap: 8px; }
+.ph-ui .ph-toast { display: flex; align-items: center; gap: 10px; min-width: 300px; max-width: 420px; padding: 10px 12px; border-radius: 10px; background: #0F172A; border: 1px solid #1E293B; border-left: 3px solid #60A5FA; color: #fff; font: 500 13px/1.45 var(--sans); box-shadow: 0 12px 32px -12px rgba(15,23,42,.5), 0 2px 6px rgba(15,23,42,.14); transition: opacity .3s, transform .3s; }
+.ph-ui .ph-toast.ok { border-left-color: #22C55E; } .ph-ui .ph-toast.ok .ph-toast-i { color: #22C55E; }
+.ph-ui .ph-toast.bad { border-left-color: #F87171; } .ph-ui .ph-toast.bad .ph-toast-i { color: #F87171; }
+.ph-ui .ph-toast.warn { border-left-color: #FBBF24; } .ph-ui .ph-toast.warn .ph-toast-i { color: #FBBF24; }
+.ph-ui .ph-toast.info .ph-toast-i { color: #60A5FA; }
+.ph-ui .ph-toast.out { opacity: 0; transform: translateY(-6px); }
+
+/* ---------- Action bar (bottom of the window) ---------- */
+.ph-ui .ph-actionbar {
+  position: fixed !important; left: 0; right: 0; bottom: 0; z-index: 2147481000; margin: 0 !important; width: 100% !important; box-sizing: border-box;
+  display: flex !important; justify-content: flex-end; align-items: center; gap: 8px; padding: 10px 24px !important;
+  background: var(--card) !important; border-top: 1px solid var(--line); box-shadow: 0 -4px 16px rgba(15,23,42,.06);
+}
+.ph-ui .ph-actionbar > tbody, .ph-ui .ph-actionbar > tbody > tr { display: flex !important; flex-direction: row-reverse; justify-content: flex-start; align-items: center; gap: 8px; width: 100%; }
+.ph-ui .ph-actionbar > tbody > tr > td { display: contents !important; }
+.ph-ui .ph-actionbar .ph-btn { margin: 0 !important; }
+.ph-ui.ph-has-actionbar body { padding-bottom: 72px !important; }
+
+/* ---------- Tiles (card grid of links) ---------- */
+.ph-ui .ph-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; margin: 0 0 16px; }
+.ph-ui .ph-tile {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 56px; padding: 12px 14px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 10px; color: var(--ink) !important; text-decoration: none !important;
+  font: 600 14px var(--sans); transition: border-color .15s, box-shadow .15s, transform .15s;
+}
+.ph-ui .ph-tile:hover { border-color: var(--blue-line); box-shadow: var(--sh); transform: translateY(-1px); }
+.ph-ui .ph-tile-go { color: var(--muted); display: inline-flex; }
+
+/* ---------- Pill (kit .kpill) ---------- */
+.ph-ui .kpill .kpg { width: 12px; height: 12px; }
+
+/* ---------- Loader ---------- */
+.ph-loader { display: block; }
+.ph-loader .ph-loader-arc { transform-origin: 24px 24px; animation: ph-loader-spin 1.1s linear infinite; }
+.ph-loader .ph-loader-mark { transform-origin: 24px 24px; animation: ph-loader-breathe 1.6s ease-in-out infinite; }
+@keyframes ph-loader-spin { to { transform: rotate(360deg); } }
+@keyframes ph-loader-breathe { 0%, 100% { transform: scale(0.9); opacity: .85; } 50% { transform: scale(1); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .ph-loader .ph-loader-arc { animation-duration: 3s; } .ph-loader .ph-loader-mark { animation: none; } }
+/*
+ * Laboratory page layout. Component looks live in ph-ui.css (PH.ui) on top of the ATA kit; this file
+ * only lays out the lab's pages and maps the lab's own widgets that PH.ui cannot rename (its grids,
+ * jQuery tabs, loading overlay, form tables). Values are kit tokens.
+ */
+
+/* ---------- Page shell: one column with ATA gutters ---------- */
+html.ph-lab, html.ph-lab body { background: var(--bg) !important; }
+html.ph-lab body { font-size: 14px; color: var(--ink) !important; line-height: 1.5; margin: 0; }
+html.ph-lab body :is(td, th, div, span, p, label, li, a, input, select, textarea, button, h1, h2, h3, h4):not(.fa):not([class*="icon"]) { font-family: var(--sans); }
+/* the old header block: logo, title, version, green menu, "Open ELIS - Log out" */
+html.ph-lab :is(#header, #oe-logo, #oe-title, #oe-version, #user-info, #main-nav, #language-chooser) { display: none !important; }
+html.ph-has-modnav body { padding-top: calc(62px + 45px) !important; }
+html.ph-lab body > table, html.ph-lab body > form > table { width: 100% !important; max-width: 1480px; margin: 0 auto !important; padding: 4px 24px 32px !important; border-collapse: separate; background: transparent !important; box-sizing: border-box; }
+html.ph-lab body > table > tbody > tr > td, html.ph-lab body > form > table > tbody > tr > td { padding: 0 !important; background: transparent !important; }
+html.ph-lab h1:not(.kph-t) { display: none; }
+html.ph-lab .ph-hide, html.ph-lab .ph-support { display: none !important; }
+html.ph-lab hr { border: 0 !important; border-top: 1px solid var(--line) !important; height: 0; margin: 12px 0; }
+html.ph-lab a { color: var(--blue); }
+html.ph-lab :is(.colorFill, #PatientPage, #searchDiv, #resultsDiv, #sampleEntryPage) { background: transparent !important; border: 0 !important; }
+
+/* ---------- Module navigation bar (PH.ui tabs), fixed under the top bar ---------- */
+.ph-modnav {
+  position: fixed; top: 62px; left: 0; right: 0; z-index: 2147482000; height: 45px; box-sizing: border-box;
+  display: flex; align-items: flex-end; padding: 0 24px; background: var(--card); border-bottom: 1px solid var(--line);
+}
+.ph-modnav > .ktabs { border-bottom: 0; overflow: visible; height: 44px; align-items: flex-end; }
+.ph-modnav .ktab { min-height: 40px; }
+
+/* ---------- The lab's form tables: label/field rows ---------- */
+html.ph-lab .ph-card-b table:not(.ph-table), html.ph-lab form table:not(.ph-table):not(.ph-actionbar) { border-collapse: separate; border-spacing: 0 6px; }
+html.ph-lab :is(.ph-card-b, form) td { font-size: 13px; color: var(--ink2); vertical-align: middle; }
+html.ph-lab .ph-card-b td:not(:has(input, select, textarea, button)), html.ph-lab .ph-card-b label { font-weight: 600; font-size: 12px; color: var(--ink2); }
+html.ph-lab td > :is(b, strong) { font-weight: 600; color: var(--ink); }
+html.ph-lab .requiredlabel { color: var(--red) !important; }
+html.ph-lab .results-page-block { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 10px 0; color: var(--muted); font-size: 13px; }
+html.ph-lab table.results-table td[colspan] { background: var(--line2) !important; color: var(--ink) !important; font-weight: 600; }
+
+/* ---------- The lab's jQuery tabs = PH.ui tabs ---------- */
+html.ph-lab .ui-tabs { background: var(--card) !important; border: 1px solid var(--line) !important; border-radius: 14px !important; padding: 0 !important; box-shadow: var(--sh); overflow: hidden; max-width: 100%; box-sizing: border-box; font-family: var(--sans) !important; }
+html.ph-lab .ui-tabs .ui-tabs-nav { display: flex !important; gap: 2px; padding: 8px 14px 0 !important; margin: 0 !important; background: var(--card) !important; border: 0 !important; border-bottom: 1px solid var(--line) !important; border-radius: 0 !important; }
+html.ph-lab .ui-tabs .ui-tabs-nav li { float: none !important; margin: 0 0 -1px !important; padding: 0 !important; background: none !important; border: 0 !important; border-radius: 0 !important; top: 0 !important; white-space: nowrap; }
+html.ph-lab .ui-tabs .ui-tabs-nav li a { display: inline-flex !important; align-items: center; min-height: 36px; padding: 0 12px !important; font: 500 13px var(--sans) !important; color: var(--ink2) !important; border-bottom: 2px solid transparent; border-radius: 6px 6px 0 0; text-decoration: none !important; float: none !important; }
+html.ph-lab .ui-tabs .ui-tabs-nav li a:hover { color: var(--ink) !important; background: var(--line2); }
+html.ph-lab .ui-tabs .ui-tabs-nav li:is(.ui-tabs-selected, .ui-state-active) a { color: var(--blue) !important; border-bottom-color: var(--blue); font-weight: 600 !important; }
+html.ph-lab .ui-tabs .ui-tabs-nav li.backLog_first { margin-right: 18px !important; }
+html.ph-lab .ui-tabs .ui-tabs-panel { padding: 0 !important; border: 0 !important; background: var(--card) !important; overflow-x: auto; }
+html.ph-lab .sample_title_dashboard { display: none !important; }
+
+/* ---------- The lab's grids (SlickGrid) = PH.ui table ---------- */
+html.ph-lab :is(.slick-header, .slick-headerrow) { background: color-mix(in srgb, var(--line2) 85%, var(--card)) !important; border: 0 !important; border-bottom: 1px solid var(--line) !important; }
+html.ph-lab .slick-header-column { background: transparent !important; border: 0 !important; color: var(--muted) !important; font: 600 12px var(--sans) !important; height: 42px !important; line-height: 42px !important; padding: 0 10px !important; }
+html.ph-lab .slick-headerrow-column { background: transparent !important; border: 0 !important; padding: 6px !important; }
+html.ph-lab .slick-headerrow-column input { width: 100% !important; height: 30px !important; box-sizing: border-box; border: 1px solid var(--line-input) !important; border-radius: 6px !important; padding: 0 8px !important; font: 13px var(--sans) !important; color: var(--ink) !important; background: var(--card) !important; }
+html.ph-lab .slick-headerrow-column input:focus { border-color: var(--blue) !important; box-shadow: 0 0 0 3px var(--blue-soft) !important; outline: none; }
+html.ph-lab :is(.slick-row, .slick-row.ui-widget-content, .slick-row.odd) { background: var(--card) !important; border: 0 !important; }
+html.ph-lab .slick-row:hover { background: color-mix(in srgb, var(--blue-soft) 55%, var(--card)) !important; }
+html.ph-lab .slick-cell { border: 0 !important; border-bottom: 1px solid var(--line) !important; color: var(--ink) !important; font: 13px var(--sans) !important; padding: 0 10px !important; display: flex; align-items: center; }
+html.ph-lab .slick-cell a { color: var(--blue) !important; font-weight: 600; text-decoration: none; }
+html.ph-lab .slick-cell:is(.selected, .active) { background: var(--blue-soft) !important; }
+html.ph-lab .slick-viewport { background: var(--card) !important; }
+
+/* ---------- The lab's loading overlay = the Pioneer Healthcare loader ---------- */
+html.ph-lab #lightbox { background: rgba(247,249,252,.72) !important; border: 0 !important; }
+html.ph-lab #lightbox > :not(.ph-loader) { display: none !important; }
+html.ph-lab #lightbox[style*="block"] { position: fixed !important; inset: 0 !important; width: auto !important; height: auto !important; margin: 0 !important; display: grid !important; place-items: center; z-index: 2147483500; }
+
+/* wide old widgets (the dashboard grid) must not push the page wider than the window */
+html.ph-lab body > table, html.ph-lab body > form > table { table-layout: fixed; }
+html.ph-lab #todayStat ~ #tabs, html.ph-lab #tabs { width: 100% !important; }
+/* nested layout tables inside the results table */
+html.ph-lab table.ph-table td :is(table, tbody, tr, td) { background: transparent !important; border: 0 !important; }

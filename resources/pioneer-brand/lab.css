@@ -1,0 +1,72 @@
+/*
+ * Laboratory page layout. Component looks live in ph-ui.css (PH.ui) on top of the ATA kit; this file
+ * only lays out the lab's pages and maps the lab's own widgets that PH.ui cannot rename (its grids,
+ * jQuery tabs, loading overlay, form tables). Values are kit tokens.
+ */
+
+/* ---------- Page shell: one column with ATA gutters ---------- */
+html.ph-lab, html.ph-lab body { background: var(--bg) !important; }
+html.ph-lab body { font-size: 14px; color: var(--ink) !important; line-height: 1.5; margin: 0; }
+html.ph-lab body :is(td, th, div, span, p, label, li, a, input, select, textarea, button, h1, h2, h3, h4):not(.fa):not([class*="icon"]) { font-family: var(--sans); }
+/* the old header block: logo, title, version, green menu, "Open ELIS - Log out" */
+html.ph-lab :is(#header, #oe-logo, #oe-title, #oe-version, #user-info, #main-nav, #language-chooser) { display: none !important; }
+html.ph-has-modnav body { padding-top: calc(62px + 45px) !important; }
+html.ph-lab body > table, html.ph-lab body > form > table { width: 100% !important; max-width: 1480px; margin: 0 auto !important; padding: 4px 24px 32px !important; border-collapse: separate; background: transparent !important; box-sizing: border-box; }
+html.ph-lab body > table > tbody > tr > td, html.ph-lab body > form > table > tbody > tr > td { padding: 0 !important; background: transparent !important; }
+html.ph-lab h1:not(.kph-t) { display: none; }
+html.ph-lab .ph-hide, html.ph-lab .ph-support { display: none !important; }
+html.ph-lab hr { border: 0 !important; border-top: 1px solid var(--line) !important; height: 0; margin: 12px 0; }
+html.ph-lab a { color: var(--blue); }
+html.ph-lab :is(.colorFill, #PatientPage, #searchDiv, #resultsDiv, #sampleEntryPage) { background: transparent !important; border: 0 !important; }
+
+/* ---------- Module navigation bar (PH.ui tabs), fixed under the top bar ---------- */
+.ph-modnav {
+  position: fixed; top: 62px; left: 0; right: 0; z-index: 2147482000; height: 45px; box-sizing: border-box;
+  display: flex; align-items: flex-end; padding: 0 24px; background: var(--card); border-bottom: 1px solid var(--line);
+}
+.ph-modnav > .ktabs { border-bottom: 0; overflow: visible; height: 44px; align-items: flex-end; }
+.ph-modnav .ktab { min-height: 40px; }
+
+/* ---------- The lab's form tables: label/field rows ---------- */
+html.ph-lab .ph-card-b table:not(.ph-table), html.ph-lab form table:not(.ph-table):not(.ph-actionbar) { border-collapse: separate; border-spacing: 0 6px; }
+html.ph-lab :is(.ph-card-b, form) td { font-size: 13px; color: var(--ink2); vertical-align: middle; }
+html.ph-lab .ph-card-b td:not(:has(input, select, textarea, button)), html.ph-lab .ph-card-b label { font-weight: 600; font-size: 12px; color: var(--ink2); }
+html.ph-lab td > :is(b, strong) { font-weight: 600; color: var(--ink); }
+html.ph-lab .requiredlabel { color: var(--red) !important; }
+html.ph-lab .results-page-block { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 10px 0; color: var(--muted); font-size: 13px; }
+html.ph-lab table.results-table td[colspan] { background: var(--line2) !important; color: var(--ink) !important; font-weight: 600; }
+
+/* ---------- The lab's jQuery tabs = PH.ui tabs ---------- */
+html.ph-lab .ui-tabs { background: var(--card) !important; border: 1px solid var(--line) !important; border-radius: 14px !important; padding: 0 !important; box-shadow: var(--sh); overflow: hidden; max-width: 100%; box-sizing: border-box; font-family: var(--sans) !important; }
+html.ph-lab .ui-tabs .ui-tabs-nav { display: flex !important; gap: 2px; padding: 8px 14px 0 !important; margin: 0 !important; background: var(--card) !important; border: 0 !important; border-bottom: 1px solid var(--line) !important; border-radius: 0 !important; }
+html.ph-lab .ui-tabs .ui-tabs-nav li { float: none !important; margin: 0 0 -1px !important; padding: 0 !important; background: none !important; border: 0 !important; border-radius: 0 !important; top: 0 !important; white-space: nowrap; }
+html.ph-lab .ui-tabs .ui-tabs-nav li a { display: inline-flex !important; align-items: center; min-height: 36px; padding: 0 12px !important; font: 500 13px var(--sans) !important; color: var(--ink2) !important; border-bottom: 2px solid transparent; border-radius: 6px 6px 0 0; text-decoration: none !important; float: none !important; }
+html.ph-lab .ui-tabs .ui-tabs-nav li a:hover { color: var(--ink) !important; background: var(--line2); }
+html.ph-lab .ui-tabs .ui-tabs-nav li:is(.ui-tabs-selected, .ui-state-active) a { color: var(--blue) !important; border-bottom-color: var(--blue); font-weight: 600 !important; }
+html.ph-lab .ui-tabs .ui-tabs-nav li.backLog_first { margin-right: 18px !important; }
+html.ph-lab .ui-tabs .ui-tabs-panel { padding: 0 !important; border: 0 !important; background: var(--card) !important; overflow-x: auto; }
+html.ph-lab .sample_title_dashboard { display: none !important; }
+
+/* ---------- The lab's grids (SlickGrid) = PH.ui table ---------- */
+html.ph-lab :is(.slick-header, .slick-headerrow) { background: color-mix(in srgb, var(--line2) 85%, var(--card)) !important; border: 0 !important; border-bottom: 1px solid var(--line) !important; }
+html.ph-lab .slick-header-column { background: transparent !important; border: 0 !important; color: var(--muted) !important; font: 600 12px var(--sans) !important; height: 42px !important; line-height: 42px !important; padding: 0 10px !important; }
+html.ph-lab .slick-headerrow-column { background: transparent !important; border: 0 !important; padding: 6px !important; }
+html.ph-lab .slick-headerrow-column input { width: 100% !important; height: 30px !important; box-sizing: border-box; border: 1px solid var(--line-input) !important; border-radius: 6px !important; padding: 0 8px !important; font: 13px var(--sans) !important; color: var(--ink) !important; background: var(--card) !important; }
+html.ph-lab .slick-headerrow-column input:focus { border-color: var(--blue) !important; box-shadow: 0 0 0 3px var(--blue-soft) !important; outline: none; }
+html.ph-lab :is(.slick-row, .slick-row.ui-widget-content, .slick-row.odd) { background: var(--card) !important; border: 0 !important; }
+html.ph-lab .slick-row:hover { background: color-mix(in srgb, var(--blue-soft) 55%, var(--card)) !important; }
+html.ph-lab .slick-cell { border: 0 !important; border-bottom: 1px solid var(--line) !important; color: var(--ink) !important; font: 13px var(--sans) !important; padding: 0 10px !important; display: flex; align-items: center; }
+html.ph-lab .slick-cell a { color: var(--blue) !important; font-weight: 600; text-decoration: none; }
+html.ph-lab .slick-cell:is(.selected, .active) { background: var(--blue-soft) !important; }
+html.ph-lab .slick-viewport { background: var(--card) !important; }
+
+/* ---------- The lab's loading overlay = the Pioneer Healthcare loader ---------- */
+html.ph-lab #lightbox { background: rgba(247,249,252,.72) !important; border: 0 !important; }
+html.ph-lab #lightbox > :not(.ph-loader) { display: none !important; }
+html.ph-lab #lightbox[style*="block"] { position: fixed !important; inset: 0 !important; width: auto !important; height: auto !important; margin: 0 !important; display: grid !important; place-items: center; z-index: 2147483500; }
+
+/* wide old widgets (the dashboard grid) must not push the page wider than the window */
+html.ph-lab body > table, html.ph-lab body > form > table { table-layout: fixed; }
+html.ph-lab #todayStat ~ #tabs, html.ph-lab #tabs { width: 100% !important; }
+/* nested layout tables inside the results table */
+html.ph-lab table.ph-table td :is(table, tbody, tr, td) { background: transparent !important; border: 0 !important; }
