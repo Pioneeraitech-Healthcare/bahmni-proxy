@@ -71,28 +71,48 @@ input[type=button], input[type=submit] { accent-color: var(--ph-green); }
 a.o_powered_by, .o_brand_promotion, .o_login_auth .o_brand_promotion, a[href*="odoo.com?utm"] { display: none !important; }
 .oe_login_form .btn-primary, .oe_signup_form .btn-primary { background-color: var(--ph-green) !important; border-color: var(--ph-green-2) !important; }
 
-/* ---------- Top bar on every module (same as ATA healthcare's header) ---------- */
+/* ---------- Top bar on every module (same as ATA healthcare's header), fixed at the top ---------- */
 #ph-topbar {
-  position: relative; z-index: 2147483000; box-sizing: border-box;
+  position: sticky; top: 0; z-index: 2147483000; box-sizing: border-box;
   display: flex; align-items: center; gap: 16px;
   height: 62px; min-height: 62px; flex: none; width: 100%;
   padding: 0 16px; margin: 0;
   background: #fff; border-bottom: 1px solid #E4E7F0;
-  font: 500 14px/1 Inter, -apple-system, "Segoe UI", Roboto, sans-serif; color: #0B1F44;
+  font: 500 14px/1.2 Inter, -apple-system, "Segoe UI", Roboto, sans-serif; color: #0B1F44; text-align: left;
   -webkit-font-smoothing: antialiased;
 }
-#ph-topbar * { box-sizing: border-box; }
-#ph-topbar .ph-brand { display: flex; align-items: center; padding-right: 18px; margin-right: 2px; border-right: 1px solid #DADDF5; height: 32px; text-decoration: none; }
+#ph-topbar * { box-sizing: border-box; font-family: inherit; }
+#ph-topbar .ph-brand { display: flex; align-items: center; height: 32px; text-decoration: none; flex: none; }
 #ph-topbar .ph-brand svg { display: block; }
-#ph-topbar .ph-mods { display: flex; gap: 4px; margin-left: auto; overflow-x: auto; }
-#ph-topbar .ph-mod {
-  display: inline-flex; align-items: center; height: 34px; padding: 0 14px; border-radius: 8px;
-  color: #334155 !important; text-decoration: none !important; font-weight: 600; font-size: 14px; white-space: nowrap;
-  background: transparent; transition: background .15s, color .15s;
+#ph-topbar .ph-search { position: relative; margin-left: auto; width: min(460px, 42vw); }
+#ph-topbar .ph-search input {
+  width: 100%; height: 38px; margin: 0; padding: 0 64px 0 38px; border: 1px solid #DADDF5 !important; border-radius: 10px !important;
+  background: #F8F9FC !important; color: #0B1F44 !important; font: 400 14px Inter, -apple-system, "Segoe UI", Roboto, sans-serif !important;
+  box-shadow: none !important; outline: none; -webkit-appearance: none; appearance: none;
 }
-#ph-topbar .ph-mod:hover { background: #EEF2FB; color: #081D42 !important; }
-#ph-topbar .ph-mod.on { background: #EEF0FF; color: #4F46E5 !important; }
-@media (max-width: 760px) { #ph-topbar .ph-mod { padding: 0 10px; font-size: 13px; } }
+#ph-topbar .ph-search input::placeholder { color: #6B7280; }
+#ph-topbar .ph-search input:focus { border-color: #4F46E5 !important; background: #fff !important; box-shadow: 0 0 0 3px rgba(79,70,229,.15) !important; }
+#ph-topbar .ph-s-ic { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: #6B7280; pointer-events: none; }
+#ph-topbar .ph-s-ic svg { width: 16px; height: 16px; display: block; }
+#ph-topbar kbd { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font: 600 11px Inter, sans-serif; color: #475069; background: #fff; border: 1px solid #DADDF5; border-radius: 6px; padding: 2px 6px; pointer-events: none; }
+#ph-topbar .ph-s-list {
+  position: absolute; left: 0; right: 0; top: 44px; margin: 0; padding: 6px; list-style: none; max-height: 60vh; overflow: auto;
+  background: #fff; border: 1px solid #E4E7F0; border-radius: 12px; box-shadow: 0 12px 32px -8px rgba(15,23,42,.25);
+}
+#ph-topbar .ph-s-list li { display: flex; justify-content: space-between; gap: 12px; padding: 9px 10px; border-radius: 8px; cursor: pointer; font-size: 14px; }
+#ph-topbar .ph-s-list li b { font-weight: 600; color: #0B1F44; }
+#ph-topbar .ph-s-list li span { color: #6B7280; font-size: 12.5px; white-space: nowrap; }
+#ph-topbar .ph-s-list li.on, #ph-topbar .ph-s-list li:hover { background: #EEF0FF; }
+#ph-topbar .ph-s-list li.none { color: #6B7280; cursor: default; background: none; }
+#ph-topbar .ph-user { position: relative; flex: none; }
+#ph-topbar .ph-me { display: flex; align-items: center; gap: 8px; height: 38px; padding: 0 10px 0 4px; border: 1px solid transparent; border-radius: 999px; background: transparent; cursor: pointer; color: #0B1F44; font-weight: 600; font-size: 14px; }
+#ph-topbar .ph-me:hover { background: #EEF2FB; }
+#ph-topbar .ph-av { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: #4F46E5; color: #fff; font-weight: 700; font-size: 13px; }
+#ph-topbar .ph-menu { position: absolute; right: 0; top: 46px; min-width: 170px; padding: 6px; background: #fff; border: 1px solid #E4E7F0; border-radius: 12px; box-shadow: 0 12px 32px -8px rgba(15,23,42,.25); }
+#ph-topbar .ph-menu a, #ph-topbar .ph-menu button { display: block; width: 100%; text-align: left; padding: 9px 10px; border: 0; border-radius: 8px; background: none; color: #0B1F44 !important; text-decoration: none !important; font-size: 14px; font-weight: 500; cursor: pointer; }
+#ph-topbar .ph-menu a:hover, #ph-topbar .ph-menu button:hover { background: #EEF2FB; }
+#ph-topbar .ph-signin { display: inline-flex; align-items: center; height: 36px; padding: 0 14px; border-radius: 10px; background: #4F46E5; color: #fff !important; text-decoration: none !important; font-weight: 600; font-size: 14px; }
+@media (max-width: 760px) { #ph-topbar kbd, #ph-topbar .ph-nm { display: none; } #ph-topbar .ph-search { width: auto; flex: 1; } }
 
 /* ---------- Module tiles (clinical home, admin, ...) as ATA healthcare cards ---------- */
 body:has(.dashboard .apps) { background: #F6F7FB !important; }
@@ -116,3 +136,6 @@ body:has(.dashboard .apps) { background: #F6F7FB !important; }
 img[src*="/web/binary/company_logo"] { content: url(/pioneer-brand/logo.png); max-height: 64px !important; width: auto !important; }
 a[href*="/web/database"], .oe_login_form a[href*="database"] { display: none !important; }
 .o_login_auth + div, .oe_login_form + div.text-center { }
+
+/* Admin-only tools blocked from the internet: hide their tiles so no link leads to an error. */
+.dashboard .apps li:has(a[href*="atomfeed-console"]), .dashboard .apps li:has(a[href*="dcm4chee-web3"]) { display: none !important; }
