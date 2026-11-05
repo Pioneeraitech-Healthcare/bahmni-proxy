@@ -102,14 +102,26 @@
   var ICON_SEARCH = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>';
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
 
-  function who() {
+  var ON_LAB = !ON_ERP && /^\/openelis/.test(location.pathname);
+  var ON_CLINICAL = !ON_ERP && /^\/(care|appointments|ipd)\b/.test(location.pathname);
+  var LOGIN_PAGE = /#\/login/.test(location.hash) || /LoginPage\.do|ValidateLogin/.test(location.pathname) || /^\/web\/login/.test(location.pathname);
+  function clean(s) { s = (s || '').trim(); return /^(null|undefined|false|public user)$/i.test(s) ? '' : s; }
+  // Who is signed in - from the apps themselves, never a guess ("null" is never shown).
+  function who(cb) {
     if (ON_ERP) {
-      var n = document.querySelector('.o_user_menu .oe_topbar_name, .o_user_menu span');
-      return n && n.textContent.trim() ? n.textContent.trim() : '';
+      var n = document.querySelector('.o_user_menu .oe_topbar_name, .o_user_menu .o_user_avatar + span, .o_user_menu span');
+      return cb(clean(n && n.textContent));
     }
-    var m = document.cookie.match(/(?:^|;\s*)bahmni\.user=([^;]+)/);
-    if (!m) return '';
-    try { return decodeURIComponent(m[1]).replace(/^"|"$/g, ''); } catch (e) { return ''; }
+    if (ON_LAB) { // the lab has its own sign-in; it is signed in when its menu is on screen
+      return cb(document.querySelector('#user-info, #topMenu, #nav-first') && !document.querySelector('input[name=loginName]') ? 'Lab user' : '');
+    }
+    fetch('/openmrs/ws/rest/v1/session?v=custom:(authenticated,user:(username,person:(display)))', { credentials: 'same-origin', headers: { Accept: 'application/json' } })
+      .then(function (r) { return r.ok ? r.json() : {}; })
+      .then(function (s) {
+        if (!s || !s.authenticated || !s.user) return cb('', false);
+        cb(clean((s.user.person && s.user.person.display) || s.user.username), true);
+      })
+      .catch(function () { cb(''); });
   }
   function signOut() {
     if (ON_ERP) { location.href = ERP + '/web/session/logout'; return; }
@@ -172,11 +184,25 @@
   }
 
   function user(el) {
-    var box = el.querySelector('.ph-user'), name = who();
+    who(function (name, authed) {
+      // Clinical screens need a signed-in user; without one the apps show a blank page.
+      if (ON_CLINICAL && authed === false && !LOGIN_PAGE && !/^\/care\/home\//.test(location.pathname)) {
+        location.replace(MAIN + '/care/home/index.html#/login');
+        return;
+      }
+      draw(el, name);
+    });
+  }
+  function draw(el, name) {
+    var box = el.querySelector('.ph-user');
+    if (!box) return;
     if (!name) {
-      box.innerHTML = ON_ERP ? '' : '<a class="ph-signin" href="' + MAIN + '/care/home/index.html#/login">Sign in</a>';
+      box.innerHTML = (ON_ERP || ON_LAB || LOGIN_PAGE) ? '' : '<a class="ph-signin" href="' + MAIN + '/care/home/index.html#/login">Sign in</a>';
+      box.removeAttribute('data-name');
       return;
     }
+    if (box.getAttribute('data-name') === name) return;
+    box.setAttribute('data-name', name);
     var initial = name.charAt(0).toUpperCase();
     box.innerHTML = '<button type="button" class="ph-me" aria-haspopup="menu" aria-expanded="false"><span class="ph-av">' + esc(initial) + '</span><span class="ph-nm">' + esc(name) + '</span></button>' +
       '<div class="ph-menu" role="menu" hidden><a role="menuitem" href="' + MAIN + '/">Home</a><button type="button" role="menuitem" class="ph-out">Sign out</button></div>';
@@ -185,12 +211,80 @@
     document.addEventListener('click', function () { menu.hidden = true; btn.setAttribute('aria-expanded', 'false'); });
     box.querySelector('.ph-out').addEventListener('click', signOut);
   }
-  function refreshUser() { var el = document.getElementById('ph-topbar'); if (el && !el.querySelector('.ph-me') && who()) user(el); }
+  function refreshUser() { var el = document.getElementById('ph-topbar'); if (el) who(function (n) { draw(el, n); }); }
+
+  // Fixed header: anything else the apps pin to the very top moves below it.
+  var BAR_H = 62;
+  function fixTops() {
+    if (ON_ERP && document.body.classList.contains('o_web_client')) return; // the ERP lays out in a column under the bar
+    var all = document.body.getElementsByTagName('*');
+    for (var i = 0; i < all.length; i++) {
+      var e = all[i];
+      if (e.id === 'ph-topbar' || e.closest('#ph-topbar')) continue;
+      var cs = getComputedStyle(e);
+      if (cs.position !== 'fixed' || e.getAttribute('data-ph-shifted')) continue;
+      var t = parseFloat(cs.top);
+      if (!isNaN(t) && t < BAR_H && e.getBoundingClientRect().top < BAR_H) { e.style.top = (t + BAR_H) + 'px'; e.setAttribute('data-ph-shifted', '1'); }
+    }
+  }
+  var fixQueued = null;
+  function queueFix() { if (fixQueued) return; fixQueued = setTimeout(function () { fixQueued = null; try { fixTops(); } catch (e) {} }, 400); }
+
+  // Login pages (clinical, lab, ERP): one centred card in the Pioneer Healthcare style.
+  var AREA = ON_ERP ? 'Stock Inventory & Billing' : ON_LAB ? 'Laboratory' : 'Clinical Service';
+  function loginHead() {
+    return '<div class="ph-login-head"><img src="/pioneer-brand/mark.png" alt=""><h1>Sign in</h1><p>' + esc(AREA) + ' &middot; Pioneer Healthcare</p></div>';
+  }
+  function loginSkin() {
+    var html = document.documentElement;
+    if (!ON_ERP && !ON_LAB) {
+      var box = document.querySelector('.login:not(.login-otp)');
+      var on = !!(document.querySelector('#username') && box && box.offsetParent !== null);
+      html.classList.toggle('ph-login', on);
+      if (on && !box.querySelector('.ph-login-head')) box.insertAdjacentHTML('afterbegin', loginHead());
+      return;
+    }
+    if (ON_ERP) {
+      var card = document.querySelector('form.oe_login_form');
+      if (!card) return;
+      html.classList.add('ph-login');
+      var body = card.closest('.card-body');
+      if (body && !body.querySelector('.ph-login-head')) body.insertAdjacentHTML('afterbegin', loginHead());
+      return;
+    }
+    // Lab: the old page is tables; build the card inside the same form and move the real fields in.
+    var user = document.querySelector('input[name=loginName]'), pass = document.querySelector('input[name=password]');
+    if (!user || !pass || document.querySelector('.ph-lab-card')) return;
+    var form = user.form; if (!form) return;
+    var note = '';
+    document.querySelectorAll('td, div, span, font').forEach(function (n) { if (!note && n.children.length === 0 && /session has expired|invalid|incorrect|failed/i.test(n.textContent)) note = n.textContent.trim(); });
+    var c = document.createElement('div');
+    c.className = 'ph-lab-card';
+    c.innerHTML = loginHead() + (note ? '<div class="ph-note">' + esc(note) + '</div>' : '') +
+      '<label class="ph-f"><span>Username</span></label><label class="ph-f"><span>Password</span></label><div class="ph-btns"></div><div class="ph-lang"></div>';
+    var f = c.querySelectorAll('.ph-f');
+    f[0].appendChild(user); f[1].appendChild(pass);
+    var sub = document.getElementById('submitButton'), chg = document.getElementById('changePasswordButton');
+    if (sub) c.querySelector('.ph-btns').appendChild(sub);
+    if (chg) c.querySelector('.ph-btns').appendChild(chg);
+    var lang = document.querySelector('#language-chooser select');
+    if (lang) { var lw = c.querySelector('.ph-lang'); lw.innerHTML = '<span>Language</span>'; lw.appendChild(lang); }
+    // The old page puts its form inside a table, where browsers hide it. The card goes on the
+    // page itself and the moved fields stay tied to the form, so sign-in still submits it.
+    if (!form.id) form.id = 'ph-lab-form';
+    [user, pass, sub, chg, lang].forEach(function (x) { if (x) x.setAttribute('form', form.id); });
+    document.body.appendChild(c);
+    html.classList.add('ph-login', 'ph-lab-login');
+    user.focus();
+  }
 
   function start() {
     bar();
-    new MutationObserver(function () { bar(); }).observe(document.body, { childList: true });
-    setInterval(refreshUser, 2000); // the name appears once the user signs in (no page reload in the apps)
+    try { loginSkin(); } catch (e) {}
+    queueFix();
+    new MutationObserver(function () { bar(); queueFix(); try { loginSkin(); } catch (e) {} }).observe(document.body, { childList: true, subtree: true });
+    window.addEventListener('hashchange', function () { LOGIN_PAGE = /#\/login/.test(location.hash) || /LoginPage\.do/.test(location.pathname) || /^\/web\/login/.test(location.pathname); refreshUser(); });
+    setInterval(refreshUser, 15000); // name appears after signing in (the apps change screens without reloading)
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();

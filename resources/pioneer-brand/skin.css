@@ -73,7 +73,7 @@ a.o_powered_by, .o_brand_promotion, .o_login_auth .o_brand_promotion, a[href*="o
 
 /* ---------- Top bar on every module (same as ATA healthcare's header), fixed at the top ---------- */
 #ph-topbar {
-  position: sticky; top: 0; z-index: 2147483000; box-sizing: border-box;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 2147483000; box-sizing: border-box;
   display: flex; align-items: center; gap: 16px;
   height: 62px; min-height: 62px; flex: none; width: 100%;
   padding: 0 16px; margin: 0;
@@ -113,6 +113,82 @@ a.o_powered_by, .o_brand_promotion, .o_login_auth .o_brand_promotion, a[href*="o
 #ph-topbar .ph-menu a:hover, #ph-topbar .ph-menu button:hover { background: #EEF2FB; }
 #ph-topbar .ph-signin { display: inline-flex; align-items: center; height: 36px; padding: 0 14px; border-radius: 10px; background: #4F46E5; color: #fff !important; text-decoration: none !important; font-weight: 600; font-size: 14px; }
 @media (max-width: 760px) { #ph-topbar kbd, #ph-topbar .ph-nm { display: none; } #ph-topbar .ph-search { width: auto; flex: 1; } }
+/* Content starts below the fixed bar. The ERP app lays out as a full-height column, so there
+   the bar stays in the column instead (it never scrolls there). */
+html.ph-has-bar body { padding-top: 62px !important; }
+html.ph-has-bar body.o_web_client { padding-top: 0 !important; }
+html.ph-has-bar body.o_web_client #ph-topbar { position: relative; }
+
+/* ---------- Sign-in pages (clinical, lab, ERP): one centred card ---------- */
+html.ph-login body { background: #F6F7FB !important; }
+.ph-login-head { text-align: center; margin: 0 0 22px; font-family: Inter, -apple-system, "Segoe UI", Roboto, sans-serif; }
+.ph-login-head img { width: 44px; height: 44px; display: block; margin: 0 auto 14px; }
+.ph-login-head h1 { margin: 0; font-size: 24px !important; font-weight: 800 !important; letter-spacing: -0.02em; color: #081D42 !important; line-height: 1.2; }
+.ph-login-head p { margin: 6px 0 0; font-size: 14px; color: #5B6478; }
+/* clinical */
+html.ph-login .reg-wrapper #view-content { min-height: calc(100vh - 62px); display: flex; align-items: center; justify-content: center; padding: 24px 16px 70px; box-sizing: border-box; }
+html.ph-login .clint-logo-wrapper, html.ph-login .login .emr-login-text, html.ph-login .login > header.reg-header > .left { display: none !important; }
+html.ph-login .login:not(.login-otp) {
+  position: relative !important; left: auto !important; top: auto !important; margin: 0 !important; transform: none !important;
+  width: 420px !important; max-width: 100%; height: auto !important; padding: 32px 32px 24px !important; box-sizing: border-box;
+  background: #fff !important; border: 1px solid #E4E7F0 !important; border-radius: 20px !important;
+  box-shadow: 0 1px 2px rgba(15,23,42,.04), 0 12px 32px -12px rgba(15,23,42,.18) !important;
+  font-family: Inter, -apple-system, "Segoe UI", Roboto, sans-serif;
+  display: flex !important; flex-direction: column;
+}
+html.ph-login .login > header.reg-header { order: 9; background: none !important; border: 0 !important; height: auto !important; padding: 0 !important; margin: 14px 0 0 !important; display: flex; justify-content: center; box-shadow: none !important; }
+html.ph-login .login > header.reg-header .right { float: none !important; display: flex; align-items: center; gap: 8px; color: #5B6478 !important; height: auto !important; }
+html.ph-login .login > header.reg-header .locale-text { color: #5B6478 !important; font-size: 13px !important; line-height: 1 !important; font-weight: 500 !important; }
+html.ph-login .login > header.reg-header select { height: 30px; border: 1px solid #DADDF5; border-radius: 8px; padding: 0 8px; font-size: 13px; background: #fff; color: #0B1F44; }
+html.ph-login .login .login-body { padding: 0 !important; border: 0 !important; background: none !important; }
+html.ph-login .login .form-field { display: block !important; width: 100% !important; margin: 0 0 14px !important; float: none !important; }
+html.ph-login .login .field-attribute, html.ph-login .login .field-value { display: block !important; width: 100% !important; float: none !important; padding: 0 !important; text-align: left !important; }
+html.ph-login .login .field-attribute label { display: block; margin: 0 0 6px !important; font-size: 13px !important; font-weight: 600 !important; color: #334155 !important; text-align: left !important; }
+html.ph-login .login input#username, html.ph-login .login input#password,
+.ph-lab-card input[type=text], .ph-lab-card input[type=password],
+html.ph-login .oe_login_form input.form-control {
+  width: 100% !important; height: 42px !important; box-sizing: border-box; padding: 0 12px !important; margin: 0 !important;
+  border: 1px solid #DADDF5 !important; border-radius: 10px !important; background: #F8F9FC !important; color: #0B1F44 !important;
+  font: 400 15px Inter, -apple-system, "Segoe UI", Roboto, sans-serif !important; box-shadow: none !important; outline: none;
+}
+html.ph-login .login input#username:focus, html.ph-login .login input#password:focus,
+.ph-lab-card input[type=text]:focus, .ph-lab-card input[type=password]:focus,
+html.ph-login .oe_login_form input.form-control:focus { border-color: #4F46E5 !important; background: #fff !important; box-shadow: 0 0 0 3px rgba(79,70,229,.15) !important; }
+html.ph-login .login .form-footer { padding: 6px 0 0 !important; margin: 0 !important; text-align: center !important; }
+html.ph-login .login button.confirm, .ph-lab-card #submitButton, html.ph-login .oe_login_form .btn-primary {
+  width: 100% !important; height: 44px !important; margin: 0 !important; border: 0 !important; border-radius: 10px !important;
+  background: #4F46E5 !important; color: #fff !important; font: 600 15px Inter, -apple-system, "Segoe UI", Roboto, sans-serif !important;
+  box-shadow: 0 6px 16px -8px rgba(79,70,229,.7) !important; cursor: pointer; text-shadow: none !important;
+}
+html.ph-login .login button.confirm:hover, .ph-lab-card #submitButton:hover, html.ph-login .oe_login_form .btn-primary:hover { background: #4338CA !important; }
+html.ph-login .power-by { font-size: 12px !important; }
+html.ph-login .power-by img { width: 18px !important; height: 18px !important; vertical-align: middle; }
+/* lab: the card floats over the old table page */
+html.ph-lab-login body::before { content: ""; position: fixed; inset: 62px 0 0 0; background: #F6F7FB; z-index: 1000; }
+.ph-lab-card {
+  position: fixed; z-index: 1001; left: 50%; top: calc(50% + 31px); transform: translate(-50%, -50%);
+  width: 420px; max-width: calc(100vw - 32px); box-sizing: border-box; padding: 32px 32px 24px;
+  background: #fff; border: 1px solid #E4E7F0; border-radius: 20px; box-shadow: 0 1px 2px rgba(15,23,42,.04), 0 12px 32px -12px rgba(15,23,42,.18);
+  font-family: Inter, -apple-system, "Segoe UI", Roboto, sans-serif; text-align: left;
+}
+.ph-lab-card .ph-f { display: block; margin: 0 0 14px; }
+.ph-lab-card .ph-f span, .ph-lab-card .ph-lang span { display: block; margin: 0 0 6px; font-size: 13px; font-weight: 600; color: #334155; }
+.ph-lab-card .ph-btns { display: grid; gap: 8px; margin-top: 6px; }
+.ph-lab-card #changePasswordButton { width: 100% !important; height: 38px !important; border: 1px solid #DADDF5 !important; border-radius: 10px !important; background: #fff !important; color: #334155 !important; font: 600 14px Inter, sans-serif !important; cursor: pointer; }
+.ph-lab-card .ph-lang { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 14px; }
+.ph-lab-card .ph-lang span { margin: 0; font-weight: 500; color: #5B6478; }
+.ph-lab-card .ph-lang select { height: 30px; border: 1px solid #DADDF5; border-radius: 8px; padding: 0 8px; font-size: 13px; background: #fff; }
+.ph-note { margin: -6px 0 16px; padding: 10px 12px; border-radius: 10px; background: #FEF2F2; border: 1px solid #FECACA; color: #991B1B; font-size: 13.5px; text-align: center; }
+/* ERP */
+html.ph-login body.bg-100 main { min-height: calc(100vh - 62px); display: flex; align-items: center; justify-content: center; }
+html.ph-login body.bg-100 main > .container { padding: 24px 16px !important; }
+html.ph-login .card.o_database_list {
+  width: 420px !important; max-width: 100%; background: #fff !important; border: 1px solid #E4E7F0 !important; border-radius: 20px !important;
+  box-shadow: 0 1px 2px rgba(15,23,42,.04), 0 12px 32px -12px rgba(15,23,42,.18) !important; padding: 16px 16px 8px;
+}
+html.ph-login .card.o_database_list .card-body > .text-center.border-bottom, html.ph-login .card.o_database_list .card-body > .border-top { display: none !important; }
+html.ph-login .oe_login_form .form-label { font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 6px; }
+html.ph-login .oe_login_form a { color: #4F46E5 !important; }
 
 /* ---------- Module tiles (clinical home, admin, ...) as ATA healthcare cards ---------- */
 body:has(.dashboard .apps) { background: #F6F7FB !important; }
@@ -138,4 +214,4 @@ a[href*="/web/database"], .oe_login_form a[href*="database"] { display: none !im
 .o_login_auth + div, .oe_login_form + div.text-center { }
 
 /* Admin-only tools blocked from the internet: hide their tiles so no link leads to an error. */
-.dashboard .apps li:has(a[href*="atomfeed-console"]), .dashboard .apps li:has(a[href*="dcm4chee-web3"]) { display: none !important; }
+.dashboard .apps li:has(a[href*="atomfeed-console"]), .dashboard .apps li:has(a[href*="dcm4chee-web3"]), .dashboard .apps li:has(a[href*="implementer-interface"]) { display: none !important; }
