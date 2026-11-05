@@ -1,0 +1,71 @@
+/*
+ * Pioneer Healthcare skin for Healthcare Core (clinical screens, lab, ERP).
+ * Injected into every HTML page by nginx (servers/nginx/conf.d/healthcare-core-prod.conf).
+ * Brand from ATA healthcare (src/edition/healthcare): navy ink #081D42, green #3E9C85,
+ * indigo accent #4F46E5. Only colours, logos and names change - never layout or behaviour.
+ */
+:root {
+  --ph-navy: #081D42;
+  --ph-navy-2: #1E3A8A;
+  --ph-indigo: #4F46E5;
+  --ph-green: #3E9C85;
+  --ph-green-2: #2F7F6B;
+  --ph-head: linear-gradient(100deg, #081D42 0%, #1E3A8A 100%);
+  --ph-ok: linear-gradient(#45A88F, #2F7F6B);
+}
+
+/* ---------- Clinical screens (registration, clinical, appointments, home) ---------- */
+header.reg-header, .reg-header-wrapper, .header-wrapper, .opd-header-top,
+.bahmni-appointments header, .opd-wrapper > header, .reg-wrapper > header {
+  background: var(--ph-head) !important;
+  border-color: var(--ph-navy) !important;
+}
+h2.section-title, h2.section-title-next-ui, h2.section-title.has-link, h2.forms-display-control-section-title,
+.concept-set-title, .dashboard-section h2, .section-title {
+  background: var(--ph-navy-2) !important;
+  border-color: var(--ph-navy-2) !important;
+  color: #fff !important;
+}
+.dashboard-section, section.concept-set-group { border-color: #C7D2FE !important; }
+a.back-btn, .back-btn, .back-btn-link, button.toggle-patient, #addDashboardButton, #template-control-panel-button,
+.opd-header-top .btn, .reg-header .btn {
+  background: var(--ph-head) !important;
+  border-color: var(--ph-navy) !important;
+  color: #fff !important;
+}
+a.btn--success, button.btn--success, .btn--success, button.confirm, button.save-consultation, .login-form button,
+button[type=submit].btn-success, .btn-success {
+  background: var(--ph-ok) !important;
+  border-color: var(--ph-green-2) !important;
+  color: #fff !important;
+}
+.reg-wrapper, .opd-wrapper, #ClinicalController, #view-content, .bahmni-appointments { color: var(--ph-navy); }
+.reg-wrapper a, .opd-wrapper a, #ClinicalController a { color: var(--ph-navy-2); }
+.fa-question-circle { color: var(--ph-green) !important; }
+/* sign-in page */
+.login-wrapper .login-header, .login .header, .box-header, .login-container h3, .login-form .login-header {
+  background: var(--ph-head) !important; color: #fff !important;
+}
+.login-wrapper h2, .login-wrapper h3, .title-text, .login-title { color: var(--ph-navy) !important; }
+/* the old footer logo next to "Help" */
+img[src*="bahmniLogo"], img[src*="bahmni-logo"] { content: url(/pioneer-brand/mark.png); width: 18px !important; height: 18px !important; }
+
+/* ---------- Lab (OpenELIS) ---------- */
+#header { background: var(--ph-head) !important; }
+#user-info { background: linear-gradient(#45A88F, #2F7F6B) !important; color: #fff !important; }
+#user-info a { color: #fff !important; }
+img[src*="openelis_logo"] { content: url(/pioneer-brand/logo-white.png); height: 44px !important; width: auto !important; }
+#nav-first, #nav-last, #topMenu li { border-color: #C7D2FE !important; }
+input[type=button], input[type=submit] { accent-color: var(--ph-green); }
+
+/* ---------- ERP (Odoo) ---------- */
+.o_main_navbar, nav.o_main_navbar { background: var(--ph-head) !important; border-bottom-color: var(--ph-navy) !important; }
+.btn-primary, .o_list_button_add, .o-kanban-button-new, .o_form_button_save {
+  background-color: var(--ph-indigo) !important; border-color: var(--ph-indigo) !important; color: #fff !important;
+}
+.o_arrow_button_current, .o_statusbar_status .btn-primary, .o_statusbar_status .o_arrow_button.btn-primary {
+  background-color: var(--ph-navy-2) !important; border-color: var(--ph-navy-2) !important;
+}
+.badge.text-bg-primary, .o_tag_color_10 { background-color: var(--ph-indigo) !important; }
+a.o_powered_by, .o_brand_promotion, .o_login_auth .o_brand_promotion, a[href*="odoo.com?utm"] { display: none !important; }
+.oe_login_form .btn-primary, .oe_signup_form .btn-primary { background-color: var(--ph-green) !important; border-color: var(--ph-green-2) !important; }
