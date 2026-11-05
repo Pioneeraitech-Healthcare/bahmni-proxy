@@ -1,344 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
 	<meta name="robots" content="noindex,nofollow" />
-	<meta name="googlebot" content="noindex,nofollow" />
-	<link rel="icon" type="image/png" href="/favicon.png">
+	<link rel="icon" type="image/png" href="/pioneer-brand/mark.png">
 	<title>Pioneer Healthcare</title>
+	<!-- Pioneer Healthcare home, in the ATA healthcare home pattern (hero panel + lanes of
+	     cards). The top bar comes from /pioneer-brand/skin.js, which nginx adds to every page.
+	     Cards are written here, not read from a config file, so a cached file can never bring
+	     back other tiles. -->
 	<style>
-		html {
-			overflow: auto;
+		@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+		* { box-sizing: border-box; }
+		html, body { margin: 0; min-height: 100%; }
+		body { background: #F6F7FB; color: #0B1F44; font-family: Inter, -apple-system, "Segoe UI", Roboto, sans-serif; -webkit-font-smoothing: antialiased; }
+		a { color: inherit; text-decoration: none; }
+		h1 { margin: 0; font-weight: 800; }
+		.tile {
+			--c: #4F46E5; --ci: #4F46E5; --glow: rgba(79, 70, 229, .55);
+			position: relative; overflow: hidden; display: flex; flex-direction: column;
+			padding: 18px; border-radius: 20px; background: #fff; border: 1px solid #E4E7F0;
+			box-shadow: 0 1px 2px rgba(15,23,42,.04), 0 4px 14px rgba(15,23,42,.05);
+			transition: transform .22s cubic-bezier(.2,.8,.2,1), box-shadow .22s cubic-bezier(.2,.8,.2,1), border-color .22s;
+			animation: rise .6s cubic-bezier(.2,.8,.2,1) both;
 		}
+		.tile::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 3px; background: linear-gradient(90deg, var(--c), transparent); opacity: 0; transition: opacity .2s; }
+		.tile:hover, .tile:focus-visible { transform: translateY(-3px); border-color: color-mix(in srgb, var(--c) 35%, #E4E7F0); box-shadow: 0 2px 4px rgba(15,23,42,.04), 0 20px 40px -22px var(--glow); }
+		.tile:hover::before, .tile:focus-visible::before { opacity: 1; }
+		.tile:focus-visible, .lane-head:focus-visible { outline: 2px solid #4F46E5; outline-offset: 2px; }
+		.row1 { display: flex; align-items: center; gap: 12px; }
+		.ic {
+			flex: none; width: 44px; height: 44px; border-radius: 13px; display: grid; place-items: center; color: var(--ci);
+			background: linear-gradient(145deg, color-mix(in srgb, var(--c) 18%, #fff), color-mix(in srgb, var(--c) 6%, #fff));
+			border: 1px solid color-mix(in srgb, var(--c) 20%, #fff); transition: transform .2s cubic-bezier(.2,.8,.2,1);
+		}
+		.tile:hover .ic { transform: scale(1.06); }
+		.ic svg { width: 22px; height: 22px; }
+		h3 { margin: 0; font-size: 18px; font-weight: 700; letter-spacing: -0.015em; line-height: 1.25; }
+		.tile p { margin: 10px 0 0; color: #5B6478; font-size: 15px; line-height: 1.5; }
+		.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+		.chips span { font-size: 13px; font-weight: 600; color: #334155; background: #F3F4F9; border: 1px solid #E7E9F2; padding: 3px 8px; border-radius: 999px; }
+		.go { margin-top: auto; padding-top: 12px; display: inline-flex; align-items: center; gap: 7px; font-weight: 600; font-size: 15px; color: var(--ci); }
+		.go svg { width: 16px; height: 16px; transition: transform .2s cubic-bezier(.2,.8,.2,1); }
+		.tile:hover .go svg { transform: translateX(4px); }
+		@keyframes rise { from { opacity: 0; transform: translateY(14px) scale(.94); } to { opacity: 1; transform: none; } }
+		@media (prefers-reduced-motion: reduce) { .tile { animation: none; } .tile, .ic, .go svg { transition: none; } }
 
-		body {
-			font-family: OpenSans, Arial, sans-serif;
-			position: relative;
-			background: #f8f8f8;
-			overflow: hidden;
-			padding-bottom: 40px;
+		/* ATA healthcare home pattern: hero panel left, lanes with cards right */
+		main.home { max-width: 1560px; display: grid; grid-template-columns: minmax(300px, 34%) 1fr; gap: 16px; padding: 18px 24px 32px; align-items: start; }
+		.hero {
+			position: sticky; top: 18px; min-height: calc(100vh - 62px - 36px); border-radius: 22px; padding: 26px; color: #fff; overflow: hidden;
+			background: radial-gradient(120% 80% at 85% 10%, rgba(62,156,133,.55), transparent 60%), radial-gradient(90% 70% at 10% 100%, rgba(79,70,229,.55), transparent 65%), linear-gradient(160deg, #081D42 0%, #1E3A8A 100%);
+			display: flex; flex-direction: column;
 		}
-
-		a {
-			text-decoration: none;
-		}
-
-		.container {
-			width: 750px;
-			margin: 20px auto 0;
-			padding: 0 15px 20px;
-			overflow: hidden;
-			background: #f8f8f8;
-			z-index: 2;
-		}
-
-		.container>h4 {
-			margin: 0;
-			text-align: center;
-			color: #3E9C85;
-			font-size: 16px;
-		}
-
-		.section {
-			position: relative;
-			width: 207px;
-			min-height: 200px;
-			display: inline-block;
-			margin: 10px 15px;
-			background: #fff;
-			padding: 5px;
-			border-radius: 11px;
-			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-			transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-			z-index: 2;
-			vertical-align: top;
-		}
-
-		.section:hover {
-			box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
-				0 10px 10px rgba(0, 0, 0, 0.22);
-		}
-
-		.launch {
-			text-align: center;
-			font-size: 20px;
-		}
-
-		.launch img {
-			width: 100px;
-			height: 100px;
-			display: block;
-			margin: 15px auto;
-		}
-
-		.launch span {
-			min-height: 55px;
-			display: inline-block;
-			color: #081D42;
-			font-weight: bold;
-			font-size: 18px;
-			text-transform: uppercase;
-		}
-
-		.warning-message {
-			text-align: center;
-			margin: 0 auto;
-			color: #ffac2e;
-			width: 50%;
-			background: #f8f8f8;
-			padding-top: 10px;
-		}
-
-		.warning-message span {
-			font-weight: bolder;
-			font-size: 13px;
-			display: inline-block;
-			margin-bottom: 5px;
-		}
-
-		.warning-message p {
-			padding: 0 50px;
-			margin: 0;
-			font-size: 14px;
-		}
-
-		.header_text {
-			text-align: center;
-			margin: 35px auto 25px;
-			color: #081D42;
-			font-size: 24px;
-			width: 100%;
-		}
-
-		.power-by {
-			position: fixed;
-			width: 100%;
-			bottom: 7px;
-			text-align: center;
-			background: #f8f8f8;
-			padding-bottom: 5px;
-			font-size: 12px;
-			z-index: -1;
-			color: #898989;
-		}
-
-		.power-by img {
-			width: 55px;
-			vertical-align: middle;
-			margin: 0 1px;
-		}
-
-		.power-by a {
-			color: #000;
-		}
-
-		.clint-logo-wrapper {
-			display: block;
-			text-align: center;
-			padding-top: 10px;
-		}
-
-		.clint-logo-wrapper img {
-			max-width: 200px;
-			vertical-align: middle;
-			max-height: 120px;
-		}
-
-		.clint-logo-wrapper span {
-			vertical-align: middle;
-			color: #888;
-			font-size: 20px;
-		}
-
-		.bottom-banner-wrapper {
-			position: fixed;
-			text-align: center;
-			bottom: 20px;
-			width: 100%;
-		}
-
-		.bottom-banner-wrapper img {
-			max-width: 35%;
-			height: auto;
-		}
-
-		.sections {
-			min-width: 200px;
-			text-align: center;
-			margin: 10px auto;
-		}
-		body::before { content: ""; position: fixed; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #081D42 0%, #4F46E5 55%, #3E9C85 100%); z-index: 3; }
-		.section:hover { outline: 2px solid #3E9C85; outline-offset: -2px; }
+		.hero::after { content: ""; position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px); background-size: 28px 28px; pointer-events: none; }
+		.hero > * { position: relative; z-index: 1; }
+		.tag { align-self: flex-start; font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.18); }
+		.greet { margin: 22px 0 6px; font-size: 14px; font-weight: 600; color: rgba(255,255,255,.78); }
+		.hero h1 { color: #fff; font-size: 34px; line-height: 1.12; letter-spacing: -0.03em; }
+		.hero .lead { margin: 12px 0 0; font-size: 15px; line-height: 1.55; color: rgba(255,255,255,.82); }
+		.flow { list-style: none; margin: auto 0 0; padding: 22px 0 0; display: grid; gap: 10px; counter-reset: f; }
+		.flow li { counter-increment: f; display: grid; grid-template-columns: 30px 1fr; gap: 2px 12px; align-items: center; padding: 10px 12px; border-radius: 14px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); }
+		.flow li::before { content: counter(f); grid-row: span 2; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; font-weight: 800; background: #3E9C85; }
+		.flow b { font-size: 14px; } .flow span { font-size: 12.5px; color: rgba(255,255,255,.72); }
+		.lanes { display: grid; gap: 12px; }
+		.lane { border: 1px solid #E4E7F0; border-radius: 16px; background: #fff; box-shadow: 0 1px 2px rgba(15,23,42,.04); }
+		.lane.open { border-color: #C7CBF7; }
+		.lane-head { width: 100%; display: flex; align-items: center; gap: 14px; padding: 8px 14px 8px 8px; border: 0; background: transparent; border-radius: 16px; cursor: pointer; font: inherit; color: inherit; text-align: left; }
+		.pill { flex: none; min-width: 200px; padding: 9px 14px; border-radius: 999px; color: #fff; font-size: 15px; font-weight: 700; background: linear-gradient(90deg, var(--a1), var(--a2)); }
+		.lane-line { flex: 1; min-width: 0; font-size: 16px; font-weight: 600; color: #1E2235; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+		.count { flex: none; font-size: 14px; font-weight: 700; color: #334155; background: #F3F4F9; border: 1px solid #E7E9F2; border-radius: 999px; padding: 4px 12px; }
+		.chev { flex: none; width: 20px; height: 20px; color: #334155; transition: transform .25s; }
+		.lane.open .chev { transform: rotate(180deg); }
+		.lane-body { display: none; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; padding: 8px 12px 14px; }
+		.lane.open .lane-body { display: grid; }
+		.lane.dev { --a1: #4F46E5; --a2: #6D5DF6; } .lane.biz { --a1: #0F766E; --a2: #14A08F; } .lane.gov { --a1: #1E3A8A; --a2: #3157C4; }
+		.lane.biz .tile { --c: #0F766E; --ci: #0F766E; --glow: rgba(15,118,110,.5); }
+		.lane.gov .tile { --c: #1E3A8A; --ci: #1E3A8A; --glow: rgba(30,58,138,.5); }
+		.lane .tile { animation-delay: calc(var(--i, 0) * 60ms); }
+		@media (max-width: 1100px) { main.home { grid-template-columns: 1fr; } .hero { position: static; min-height: 0; } .lane-body { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+		@media (max-width: 700px) { .lane-body { grid-template-columns: 1fr; } .pill { min-width: 0; } .lane-line { display: none; } }
 	</style>
-
-	<script>
-		function init() {
-			serverTimeZone();
-			getLogoAndHeaderText();
-			getApps();
-		}
-
-		function callAjax(url, callback) {
-			var xmlhttp = new XMLHttpRequest();
-			xmlhttp.onreadystatechange = function () {
-				if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-					try {
-						callback(JSON.parse(xmlhttp.responseText));
-					} catch (ex) {
-						callback(undefined);
-					}
-				}
-			};
-			xmlhttp.open("GET", url, true);
-			xmlhttp.send();
-		}
-
-		function serverTimeZone() {
-			callAjax("/cgi-bin/systemdate", function (data) {
-				if (data) {
-					var serverTime = data.date;
-					var offset = data.offset;
-					var localTime = new Date().toLocaleString();
-					var localTimeZone = getLocalTimeZone();
-					if (offset && !new Date().toString().includes(offset)) {
-						var warningMessageParagraph = document.getElementsByClassName(
-							"warning-message-paragraph"
-						)[0];
-						var warningMessage = document.getElementsByClassName(
-							"warning-message-span"
-						)[0];
-						warningMessage.innerHTML =
-							"<img src='/bahmni/images/warning.png'> Warning";
-						warningMessageParagraph.innerHTML =
-							"The server timezone (" +
-							serverTime +
-							") is different from your browser's time/timezone (" +
-							localTime +
-							" " +
-							localTimeZone +
-							"). This can cause some data or reports to appear incorrect. Please contact the administrator for further assistance.";
-					}
-				}
-			});
-		}
-		var getLocalTimeZone = function () {
-			var currentLocalTime = new Date().toString();
-			var localTimeZoneList = currentLocalTime.split(" ");
-			var localTimeZone = localTimeZoneList[localTimeZoneList.length - 1];
-			localTimeZone = localTimeZone.substring(1, localTimeZone.length - 1);
-			return localTimeZone;
-		};
-
-		function getLogoAndHeaderText() {
-			callAjax(
-				"/bahmni_config/openmrs/apps/home/whiteLabel.json",
-				function (data) {
-					if (data) {
-						if (data.homePage.header_text) {
-							var headerTextElement =
-								document.getElementsByClassName("header_text")[0];
-							headerTextElement.innerHTML =
-								"<b>" + data.homePage.header_text + "</b>";
-						}
-
-						if (data.homePage.logo) {
-							var logoImage =
-								document.getElementsByClassName("client_logo")[0];
-							logoImage.src = data.homePage.logo;
-						}
-
-						if (data.helpLink.url) {
-							var headerTextElement =
-								document.getElementsByClassName("helper_url")[0];
-							headerTextElement.href = data.helpLink.url;
-						}
-						if (data.homePage.title_text) {
-							var titleTextElement =
-								document.getElementsByClassName("title_text")[0];
-							titleTextElement.innerHTML = data.homePage.title_text;
-						}
-						if (data.homePage.bottomBanner) {
-							document.getElementById("bottom-banner-image").src =
-								data.homePage.bottomBanner;
-						}
-					}
-				}
-			);
-		}
-		function isIpAddress(host) {
-			return /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(host);
-		}
-		const getAppLink = (app) => {
-			if (app.name === "crater" || app.name === "odoo") {
-				let url = '/';
-				if (window.location.host === "localhost" || isIpAddress(window.location.host)) {
-					if (app.name === "odoo")
-						url = `http://${window.location.host}:8069`;
-					else
-						url = `https://${window.location.host}:444`;
-				} else if (app.linkPrefix) {
-					url =
-						window.location.protocol +
-						`//${app.linkPrefix}-` +
-						window.location.host;
-				}
-				return url;
-			}
-
-			return app.link ?? "/";
-		};
-
-		function getApps() {
-			callAjax(
-				"/bahmni_config/openmrs/apps/home/whiteLabel.json",
-				function (data) {
-					if (data && data.landingPage) {
-						const sections = document.getElementsByClassName("sections")[0];
-						for (app of data.landingPage) {
-							if (app.enabled) {
-								sections.innerHTML += `<div class="section">
-			                             <div class="launch">
-			                                 <a href="${getAppLink(app)}">
-			                                 <img src="${app.logo}" />
-			                                 <span> ${app.title}</span>
-			                                 </a>
-			                             </div>
-			                          </div>`;
-							}
-						}
-					}
-				}
-			);
-		}
-	</script>
 </head>
-
-<body onload="init()">
-	<div class="clint-logo-wrapper">
-		<img class="client_logo" src="/bahmni_config/openmrs/apps/home/logo.png" alt="Pioneer Healthcare" />
-		<span class="title_text"> TITLE TEXT </span>
-	</div>
-	<div class="header_text">
-		<b>WELCOME TO<br />PIONEER HEALTHCARE</b>
-	</div>
-	<div class="container">
-		<h4>GET STARTED</h4>
-		<div class="sections" />
-	</div>
-	<div class="warning-message">
-		<span class="warning-message-span"></span>
-		<p class="warning-message-paragraph"></p>
-	</div>
-	</div>
-	<div class="bottom-banner-wrapper">
-		<img id="bottom-banner-image" />
-	</div>
-	<div class="power-by">
-		<img src="/favicon.png" alt="" style="width:18px" /> Pioneer Healthcare &middot;
-		<a class="helper_url" href="https://www.pioneeraitech.com">
-			Help</a>
-	</div>
+<body>
+	<main class="home">
+		<aside class="hero">
+			<span class="tag">Pioneer Healthcare</span>
+			<p class="greet" id="greet">Welcome</p>
+			<h1>Healthcare Core</h1>
+			<p class="lead">One hospital system for patient care, the laboratory and the pharmacy. Patients, orders and results move between the areas by themselves.</p>
+			<ol class="flow" aria-label="How a visit flows">
+				<li><b>Register</b><span>The patient gets an ID and a visit</span></li>
+				<li><b>Consult</b><span>Diagnosis, lab tests and medicines</span></li>
+				<li><b>Lab</b><span>Samples, results, validation</span></li>
+				<li><b>Bill</b><span>Invoice, payment and stock</span></li>
+			</ol>
+		</aside>
+		<div class="lanes">
+			<section class="lane dev open" data-k="clinical"><button type="button" class="lane-head" aria-expanded="true"><span class="pill">Clinical Service</span><span class="lane-line">Register patients, consult, prescribe, order tests and book appointments.</span><span class="count">4 areas</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button><div class="lane-body"><a class="tile" style="--i:0" href="/care/registration/index.html#/search"><div class="row1"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span><h3>Registration</h3></div><p>Find a patient or register a new one, then start the visit and record vitals.</p><div class="chips" aria-hidden="true"><span>Patients</span><span>Visits</span><span>Vitals</span></div><span class="go">Register a patient <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a><a class="tile" style="--i:1" href="/care/clinical/index.html#/default/patient/search"><div class="row1"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3"/><path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4"/><circle cx="20" cy="10" r="2"/></svg></span><h3>Consultation</h3></div><p>Open a patient, write observations and diagnosis, order lab tests and prescribe medicines.</p><div class="chips" aria-hidden="true"><span>Diagnosis</span><span>Lab orders</span><span>Medicines</span></div><span class="go">Start a consultation <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a><a class="tile" style="--i:2" href="/appointments/#/home/manage/summary"><div class="row1"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span><h3>Appointments</h3></div><p>Book follow-ups and see the day's schedule by service and doctor.</p><div class="chips" aria-hidden="true"><span>Calendar</span><span>Services</span><span>Follow-ups</span></div><span class="go">Book an appointment <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a><a class="tile" style="--i:3" href="/care/home/"><div class="row1"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span><h3>All clinical apps</h3></div><p>Programs, bed management, patient documents, reports and administration.</p><div class="chips" aria-hidden="true"><span>Beds</span><span>Reports</span><span>Admin</span></div><span class="go">Open <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a></div></section>
+			<section class="lane biz" data-k="lab"><button type="button" class="lane-head" aria-expanded="false"><span class="pill">Laboratory</span><span class="lane-line">Doctors' orders arrive by themselves: collect, test, validate, return.</span><span class="count">2 areas</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button><div class="lane-body"><a class="tile" style="--i:0" href="/openelis/LabDashboard.do"><div class="row1"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6.5L4.6 18.4A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.4-2.6L14 9.5V3"/><path d="M7 15h10"/></svg></span><h3>Lab dashboard</h3></div><p>Today's samples to collect and the collected samples waiting for results.</p><div class="chips" aria-hidden="true"><span>Samples</span><span>Collection</span><span>Backlog</span></div><span class="go">Open the lab <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a><a class="tile" style="--i:1" href="/openelis/LabDashboard.do"><div class="row1"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span><h3>Results &amp; validation</h3></div><p>Enter values with normal ranges shown, then a second person validates and releases them.</p><div class="chips" aria-hidden="true"><span>Enter</span><span>Validate</span><span>Release</span></div><span class="go">Enter results <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a></div></section>
+			<section class="lane gov" data-k="erp"><button type="button" class="lane-head" aria-expanded="false"><span class="pill">Stock Inventory &amp; Billing</span><span class="lane-line">Medicine stock, patient bills, invoices and payments.</span><span class="count">4 areas</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button><div class="lane-body"><a class="tile" style="--i:0" href="ERPHOST/web#model=sale.order&view_type=list"><div class="row1"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l3-2 3 2 3-2 3 2 3-2 1 .7V2l-1 .7-3-2-3 2-3-2-3 2-3-2z"/><path d="M8 7h8M8 11h8M8 15h5"/></svg></span><h3>Patient billing</h3></div><p>Quotations and sales orders for patients, confirmed into deliveries and invoices.</p><div class="chips" aria-hidden="true"><span>Quotations</span><span>Orders</span><span>Shops</span></div><span class="go">Open billing <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a><a class="tile" style="--i:1" href="ERPHOST/web#model=product.template&view_type=kanban"><div class="row1"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><path d="M10 12h4"/></svg></span><h3>Medicines &amp; stock</h3></div><p>Prices, costs and what is on hand for every medicine and item.</p><div class="chips" aria-hidden="true"><span>Products</span><span>On hand</span><span>Prices</span></div><span class="go">Open stock <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a><a class="tile" style="--i:2" href="ERPHOST/web#model=account.move&view_type=list"><div class="row1"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></svg></span><h3>Invoices &amp; payments</h3></div><p>Posted invoices, payments taken and what is still due.</p><div class="chips" aria-hidden="true"><span>Invoices</span><span>Payments</span></div><span class="go">Open invoices <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a><a class="tile" style="--i:3" href="ERPHOST/web#model=purchase.order&view_type=list"><div class="row1"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg></span><h3>Purchases</h3></div><p>Order from suppliers and receive stock into the pharmacy.</p><div class="chips" aria-hidden="true"><span>Suppliers</span><span>Receipts</span></div><span class="go">Open purchases <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a></div></section>
+		</div>
+	</main>
+	<script>
+		(function () {
+			// The ERP lives on its own host: erp-<this host>.
+			var erp = location.protocol + '//erp-' + location.host;
+			document.querySelectorAll('a[href^="ERPHOST"]').forEach(function (a) { a.href = a.getAttribute('href').replace('ERPHOST', erp); });
+			var h = new Date().getHours();
+			var d = new Date().toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' });
+			document.getElementById('greet').textContent = (h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening') + ' \u00b7 ' + d;
+			var lanes = document.querySelectorAll('.lane');
+			var saved = null; try { saved = localStorage.getItem('ph-lane'); } catch (e) {}
+			function open(l) { lanes.forEach(function (x) { var on = x === l; x.classList.toggle('open', on); x.querySelector('.lane-head').setAttribute('aria-expanded', on); }); try { localStorage.setItem('ph-lane', l.dataset.k); } catch (e) {} }
+			lanes.forEach(function (l) { l.querySelector('.lane-head').addEventListener('click', function () { open(l); }); if (saved && l.dataset.k === saved) open(l); });
+		})();
+	</script>
 </body>
-
 </html>

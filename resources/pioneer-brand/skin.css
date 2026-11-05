@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 /*
  * Pioneer Healthcare skin for Healthcare Core (clinical screens, lab, ERP).
  * Injected into every HTML page by nginx (servers/nginx/conf.d/healthcare-core-prod.conf).
@@ -69,3 +70,49 @@ input[type=button], input[type=submit] { accent-color: var(--ph-green); }
 .badge.text-bg-primary, .o_tag_color_10 { background-color: var(--ph-indigo) !important; }
 a.o_powered_by, .o_brand_promotion, .o_login_auth .o_brand_promotion, a[href*="odoo.com?utm"] { display: none !important; }
 .oe_login_form .btn-primary, .oe_signup_form .btn-primary { background-color: var(--ph-green) !important; border-color: var(--ph-green-2) !important; }
+
+/* ---------- Top bar on every module (same as ATA healthcare's header) ---------- */
+#ph-topbar {
+  position: relative; z-index: 2147483000; box-sizing: border-box;
+  display: flex; align-items: center; gap: 16px;
+  height: 62px; min-height: 62px; flex: none; width: 100%;
+  padding: 0 16px; margin: 0;
+  background: #fff; border-bottom: 1px solid #E4E7F0;
+  font: 500 14px/1 Inter, -apple-system, "Segoe UI", Roboto, sans-serif; color: #0B1F44;
+  -webkit-font-smoothing: antialiased;
+}
+#ph-topbar * { box-sizing: border-box; }
+#ph-topbar .ph-brand { display: flex; align-items: center; padding-right: 18px; margin-right: 2px; border-right: 1px solid #DADDF5; height: 32px; text-decoration: none; }
+#ph-topbar .ph-brand svg { display: block; }
+#ph-topbar .ph-mods { display: flex; gap: 4px; margin-left: auto; overflow-x: auto; }
+#ph-topbar .ph-mod {
+  display: inline-flex; align-items: center; height: 34px; padding: 0 14px; border-radius: 8px;
+  color: #334155 !important; text-decoration: none !important; font-weight: 600; font-size: 14px; white-space: nowrap;
+  background: transparent; transition: background .15s, color .15s;
+}
+#ph-topbar .ph-mod:hover { background: #EEF2FB; color: #081D42 !important; }
+#ph-topbar .ph-mod.on { background: #EEF0FF; color: #4F46E5 !important; }
+@media (max-width: 760px) { #ph-topbar .ph-mod { padding: 0 10px; font-size: 13px; } }
+
+/* ---------- Module tiles (clinical home, admin, ...) as ATA healthcare cards ---------- */
+body:has(.dashboard .apps) { background: #F6F7FB !important; }
+.dashboard .apps ul li a.button.app, .dashboard .apps a.button.app.big {
+  background: #fff !important; border: 1px solid #E4E7F0 !important; border-radius: 20px !important;
+  box-shadow: 0 1px 2px rgba(15,23,42,.04), 0 4px 14px rgba(15,23,42,.05) !important;
+  color: #0B1F44 !important; font: 700 15px/1.3 Inter, -apple-system, "Segoe UI", Roboto, sans-serif !important;
+  letter-spacing: -0.01em; text-shadow: none !important;
+  transition: transform .22s cubic-bezier(.2,.8,.2,1), box-shadow .22s, border-color .22s;
+}
+.dashboard .apps a.button.app.big:hover, .dashboard .apps a.button.app.big:focus-visible {
+  transform: translateY(-3px); border-color: #C7CBF7 !important;
+  box-shadow: 0 2px 4px rgba(15,23,42,.04), 0 20px 40px -22px rgba(79,70,229,.55) !important;
+}
+.dashboard .apps a.button.app.big i {
+  color: #4F46E5 !important; text-shadow: none !important;
+}
+
+/* ---------- ERP sign-in: our logo, no database manager link ---------- */
+.oe_login_form img[src*="company_logo"], form.oe_login_form ~ * img[src*="company_logo"],
+img[src*="/web/binary/company_logo"] { content: url(/pioneer-brand/logo.png); max-height: 64px !important; width: auto !important; }
+a[href*="/web/database"], .oe_login_form a[href*="database"] { display: none !important; }
+.o_login_auth + div, .oe_login_form + div.text-center { }

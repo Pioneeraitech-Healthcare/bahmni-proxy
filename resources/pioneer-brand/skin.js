@@ -15,7 +15,9 @@
     [/\bBAHMNI\b/g, 'PIONEER HEALTHCARE'],
     [/Open ?ELIS/g, 'Pioneer Healthcare Lab'],
     [/Powered by Odoo/g, ''],
+    [/OdooBot/g, 'Assistant'],
     [/\bOdoo\b/g, 'Pioneer Healthcare ERP'],
+    [/bahmni/gi, 'Pioneer Healthcare'],
   ];
   var SKIP = { SCRIPT: 1, STYLE: 1, TEXTAREA: 1, INPUT: 1, SELECT: 1, OPTION: 1, CODE: 1, PRE: 1 };
 
@@ -29,7 +31,7 @@
       acceptNode: function (n) {
         var p = n.parentNode;
         if (!p || SKIP[p.nodeName] || (p.isContentEditable)) return NodeFilter.FILTER_REJECT;
-        return /Bahmni|BAHMNI|ELIS|Odoo/.test(n.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
+        return /bahmni|ELIS|Odoo/i.test(n.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
       },
     });
     var n; var list = [];
@@ -63,5 +65,47 @@
     new MutationObserver(schedule).observe(document.documentElement, { childList: true, subtree: true, characterData: true });
     new MutationObserver(title).observe(document.querySelector('title') || document.head, { childList: true, subtree: true, characterData: true });
   }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+/*
+ * Pioneer Healthcare top bar - the same header as ATA healthcare (white 62px bar, logo,
+ * navy ink) on every module, with links between the three areas.
+ */
+(function () {
+  if (window.top !== window.self) return; // not inside embedded frames
+  var H = location.hostname.replace(/^erp-/, '');
+  var proto = location.protocol;
+  var MODS = [
+    { key: 'clinical', label: 'Clinical Service', href: proto + '//' + H + '/care/home/' },
+    { key: 'lab', label: 'Laboratory', href: proto + '//' + H + '/openelis/' },
+    { key: 'erp', label: 'Stock Inventory & Billing', href: proto + '//erp-' + H + '/web' },
+  ];
+  function current() {
+    if (/^erp-/.test(location.hostname)) return 'erp';
+    if (/^\/openelis/.test(location.pathname)) return 'lab';
+    if (/^\/(care|bahmni|openmrs|appointments|ipd)/.test(location.pathname)) return 'clinical';
+    return '';
+  }
+  var LOGO = '<svg viewBox="0 0 122 32" height="32" width="122" role="img" aria-label="Pioneer Healthcare">' +
+    '<image href="/pioneer-brand/mark.png" x="0" y="0" width="32" height="32"/>' +
+    '<g font-family="-apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Arial, sans-serif">' +
+    '<text x="38" y="17" font-weight="800" font-size="16" textLength="82" lengthAdjust="spacingAndGlyphs" fill="#081D42">PIONEER</text>' +
+    '<text x="38.5" y="28" font-weight="700" font-size="7.6" textLength="81" lengthAdjust="spacing" fill="#3E9C85">HEALTHCARE</text></g></svg>';
+  function bar() {
+    if (!document.body || document.getElementById('ph-topbar')) return;
+    var cur = current();
+    var el = document.createElement('header');
+    el.id = 'ph-topbar';
+    el.setAttribute('role', 'banner');
+    var links = MODS.map(function (m) {
+      return '<a class="ph-mod' + (m.key === cur ? ' on' : '') + '" href="' + m.href + '"' + (m.key === cur ? ' aria-current="page"' : '') + '>' + m.label + '</a>';
+    }).join('');
+    el.innerHTML = '<a class="ph-brand" href="' + proto + '//' + H + '/" title="Pioneer Healthcare home">' + LOGO + '</a>' +
+      '<nav class="ph-mods" aria-label="Healthcare Core areas">' + links + '</nav>';
+    document.body.insertBefore(el, document.body.firstChild);
+    document.documentElement.classList.add('ph-has-bar');
+  }
+  function start() { bar(); new MutationObserver(bar).observe(document.documentElement, { childList: true, subtree: false }); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();
