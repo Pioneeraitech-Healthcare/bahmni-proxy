@@ -115,7 +115,7 @@
     if (ON_LAB) { // the lab has its own sign-in; it is signed in when its menu is on screen
       return cb(document.querySelector('#user-info, #topMenu, #nav-first') && !document.querySelector('input[name=loginName]') ? 'Lab user' : '');
     }
-    fetch('/openmrs/ws/rest/v1/session?v=custom:(authenticated,user:(username,person:(display)))', { credentials: 'same-origin', headers: { Accept: 'application/json' } })
+    fetch('/openmrs/ws/rest/v1/session?v=custom:(authenticated,user:(username,person:(display)))', { credentials: 'same-origin', cache: 'no-store', headers: { Accept: 'application/json' } })
       .then(function (r) { return r.ok ? r.json() : {}; })
       .then(function (s) {
         if (!s || !s.authenticated || !s.user) return cb('', false);
