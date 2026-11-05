@@ -1003,6 +1003,42 @@
 @keyframes ph-loader-spin { to { transform: rotate(360deg); } }
 @keyframes ph-loader-breathe { 0%, 100% { transform: scale(0.9); opacity: .85; } 50% { transform: scale(1); opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .ph-loader .ph-loader-arc { animation-duration: 3s; } .ph-loader .ph-loader-mark { animation: none; } }
+
+/* ---------- Dropdown (ATA menu instead of the browser list) ---------- */
+.ph-ui .ph-dd { position: relative; display: inline-flex; vertical-align: middle; max-width: 100%; min-width: 180px; margin: 0 4px 0 0; }
+.ph-ui .ph-dd-btn {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; height: 32px; padding: 0 10px; box-sizing: border-box;
+  border: 1px solid var(--line-input); border-radius: 6px; background: var(--card); color: var(--ink); font: 13px var(--sans); text-align: left; cursor: pointer;
+}
+.ph-ui .ph-dd-btn:hover { border-color: var(--ink2); }
+.ph-ui .ph-dd-btn:focus-visible, .ph-ui .ph-dd-btn[aria-expanded="true"] { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-soft); }
+.ph-ui .ph-dd-btn svg { flex: none; color: #64748B; transition: transform .15s; }
+.ph-ui .ph-dd-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
+.ph-ui .ph-dd-v { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ph-ui .ph-dd-ph { color: var(--muted); }
+.ph-ui .ph-dd.disabled .ph-dd-btn { background: var(--line2); color: var(--muted); cursor: not-allowed; }
+.ph-ui .ph-dd-native { position: absolute !important; inset: 0 !important; width: 100% !important; height: 100% !important; opacity: 0 !important; pointer-events: none !important; margin: 0 !important; }
+.ph-ui .ph-dd-menu {
+  position: fixed; z-index: 2147483300; max-height: 320px; overflow: auto; padding: 6px; box-sizing: border-box;
+  background: var(--card); border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shl); font: 13px var(--sans); color: var(--ink);
+}
+.ph-ui .ph-dd-menu[hidden] { display: none; }
+.ph-ui .ph-dd-h { padding: 8px 8px 4px; font-size: 11px; font-weight: 600; color: var(--muted); }
+.ph-ui .ph-dd-i { display: flex; align-items: center; min-height: 32px; padding: 6px 10px; border-radius: 6px; cursor: pointer; white-space: nowrap; outline: none; }
+.ph-ui .ph-dd-i:hover, .ph-ui .ph-dd-i:focus { background: var(--blue-soft); }
+.ph-ui .ph-dd-i.on { color: var(--blue); font-weight: 600; background: var(--blue-soft); }
+.ph-ui .ph-dd-i.on::after { content: ""; margin-left: auto; padding-left: 12px; width: 14px; height: 14px; background: currentColor; -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") no-repeat center / 14px; }
+.ph-ui .ph-dd-i.off { color: var(--muted); cursor: default; background: none; }
+
+/* ---------- Rich tiles (icon, title, one line) ---------- */
+.ph-ui .ph-tiles-rich { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+.ph-ui .ph-tile { text-align: left; }
+.ph-ui .ph-tile-i { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 10px; background: var(--blue-soft); border: 1px solid var(--blue-line); color: var(--blue); }
+.ph-ui .ph-tile-b { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.ph-ui .ph-tile-d { font: 400 12.5px/1.45 var(--sans); color: var(--muted); }
+.ph-ui .ph-tiles-rich .ph-tile { justify-content: flex-start; gap: 12px; min-height: 76px; }
+
+.ph-ui .ph-dd-i.ph-dd-none { color: var(--muted); font-style: italic; }
 /*
  * Laboratory page layout. Component looks live in ph-ui.css (PH.ui) on top of the ATA kit; this file
  * only lays out the lab's pages and maps the lab's own widgets that PH.ui cannot rename (its grids,
@@ -1075,3 +1111,26 @@ html.ph-lab body > table, html.ph-lab body > form > table { table-layout: fixed;
 html.ph-lab #todayStat ~ #tabs, html.ph-lab #tabs { width: 100% !important; }
 /* nested layout tables inside the results table */
 html.ph-lab table.ph-table td :is(table, tbody, tr, td) { background: transparent !important; border: 0 !important; }
+
+/* ---------- Dashboard lists (PH.ui tables built from the lab's data) ---------- */
+html.ph-lab .ui-tabs-panel.ph-has-list > :not(.ph-dash-list) { display: none !important; }
+html.ph-lab .ph-dash-list .ph-table-card { margin: 0; border: 0; border-radius: 0; box-shadow: none; }
+html.ph-lab .ph-dash-list .ph-table-bar { justify-content: flex-start; }
+html.ph-lab .ph-table-search { width: 320px !important; max-width: 100%; }
+html.ph-lab .ph-dash-list td { vertical-align: middle; }
+html.ph-lab .ph-who { display: flex; flex-direction: column; gap: 1px; }
+html.ph-lab .ph-who-n { font-weight: 600; color: var(--ink); }
+html.ph-lab .ph-who-s, html.ph-lab .ph-mono { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+html.ph-lab .ph-mono { color: var(--ink); }
+html.ph-lab .ph-wrap { white-space: normal; max-width: 280px; color: var(--ink2); }
+html.ph-lab .ph-row-acts { display: flex; gap: 6px; justify-content: flex-end; }
+html.ph-lab .ph-row-acts .ph-btn { height: 28px; min-height: 28px !important; padding: 0 10px !important; font-size: 12.5px !important; margin: 0 !important; }
+html.ph-lab .ph-th-acts { width: 1%; }
+html.ph-lab .ph-nohit { padding: 18px; text-align: center; color: var(--muted); font-size: 13px; }
+html.ph-lab .ui-tabs-nav .kcount { display: inline-block; margin-left: 6px; min-width: 20px; padding: 1px 6px; border-radius: 10px; background: var(--line2); color: var(--ink2); font-size: 11.5px; font-weight: 600; text-align: center; }
+html.ph-lab .ui-tabs-nav li.ui-tabs-selected .kcount { background: var(--blue-soft); color: var(--blue); }
+html.ph-lab .ph-dash-list table.ph-table { table-layout: auto; }
+html.ph-lab .ph-dash-list table.ph-table td { max-width: none !important; overflow: visible !important; }
+html.ph-lab .ph-dash-list .ph-wrap { max-width: 220px; }
+html.ph-lab .ph-dash-list .ph-td-acts { white-space: nowrap; width: 1%; padding-right: 14px !important; }
+html.ph-lab .ph-dash-list .kdt-scroll { overflow-x: auto; }

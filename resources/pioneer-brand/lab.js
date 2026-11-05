@@ -17,7 +17,7 @@
     [/SampleEdit/i, 'sample', '', 'Find a sample by its lab number and change it.'],
     [/PatientManagement/i, 'patient', '', 'Find a patient or add a new one.'],
     [/NonConformity/i, 'alert', '', 'Record a problem with a sample or an order.'],
-    [/ResultValidation|Validation/i, 'results', '', 'Check the results, then accept them to send them to the doctor.'],
+    [/ResultValidation|Validation/i, 'results', 'Result validation', 'Check the results, then accept them to send them to the doctor.'],
     [/Results|Logbook|Referral/i, 'results', '', 'Enter test results. Normal ranges are shown next to each value.'],
     [/AuditTrail/i, 'report', '', 'Every change made to a sample, with who made it and when.'],
     [/Report/i, 'report', '', 'Choose the values, then print the report.'],
@@ -56,6 +56,8 @@
           items.push({ label: txt(sa), href: sa.getAttribute('href') || '#', target: sa.target, onclick: sa.getAttribute('onclick'), current: cur });
         });
       })(sub);
+      var links = items.filter(function (x) { return x.href; });
+      if (links.length === 1) { strip.appendChild(ui.tabs([{ label: label, href: links[0].href, selected: active }]).firstChild); return; }
       strip.appendChild(ui.tabMenu(label, items, { selected: active }));
     });
     var top = document.getElementById('ph-topbar');
@@ -154,6 +156,7 @@
   /* Inputs and buttons -> PH.ui.field / PH.ui.button */
   function controls() {
     document.querySelectorAll('input:not([type=hidden]):not([type=button]):not([type=submit]):not([type=reset]):not([type=image]), select, textarea').forEach(function (i) { if (!i.closest(SKIP)) ui.field(i); });
+    document.querySelectorAll('select').forEach(function (s) { if (!s.closest(SKIP) && s.offsetParent !== null) ui.dropdown(s); });
     document.querySelectorAll('input[type=button], input[type=submit], input[type=reset], button').forEach(function (b) {
       if (b.closest(SKIP + ', .ph-actionbar')) return;
       var label = (b.value || b.textContent || '').trim();
@@ -199,9 +202,105 @@
     var r = document.querySelector('.ph-refresh'), acts = document.querySelector('.ph-page-header .kph-a');
     if (r && acts && r.parentNode !== acts) { ui.move(r, acts); r.classList.remove('pri'); }
   }
+  /*
+   * Dashboard lists -> PH.ui tables. The page writes its four lists into an inline script
+   * (JSON.parse('...')); the old grid only draws what fits in its small window, so the tables are
+   * built from that data and the lab's own link builder (generateAllLinksForOrder), so every row
+   * and every action is the lab's real one.
+   */
+  function pageList(name) {
+    var re = new RegExp('var\\s+' + name + "\\s*=\\s*JSON\\.parse\\(('(?:[^'\\\\]|\\\\.)*')\\)");
+    for (var i = 0; i < document.scripts.length; i++) {
+      var m = re.exec(document.scripts[i].textContent || '');
+      if (m) { try { return JSON.parse(Function('return ' + m[1])()); } catch (e) { return null; } }
+    }
+    return null;
+  }
+  function personCell(o) {
+    var name = [o.firstName, o.middleName, o.lastName].filter(Boolean).join(' ');
+    return '<div class="ph-who"><span class="ph-who-n">' + ui.esc(name) + '</span><span class="ph-who-s">' + ui.esc(o.stNumber || '') + '</span></div>';
+  }
+  function actionsFor(o, collected) {
+    var box = document.createElement('div'); box.className = 'ph-row-acts';
+    var tmp = document.createElement('div');
+    try { tmp.innerHTML = window.generateAllLinksForOrder ? window.generateAllLinksForOrder(o, collected) : ''; } catch (e) { tmp.innerHTML = ''; }
+    var a = function (sel) { var x = tmp.querySelector(sel); return x && x.getAttribute('href'); };
+    if (!collected) {
+      var href = a('a[href*="SamplePatientEntry"]') || a('a[href]');
+      if (href) box.appendChild(ui.linkButton('Collect sample', href, 'primary'));
+      return box;
+    }
+    var r = a('a#result'), v = a('a#validate'), pr = tmp.querySelector('a#print');
+    if (r && +o.pendingTestCount > 0) box.appendChild(ui.linkButton('Enter results', r, 'primary'));
+    else if (r) box.appendChild(ui.linkButton('Results', r, 'secondary'));
+    if (v && +o.pendingValidationCount > 0) box.appendChild(ui.linkButton('Validate', v, +o.pendingTestCount > 0 ? 'secondary' : 'primary'));
+    if (pr) box.appendChild(ui.linkButton('Report', pr.getAttribute('href'), 'quiet', '_blank'));
+    return box;
+  }
+  function statusFor(o) {
+    if (o.isCompleted === true || o.isCompleted === 'true' || (+o.pendingTestCount === 0 && +o.pendingValidationCount === 0 && +o.totalTestCount > 0)) return ui.pill('Completed', 'ok');
+    if (+o.pendingValidationCount > 0 && +o.pendingTestCount === 0) return ui.pill(o.pendingValidationCount + ' to validate', 'info');
+    if (+o.pendingTestCount > 0) return ui.pill(o.pendingTestCount + ' of ' + o.totalTestCount + ' to enter', 'warn');
+    return ui.pill('In progress', 'info');
+  }
+  var LISTS = [
+    ['todaySamplesToCollectListContainer', 'todaySampleNotCollectedList', false],
+    ['backlogSamplesToCollectListContainer', 'backlogSampleNotCollectedList', false],
+    ['todaySamplesCollectedListContainer', 'todayOrderList', true],
+    ['backlogSamplesCollectedListContainer', 'backlogOrderList', true],
+  ];
+  function dashboardTables() {
+    if (!document.getElementById('todayStat')) return;
+    LISTS.forEach(function (L) {
+      var panel = document.getElementById(L[0]); if (!panel || panel.querySelector('.ph-dash-list')) return;
+      var data = pageList(L[1]); if (!data) return;
+      var collected = L[2];
+      var holder = document.createElement('div'); holder.className = 'ph-dash-list';
+      panel.insertBefore(holder, panel.firstChild);
+      panel.classList.add('ph-has-list');
+      var tabA = document.getElementById(L[0] + 'Id');
+      if (tabA && !tabA.querySelector('.kcount')) tabA.insertAdjacentHTML('beforeend', ' <span class="kcount">' + data.length + '</span>');
+      if (!data.length) {
+        holder.appendChild(ui.emptyState(collected
+          ? { icon: 'sample', title: 'No samples collected yet', text: 'Collected samples show here with their results and validation.' }
+          : { icon: 'sample', title: 'No samples to collect', text: 'Lab orders from doctors appear here by themselves. To register a sample without an order, add it here.', actions: [ui.linkButton('Add sample', '/openelis/SamplePatientEntry.do', 'primary')] }));
+        return;
+      }
+      var t = document.createElement('table');
+      t.innerHTML = '<thead><tr>' + (collected ? '<th>Lab number</th>' : '') + '<th>Patient</th><th>Sample</th><th>Departments</th><th>Priority</th>' + (collected ? '<th>Status</th>' : '<th>Tests</th>') + '<th class="ph-th-acts"></th></tr></thead><tbody></tbody>';
+      var tb = t.querySelector('tbody');
+      data.forEach(function (o) {
+        var tr = document.createElement('tr');
+        tr.setAttribute('data-q', [o.accessionNumber, o.stNumber, o.firstName, o.middleName, o.lastName, o.sampleType, o.sectionNames].join(' ').toLowerCase());
+        var pr = String(o.priority || 'Routine');
+        tr.innerHTML = (collected ? '<td class="ph-mono">' + ui.esc(o.accessionNumber || '') + '</td>' : '') +
+          '<td>' + personCell(o) + '</td><td>' + ui.esc(o.sampleType || '') + '</td>' +
+          '<td class="ph-wrap">' + ui.esc(String(o.sectionNames || '').split(',').map(function (x) { return x.replace(/ Department$/, '').trim(); }).filter(Boolean).join(', ')) + '</td>' +
+          '<td></td><td></td><td class="ph-td-acts"></td>';
+        var cells = tr.children, off = collected ? 1 : 0;
+        cells[3 + off].appendChild(ui.pill(pr, /stat|urgent|high/i.test(pr) ? 'bad' : 'mute'));
+        if (collected) cells[4 + off].appendChild(statusFor(o)); else cells[4 + off].textContent = (o.totalTestCount || o.testCount || '') + '';
+        cells[5 + off].appendChild(actionsFor(o, collected));
+        tb.appendChild(tr);
+      });
+      var search = document.createElement('input'); search.type = 'search'; search.placeholder = 'Search patient, ID or lab number'; search.className = 'ph-table-search';
+      ui.field(search);
+      var none = document.createElement('div'); none.className = 'ph-nohit'; none.hidden = true; none.textContent = 'No samples match your search.';
+      search.addEventListener('input', function () {
+        var q = search.value.trim().toLowerCase(), shown = 0;
+        [].forEach.call(tb.rows, function (r) { var on = !q || r.getAttribute('data-q').indexOf(q) >= 0; r.style.display = on ? '' : 'none'; if (on) shown++; });
+        none.hidden = shown > 0;
+      });
+      holder.appendChild(t);
+      var card = ui.table(t, { toolbar: [search] });
+      card.appendChild(none);
+    });
+  }
+
   /* Grids with no rows -> PH.ui.emptyState inside the tab panel */
   function gridEmpty() {
     document.querySelectorAll('.ui-tabs-panel').forEach(function (panel) {
+      if (panel.classList.contains('ph-has-list')) return;
       var vp = panel.querySelector('.slick-viewport'); if (!vp) return;
       var rows = vp.querySelectorAll('.slick-row').length, box = panel.querySelector(':scope > .ph-empty');
       if (!rows && !box) panel.appendChild(ui.emptyState({ title: 'No samples here', text: 'Samples appear here as soon as a doctor orders a lab test.' }));
@@ -218,6 +317,7 @@
     if (LOGIN) return;
     guard('nav', nav);
     guard('dashboard', dashboard);
+    guard('dashboard-tables', dashboardTables);
     guard('admin', adminTiles);
     guard('header', pageHeader);
     guard('refresh', moveRefresh);

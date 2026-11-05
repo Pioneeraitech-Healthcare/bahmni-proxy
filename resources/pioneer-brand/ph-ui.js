@@ -215,8 +215,15 @@
   };
 
   ui.emptyState = function (o) {
-    return el('div', 'kstate center ph-empty',
+    var e = el('div', 'kstate center ph-empty',
       '<span class="ph-empty-i">' + icon(o.icon || 'search', 26) + '</span><p class="kst-t">' + esc(o.title || 'Nothing to show') + '</p>' + (o.text ? '<p class="kst-w">' + esc(o.text) + '</p>' : ''));
+    if (o.actions && o.actions.length) { var a = el('div', 'kst-a'); append(a, o.actions); e.appendChild(a); }
+    return e;
+  };
+  // a link styled as a button (same look as ui.button)
+  ui.linkButton = function (label, href, variant, target) {
+    var a = el('a', '', esc(label)); a.href = href; if (target) a.target = target;
+    return ui.button(a, variant);
   };
 
   ui.pill = function (text, tone) {
@@ -272,12 +279,102 @@
   };
 
   ui.tiles = function (items) {
-    var g = el('div', 'ph-tiles');
+    var g = el('div', 'ph-tiles' + (items.some(function (i) { return i.text; }) ? ' ph-tiles-rich' : ''));
     items.forEach(function (it) {
-      var a = el('a', 'ph-tile', '<span class="ph-tile-t">' + esc(it.label) + '</span><span class="ph-tile-go">' + icon('right', 16) + '</span>');
+      var a = el('a', 'ph-tile',
+        (it.icon ? '<span class="ph-tile-i">' + icon(it.icon, 20) + '</span>' : '') +
+        '<span class="ph-tile-b"><span class="ph-tile-t">' + esc(it.label) + '</span>' + (it.text ? '<span class="ph-tile-d">' + esc(it.text) + '</span>' : '') + '</span>' +
+        '<span class="ph-tile-go">' + icon('right', 16) + '</span>');
       a.href = it.href || '#'; if (it.onclick) a.setAttribute('onclick', it.onclick);
+      if (it.onClick) a.addEventListener('click', it.onClick);
       g.appendChild(a);
     });
     return g;
   };
+
+  /*
+   * Dropdown: an ATA menu instead of the browser's own list. The native <select> stays in place
+   * (transparent, under the button) so the app's forms, bindings and validation keep working;
+   * choosing an item sets its value and fires the same events a user's choice would.
+   */
+  var openDd = null;
+  function closeDd() { if (openDd) { openDd.menu.hidden = true; openDd.btn.setAttribute('aria-expanded', 'false'); openDd = null; } }
+  document.addEventListener('click', function (e) { if (openDd && !e.target.closest('.ph-dd')) closeDd(); }, true);
+  window.addEventListener('scroll', function (e) { if (openDd && !(e.target.closest && e.target.closest('.ph-dd-menu'))) closeDd(); }, true);
+  function ddLabel(s) { var o = s.options[s.selectedIndex]; return o ? o.text.trim() : ''; }
+  ui.dropdown = function (s) {
+    if (!s || s.multiple || s.size > 1 || s.getAttribute('data-ph-dd')) return s;
+    s.setAttribute('data-ph-dd', '1');
+    var wrap = el('span', 'ph-dd');
+    var btn = el('button', 'ph-dd-btn'); btn.type = 'button'; btn.setAttribute('aria-haspopup', 'listbox'); btn.setAttribute('aria-expanded', 'false');
+    var menu = el('div', 'ph-dd-menu'); menu.setAttribute('role', 'listbox'); menu.hidden = true;
+    s.parentNode.insertBefore(wrap, s);
+    wrap.appendChild(btn); ui.move(s, wrap); document.body.appendChild(menu);
+    s.classList.add('ph-dd-native'); s.tabIndex = -1;
+    var w = s.style.width || (s.offsetWidth ? s.offsetWidth + 'px' : '');
+    if (w && parseInt(w, 10) > 180) wrap.style.width = w;
+    function sync() {
+      var t = ddLabel(s);
+      btn.innerHTML = '<span class="ph-dd-v' + (t && s.selectedIndex > -1 && s.options[s.selectedIndex].value !== '' ? '' : ' ph-dd-ph') + '">' + esc(t || 'Select') + '</span>' + icon('chev', 14);
+      btn.disabled = s.disabled; wrap.classList.toggle('disabled', s.disabled);
+    }
+    function choose(i) {
+      if (s.selectedIndex !== i) {
+        s.selectedIndex = i;
+        s.dispatchEvent(new Event('input', { bubbles: true }));
+        s.dispatchEvent(new Event('change', { bubbles: true }));
+        if (window.jQuery) try { window.jQuery(s).trigger('change'); } catch (e) {}
+      }
+      sync(); closeDd(); btn.focus();
+    }
+    function build() {
+      menu.innerHTML = '';
+      [].forEach.call(s.children, function (c) {
+        if (c.tagName === 'OPTGROUP') { menu.appendChild(el('div', 'ph-dd-h', esc(c.label))); [].forEach.call(c.children, add); } else add(c);
+      });
+      function add(o) {
+        if (o.hidden || o.style.display === 'none') return;
+        var blank = !o.text.trim();
+        var it = el('div', 'ph-dd-i' + (o.selected ? ' on' : '') + (o.disabled ? ' off' : '') + (blank ? ' ph-dd-none' : ''), blank ? 'None' : esc(o.text.trim()));
+        it.setAttribute('role', 'option'); it.setAttribute('aria-selected', o.selected ? 'true' : 'false'); it.tabIndex = -1;
+        if (!o.disabled) it.addEventListener('click', function () { choose(o.index); });
+        menu.appendChild(it);
+      }
+    }
+    function place() {
+      var r = btn.getBoundingClientRect(), h = Math.min(320, menu.scrollHeight + 2);
+      var below = window.innerHeight - r.bottom > h + 8 || r.top < h + 8;
+      menu.style.minWidth = Math.max(r.width, 180) + 'px';
+      menu.style.left = Math.min(r.left, window.innerWidth - Math.max(r.width, 180) - 8) + 'px';
+      menu.style.top = (below ? r.bottom + 4 : r.top - h - 4) + 'px';
+    }
+    function open() {
+      if (s.disabled) return;
+      if (openDd && openDd.menu === menu) { closeDd(); return; }
+      closeDd(); build(); menu.hidden = false; place();
+      btn.setAttribute('aria-expanded', 'true'); openDd = { menu: menu, btn: btn };
+      var on = menu.querySelector('.on') || menu.querySelector('.ph-dd-i:not(.off)'); if (on) { on.focus(); on.scrollIntoView({ block: 'nearest' }); }
+    }
+    btn.addEventListener('click', function (e) { e.preventDefault(); open(); });
+    btn.addEventListener('keydown', function (e) { if (/^(ArrowDown|ArrowUp|Enter| )$/.test(e.key)) { e.preventDefault(); open(); } });
+    menu.addEventListener('keydown', function (e) {
+      var items = [].slice.call(menu.querySelectorAll('.ph-dd-i:not(.off)')), i = items.indexOf(document.activeElement);
+      if (e.key === 'ArrowDown') { (items[i + 1] || items[i] || items[0]).focus(); e.preventDefault(); }
+      else if (e.key === 'ArrowUp') { (items[i - 1] || items[0]).focus(); e.preventDefault(); }
+      else if (e.key === 'Enter' || e.key === ' ') { if (document.activeElement.click) document.activeElement.click(); e.preventDefault(); }
+      else if (e.key === 'Escape' || e.key === 'Tab') { closeDd(); btn.focus(); }
+      else if (e.key.length === 1) { var k = e.key.toLowerCase(); var hit = items.filter(function (x) { return x.textContent.trim().toLowerCase().indexOf(k) === 0; })[0]; if (hit) hit.focus(); }
+    });
+    s.addEventListener('change', sync);
+    new MutationObserver(sync).observe(s, { childList: true, subtree: true, attributes: true, attributeFilter: ['disabled'] });
+    sync();
+    ddAll.push({ s: s, sync: sync, wrap: wrap });
+    return wrap;
+  };
+  // the apps change select values in code without events: keep the labels in step
+  var ddAll = [];
+  setInterval(function () {
+    ddAll = ddAll.filter(function (d) { if (!d.s.isConnected) { d.wrap.remove(); return false; } return true; });
+    ddAll.forEach(function (d) { var t = ddLabel(d.s), cur = d.wrap.querySelector('.ph-dd-v'); if (cur && cur.textContent !== (t || 'Select')) d.sync(); });
+  }, 600);
 })();
