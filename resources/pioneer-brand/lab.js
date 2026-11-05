@@ -91,11 +91,11 @@
       var card = ui.card({ title: ' ' });
       card.querySelector('.ph-card-h').innerHTML = h2.innerHTML; // keeps the required marker
       h2.parentNode.insertBefore(card, h2);
-      h2.style.display = 'none'; card.insertBefore(h2, card.firstChild);
+      h2.style.display = 'none'; ui.move(h2, card, card.firstChild);
       var body = card.querySelector('.ph-card-b'), n = card.nextSibling;
       while (n && !(n.nodeType === 1 && (n.tagName === 'H2' || (n.querySelector && n.querySelector(':scope > h2'))))) {
         var next = n.nextSibling;
-        if (n.nodeType === 1 && n.tagName === 'BR') n.remove(); else body.appendChild(n);
+        if (n.nodeType === 1 && n.tagName === 'BR') n.remove(); else ui.move(n, body);
         n = next;
       }
       if (!body.textContent.trim() && !body.querySelector('input, select, table, img')) body.remove();
@@ -116,7 +116,7 @@
       var real = group.filter(function (x) { return x.nodeType === 1 ? x.tagName !== 'BR' && x.tagName !== 'H1' && x.tagName !== 'SCRIPT' && (x.offsetParent !== null || x.querySelector('input, select, textarea')) : x.nodeType === 3 && x.nodeValue.trim(); });
       if (real.length && real.some(function (x) { return x.nodeType === 3 || x.querySelector('input:not([type=hidden]), select, textarea, a, table') || /\S/.test(x.textContent); })) {
         var card = ui.card({ plain: true }); var body = card.querySelector('.ph-card-b');
-        group[0].parentNode.insertBefore(card, group[0]); group.forEach(function (x) { body.appendChild(x); });
+        group[0].parentNode.insertBefore(card, group[0]); group.forEach(function (x) { ui.move(x, body); });
       }
       group = [];
     }
@@ -197,7 +197,7 @@
   }
   function moveRefresh() {
     var r = document.querySelector('.ph-refresh'), acts = document.querySelector('.ph-page-header .kph-a');
-    if (r && acts && r.parentNode !== acts) { acts.appendChild(r); r.classList.remove('pri'); }
+    if (r && acts && r.parentNode !== acts) { ui.move(r, acts); r.classList.remove('pri'); }
   }
   /* Grids with no rows -> PH.ui.emptyState inside the tab panel */
   function gridEmpty() {

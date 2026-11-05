@@ -53,6 +53,28 @@
 
   var ui = PH.ui = {};
   ui.icon = icon;
+
+  /*
+   * Move a node without breaking forms. Old pages put forms inside tables, where the browser ties
+   * each field to its form invisibly; moving the field would cut that tie and the page's own save
+   * would no longer find it. Every component moves nodes through here: each field keeps its form
+   * (re-tied with the form attribute when needed).
+   */
+  var fid = 0;
+  ui.move = function (node, parent, before) {
+    var ctrls = [];
+    if (node.nodeType === 1) {
+      if ('form' in node && /^(INPUT|SELECT|TEXTAREA|BUTTON|FIELDSET|OUTPUT|OBJECT)$/.test(node.tagName)) ctrls.push(node);
+      [].push.apply(ctrls, node.querySelectorAll('input, select, textarea, button, fieldset, output, object'));
+    }
+    var owners = ctrls.map(function (c) { return c.form; });
+    parent.insertBefore(node, before || null);
+    ctrls.forEach(function (c, i) {
+      var f = owners[i];
+      if (f && c.form !== f) { if (!f.id) f.id = 'ph-form-' + (++fid); c.setAttribute('form', f.id); }
+    });
+    return node;
+  };
   ui.esc = esc;
 
   ui.scope = function (root) {
@@ -113,7 +135,7 @@
       var bar = el('div', 'kdt-bar ph-table-bar', o.title ? '<span class="ph-table-title">' + esc(o.title) + '</span>' : '');
       append(bar, o.toolbar); wrap.appendChild(bar);
     }
-    var scroll = el('div', 'kdt-scroll'); wrap.appendChild(scroll); scroll.appendChild(t);
+    var scroll = el('div', 'kdt-scroll'); wrap.appendChild(scroll); ui.move(t, scroll);
     return wrap;
   };
 
@@ -157,7 +179,7 @@
   }
   document.addEventListener('click', function (e) { if (!e.target.closest('.ph-menu, .ph-menu-anchor')) closeMenus(); });
   ui.menu = function (anchor, items) {
-    var wrap = el('div', 'ph-menu-anchor'); anchor.parentNode.insertBefore(wrap, anchor); wrap.appendChild(anchor);
+    var wrap = el('div', 'ph-menu-anchor'); anchor.parentNode.insertBefore(wrap, anchor); ui.move(anchor, wrap);
     var m = menuEl(items); wrap.appendChild(m);
     anchor.setAttribute('aria-haspopup', 'menu'); anchor.setAttribute('aria-expanded', 'false');
     anchor.addEventListener('click', function (e) {
