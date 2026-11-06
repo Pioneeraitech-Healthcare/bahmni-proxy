@@ -128,3 +128,29 @@ html.ph-clin :is(.submit-btn-container, .form-footer) button { height: 32px !imp
 html.ph-clin .ph-apptoolbar :is(header, .opd-header-top, .reg-header, nav, ul) { text-align: left !important; justify-content: flex-start !important; }
 html.ph-clin .ph-apptoolbar :is(.opd-header-top > header > *, header > nav) { margin-left: 0 !important; margin-right: 0 !important; }
 html.ph-clin .ph-home-apps { max-width: 1480px !important; }
+
+/* ---------- Every clinical tab strip (consultation, patient dashboard, queues) = kit tabs ---------- */
+html.ph-clin :is(.scrollable-tabs, ul.header-tabs) li.tab-item, html.ph-clin :is(.scrollable-tabs, ul.header-tabs) li.tab-item.dashboard {
+  background: transparent !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important; margin: 0 2px -1px 0 !important; padding: 0 !important; height: auto !important;
+}
+html.ph-clin :is(.scrollable-tabs, ul.header-tabs) li.tab-item > a {
+  display: inline-flex !important; align-items: center; min-height: 40px; padding: 0 12px !important; background: transparent !important; background-image: none !important;
+  border: 0 !important; border-bottom: 2px solid transparent !important; border-radius: 6px 6px 0 0 !important; color: var(--ink2) !important;
+  font: 500 13px var(--sans) !important; text-decoration: none !important; box-shadow: none !important; text-shadow: none !important;
+}
+html.ph-clin :is(.scrollable-tabs, ul.header-tabs) li.tab-item > a:hover { background: var(--line2) !important; color: var(--ink) !important; }
+html.ph-clin :is(.scrollable-tabs, ul.header-tabs) li.tab-item:is(.tab-selected, .active, .selected) > a { color: var(--blue) !important; border-bottom-color: var(--blue) !important; font-weight: 600 !important; }
+html.ph-clin :is(.scrollable-tabs, ul.header-tabs) :is(.arrow-left, .arrow-right) { background: var(--card) !important; border: 1px solid var(--line) !important; border-radius: 8px !important; color: var(--ink2) !important; }
+/* the consultation's side list of forms */
+html.ph-clin .template-control-panel ul.template-icons { background: var(--card) !important; border: 1px solid var(--line) !important; border-radius: 10px !important; padding: 6px !important; }
+html.ph-clin .template-control-panel ul.template-icons li { border: 0 !important; margin: 0 0 2px !important; }
+html.ph-clin .template-control-panel ul.template-icons button {
+  width: 100% !important; text-align: left !important; min-height: 34px; padding: 6px 10px !important; border: 0 !important; border-radius: 6px !important;
+  background: transparent !important; background-image: none !important; color: var(--ink2) !important; font: 500 13px var(--sans) !important; box-shadow: none !important; text-shadow: none !important;
+}
+html.ph-clin .template-control-panel ul.template-icons button:hover { background: var(--line2) !important; color: var(--ink) !important; }
+html.ph-clin .template-control-panel ul.template-icons :is(button.active, button.selected, li.active button, li.selected button, button[class*="active"]) { background: var(--blue-soft) !important; color: var(--blue) !important; font-weight: 600 !important; }
+html.ph-clin .primary-section-grid { background: transparent !important; }
+html.ph-clin .template-control-panel ul.template-icons li { background: transparent !important; border-radius: 6px !important; }
+html.ph-clin .template-control-panel ul.template-icons li:is(.active, .selected, [class*="active"], [class*="select"]) { background: var(--blue-soft) !important; }
+html.ph-clin .template-control-panel ul.template-icons li:is(.active, .selected, [class*="active"], [class*="select"]) button { color: var(--blue) !important; font-weight: 600 !important; background: transparent !important; }
