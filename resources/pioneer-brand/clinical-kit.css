@@ -1130,3 +1130,45 @@ html.ph-clin .ph-table-card :is(td, th):last-child { white-space: nowrap; }
 html.ph-clin .ph-table-card td:last-child .ph-btn { margin: 0 0 0 6px !important; }
 html.ph-clin .bahmni-reports :is(.reports-header, h2, .heading) { border: 0 !important; }
 html.ph-has-bar button u, html.ph-has-bar a.ph-apptab u, html.ph-has-bar .ph-btn u { text-decoration: none !important; font: inherit !important; }
+
+/* ---------- Registration form: ATA form layout (cards, labels above, two columns) ---------- */
+html.ph-clin form.form-horizontal { background: transparent !important; border: 0 !important; box-shadow: none !important; max-width: 1180px; margin: 12px auto !important; padding: 0 24px !important; box-sizing: border-box; }
+html.ph-embed form.form-horizontal { padding: 16px !important; margin: 0 !important; max-width: none; }
+html.ph-clin form.form-horizontal .box-container { background: var(--card) !important; border: 1px solid var(--line) !important; border-radius: 10px !important; padding: 16px 20px 8px !important; margin: 0 0 16px !important; box-shadow: none !important; }
+html.ph-clin form.form-horizontal legend.registraion_legend, html.ph-clin form.form-horizontal legend.additional-attribute {
+  display: block !important; width: 100% !important; margin: 4px 0 14px !important; padding: 0 0 10px !important; border: 0 !important; border-bottom: 1px solid var(--line) !important;
+  font: 600 14px var(--sans) !important; color: var(--ink) !important; text-transform: none !important; background: none !important;
+}
+html.ph-clin form.form-horizontal legend :is(span, strong) { font: inherit !important; color: inherit !important; text-transform: none !important; }
+html.ph-clin form.form-horizontal article.form-field { display: flex !important; flex-direction: column; align-items: stretch; gap: 4px; float: none !important; width: auto !important; margin: 0 0 12px !important; padding: 0 !important; min-height: 0 !important; }
+html.ph-clin form.form-horizontal article.form-field > .field-attribute { width: auto !important; float: none !important; text-align: left !important; padding: 0 !important; margin: 0 !important; }
+html.ph-clin form.form-horizontal article.form-field > .field-attribute label { display: block; width: auto !important; text-align: left !important; font: 600 12px var(--sans) !important; color: var(--ink2) !important; margin: 0 !important; padding: 0 !important; }
+html.ph-clin form.form-horizontal article.form-field > .field-value { width: auto !important; float: none !important; margin: 0 !important; padding: 0 !important; }
+html.ph-clin form.form-horizontal .field-value :is(input[type=text], input[type=number], input[type=date], input[type=time], input[type=tel], input:not([type]), select) { width: 100% !important; max-width: 420px; height: 32px !important; }
+html.ph-clin form.form-horizontal .field-value .ph-dd { width: 100% !important; max-width: 420px; }
+html.ph-clin form.form-horizontal section.form-field-inline { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 24px; width: 100% !important; float: none !important; }
+html.ph-clin form.form-horizontal article.right-form-field { margin-left: 0 !important; }
+html.ph-clin form.form-horizontal #patientName { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; width: 100% !important; max-width: 860px; }
+html.ph-clin form.form-horizontal #patientName > span, html.ph-clin form.form-horizontal #patientName > span > span { display: block; width: 100% !important; }
+html.ph-clin form.form-horizontal #patientName input { width: 100% !important; max-width: none; }
+html.ph-clin form.form-horizontal .age-field { display: flex !important; gap: 8px; width: auto !important; }
+html.ph-clin form.form-horizontal .age-field .input-prepend { display: flex !important; width: auto !important; }
+html.ph-clin form.form-horizontal .age-field .input-prepend input { width: 72px !important; border-radius: 0 6px 6px 0 !important; }
+html.ph-clin form.form-horizontal .photo-container-wrapper { float: right; }
+@media (max-width: 760px) { html.ph-clin form.form-horizontal section.form-field-inline { grid-template-columns: 1fr; } }
+/* footer actions stay at the bottom of the window */
+html.ph-clin .submit-btn-container, html.ph-clin .reg-wrapper .form-footer, html.ph-clin form.form-horizontal ~ .submit-btn-container {
+  position: sticky !important; bottom: 0; z-index: 5; display: flex !important; justify-content: flex-end; align-items: center; gap: 8px;
+  background: var(--card) !important; border-top: 1px solid var(--line); padding: 10px 24px !important; margin: 0 !important; box-shadow: 0 -4px 16px rgba(15,23,42,.06);
+}
+html.ph-clin form.form-horizontal section.form-field-inline { display: flex !important; flex-wrap: wrap; gap: 0 24px; }
+html.ph-clin form.form-horizontal section.form-field-inline > article.form-field { flex: 1 1 calc(50% - 12px); min-width: 240px; }
+html.ph-clin form.form-horizontal legend::before, html.ph-clin form.form-horizontal legend::after,
+html.ph-clin form.form-horizontal legend .mylegend::before, html.ph-clin form.form-horizontal legend .mylegend::after { display: none !important; content: none !important; }
+html.ph-clin form.form-horizontal legend * { border: 0 !important; background: none !important; padding: 0 !important; }
+html.ph-clin :is(.submit-btn-container, .form-footer) button :is(u, span) { font: inherit !important; text-decoration: none !important; }
+html.ph-clin :is(.submit-btn-container, .form-footer) button.submit-btn { order: -1; background: var(--card) !important; color: var(--blue) !important; border: 1px solid var(--line) !important; box-shadow: none !important; }
+html.ph-clin :is(.submit-btn-container, .form-footer) button { height: 32px !important; border-radius: 8px !important; font: 600 13px var(--sans) !important; padding: 0 14px !important; }
+html.ph-clin .ph-apptoolbar :is(header, .opd-header-top, .reg-header, nav, ul) { text-align: left !important; justify-content: flex-start !important; }
+html.ph-clin .ph-apptoolbar :is(.opd-header-top > header > *, header > nav) { margin-left: 0 !important; margin-right: 0 !important; }
+html.ph-clin .ph-home-apps { max-width: 1480px !important; }

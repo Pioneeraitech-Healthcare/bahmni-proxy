@@ -43,7 +43,12 @@
     var h = onPatient ? null : HEADS.filter(function (x) { return x[0].test(r); })[0];
     if (!h || EMBED) { if (slot) slot.remove(); return; }
     var key = h[2];
-    if (slot && slot.getAttribute('data-k') === key) return;
+    var vbar = [].filter.call(document.querySelectorAll('.reg-header-wrapper, .opd-header-wrapper, .header-wrapper'), function (b) { return b.offsetHeight > 0; }).pop();
+    if (slot && slot.getAttribute('data-k') === key) {
+      // the app's toolbar can appear after the header: keep the header right under it
+      if (vbar && slot.previousElementSibling !== vbar) vbar.parentNode.insertBefore(slot, vbar.nextSibling);
+      return;
+    }
     if (slot) slot.remove();
     var actions = [];
     if (h[4] === 'register') actions.push(ui.newButton('Register patient', 'primary', function () { openRegister(); }));
