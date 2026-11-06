@@ -76,10 +76,7 @@ html.ph-embed body { padding-top: 0 !important; }
 html.ph-clin .bahmni-reports .ph-table-card, html.ph-clin .reports .ph-table-card { max-width: 1480px; margin: 12px auto; }
 html.ph-clin table.ph-table :is(td, th) .ph-btn { height: 28px; min-height: 28px !important; padding: 0 10px !important; font-size: 12.5px !important; }
 
-/* the app toolbar sits in the page flow under the top bar (it was pinned and covered the page header) */
-html.ph-clin .ph-apptoolbar { position: sticky !important; top: 62px !important; left: auto !important; right: auto !important; width: auto !important; z-index: 900 !important; }
-html.ph-clin .ph-apptoolbar[data-ph-shifted] { top: 62px !important; }
-html.ph-clin :is(.opd-content-wrapper, .reg-body-wrapper, #view-content.main, .bahmni-reports > div > .main, .dashboard) { margin-top: 0 !important; padding-top: 0 !important; }
+/* the app toolbar keeps the apps' own (pinned) position: their screens are laid out around it */
 html.ph-clin button.btn-user-info { display: none !important; }
 html.ph-clin .ph-apptoolbar :is(header, .opd-header-top, .reg-header) { justify-content: flex-start !important; }
 html.ph-clin .ph-apptoolbar :is(.fr, .reg-header-right, .retro-date-widget-wrapper) { margin-left: auto !important; float: none !important; display: flex; align-items: center; gap: 8px; }

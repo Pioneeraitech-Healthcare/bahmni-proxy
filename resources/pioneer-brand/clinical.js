@@ -47,6 +47,7 @@
     if (slot && slot.getAttribute('data-k') === key) {
       // the app's toolbar can appear after the header: keep the header right under it
       if (vbar && slot.previousElementSibling !== vbar) vbar.parentNode.insertBefore(slot, vbar.nextSibling);
+      clearBar(slot, vbar);
       return;
     }
     if (slot) slot.remove();
@@ -57,6 +58,12 @@
     var bar = [].filter.call(document.querySelectorAll('.reg-header-wrapper, .opd-header-wrapper, .header-wrapper'), function (b) { return b.offsetHeight > 0; }).pop();
     var host = bar && bar.parentNode ? bar.parentNode : document.body;
     if (bar) host.insertBefore(slot, bar.nextSibling); else { var top = document.getElementById('ph-topbar'); document.body.insertBefore(slot, top ? top.nextSibling : document.body.firstChild); }
+    clearBar(slot, bar);
+  }
+  // the apps pin their toolbar to the top; the header starts below it
+  function clearBar(slot, bar) {
+    var pinned = bar && /fixed|sticky/.test(getComputedStyle(bar).position);
+    slot.style.marginTop = pinned ? bar.offsetHeight + 'px' : '';
   }
 
   /* The app toolbar: no second home or user button (the top bar has both); links become tabs. */
